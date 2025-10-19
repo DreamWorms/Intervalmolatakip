@@ -58,3 +58,8 @@ h2{ margin:0 0 8px; font-size:18px }
 .tile-body .note{ min-height:46px; resize:vertical; padding:8px; border-radius:10px; border:1px solid var(--border); background:#0d1220; color:var(--fg) }
 .tiny-btn{ font-size:12px; padding:6px 10px; }
 
+/* Küçük görsel iyileştirme */
+.break-tile .tile-head { margin-bottom: 6px; }
+.break-tile .tile-body { grid-template-columns: 110px 1fr; }
+.break-tile .badge { background:#0b1020; }
+.break-tile .mins { width: 90px; text-align: right; }
