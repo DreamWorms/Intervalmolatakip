@@ -129,3 +129,37 @@ h2{ margin:0 0 8px; font-size:18px }
 @media (max-width: 1100px){
   .mins-float{ position:static; transform:none; margin-top:8px; }
 }
+
+/* ==== Breaks v2 (sade & taşmasız) ==== */
+.break-grid{
+  display:grid;
+  grid-template-columns: repeat(5, minmax(220px,1fr));
+  gap:18px;
+}
+@media (max-width: 1300px){ .break-grid{ grid-template-columns: repeat(4, minmax(220px,1fr)); } }
+@media (max-width: 1100px){ .break-grid{ grid-template-columns: repeat(3, minmax(220px,1fr)); } }
+@media (max-width: 800px){  .break-grid{ grid-template-columns: repeat(2, minmax(220px,1fr)); } }
+@media (max-width: 560px){  .break-grid{ grid-template-columns: 1fr; } }
+
+.break-tile{
+  background: linear-gradient(180deg, rgba(18,20,35,.75), rgba(14,16,28,.85));
+  border:1px solid #2a3040; border-radius:16px; padding:12px;
+  box-shadow: 0 8px 28px rgba(0,0,0,.35);
+}
+.tile-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.tile-title{ font-weight:800; letter-spacing:.2px; }
+.badge{ font-size:12px; padding:2px 8px; border-radius:999px; border:1px solid #2a3040; background:#0b1020; }
+.break-tile .note{ width:100%; min-height:90px; resize:vertical; padding:10px; border-radius:12px;
+  border:1px solid var(--border); background:#0d1220; color:var(--fg) }
+
+/* Sadece CUSTOM için alt düzenleme şeridi */
+.tile-footer{
+  display:flex; align-items:center; gap:8px; margin-top:10px;
+  border-top:1px dashed #283044; padding-top:10px;
+}
+.tile-footer .text.small{ padding:6px 8px; border-radius:8px; border:1px solid #2a3040; background:#0f1420; color:var(--fg) }
+.tile-footer .text.small.num{ width:70px; text-align:right }
+.tile-footer .spacer{ flex:1 1 auto }
+
+/* Eski yan kapsülleri tamamen kaldırıyoruz */
+.mins-float, .mins-float-input, .mins-unit { display:none !important; }
