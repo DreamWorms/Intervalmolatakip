@@ -1,22 +1,23 @@
-// src/breaks.js — Molalar (şık başlık + rozet + temiz düzen)
+// src/breaks.js — Molalar (görsel olarak zengin, 5 sütun, rozet + sağda süre kapsülü)
 import { S, sub } from './state.js';
 import { t } from './i18n.js';
 
 const LS_KEY = 'kzs_breaks_v1';
 
+// Her slota "type" ekledim: renk ve rozet stili için
 const DEFAULT_SLOTS = [
-  { id:'rest1',   titleKey:'rest1',   mins:15, note:'' },
-  { id:'rest2',   titleKey:'rest2',   mins:15, note:'' },
-  { id:'lunch',   titleKey:'lunch',   mins:45, note:'' },
-  { id:'well1',   titleKey:'well1',   mins:16, note:'' },
-  { id:'well2',   titleKey:'well2',   mins:16, note:'' },
-  { id:'well3',   titleKey:'well3',   mins:16, note:'' },
-  { id:'meet15',  titleKey:'meet15',  mins:15, note:'' },
-  { id:'meet30',  titleKey:'meet30',  mins:30, note:'' },
-  { id:'meet45',  titleKey:'meet45',  mins:45, note:'' },
-  { id:'meet60',  titleKey:'meet60',  mins:60, note:'' },
-  { id:'custom1', titleKey:'custom1', mins:15, note:'' },
-  { id:'custom2', titleKey:'custom2', mins:15, note:'' },
+  { id:'rest1',   titleKey:'rest1',   type:'rest',     mins:15, note:'' },
+  { id:'rest2',   titleKey:'rest2',   type:'rest',     mins:15, note:'' },
+  { id:'lunch',   titleKey:'lunch',   type:'lunch',    mins:45, note:'' },
+  { id:'well1',   titleKey:'well1',   type:'wellness', mins:16, note:'' },
+  { id:'well2',   titleKey:'well2',   type:'wellness', mins:16, note:'' },
+  { id:'well3',   titleKey:'well3',   type:'wellness', mins:16, note:'' },
+  { id:'meet15',  titleKey:'meet15',  type:'meeting',  mins:15, note:'' },
+  { id:'meet30',  titleKey:'meet30',  type:'meeting',  mins:30, note:'' },
+  { id:'meet45',  titleKey:'meet45',  type:'meeting',  mins:45, note:'' },
+  { id:'meet60',  titleKey:'meet60',  type:'meeting',  mins:60, note:'' },
+  { id:'custom1', titleKey:'custom1', type:'custom',   mins:15, note:'' },
+  { id:'custom2', titleKey:'custom2', type:'custom',   mins:15, note:'' },
 ];
 
 function load(){
@@ -47,32 +48,31 @@ export function mountBreaks(rootSel='#breakGrid'){
     data.forEach(slot => {
       const unit = t(S.lang, 'minUnit');
 
-      const headTitle = el('div', { class:'tile-title' }, t(S.lang, slot.titleKey));
-      const timeWrap  = el('div', { style:'display:flex;align-items:center;gap:6px;' },
-                        el('input', {
-                          class:'mins', type:'number', min:'0', step:'1', value:String(slot.mins),
-                          oninput: (ev) => {
-                            slot.mins = Math.max(0, Number(ev.target.value||0));
-                            badge.textContent = `${slot.mins} ${unit}`;
-                            save(data);
-                          }
-                        }),
-                        el('span', { class:'badge' }, unit)
-                      );
+      // Üst başlık + rozet
+      const title = el('div', { class:'tile-title' }, t(S.lang, slot.titleKey));
+      const badge = el('span', { class:`badge pill badge-${slot.type}` }, `${slot.mins} ${unit}`);
+      const head  = el('div', { class:'tile-head' }, title, badge);
 
-      const badge = el('span', { class:'badge' }, `${slot.mins} ${unit}`);
-      const head  = el('div', { class:'tile-head' }, headTitle, badge);
-
+      // Not alanı (büyük)
       const note  = el('textarea', {
-        class:'note', placeholder: t(S.lang, 'notePlaceholder'),
+        class:'note',
+        placeholder: t(S.lang, 'notePlaceholder'),
         oninput: (ev) => { slot.note = ev.target.value; save(data); }
       }, slot.note || '');
 
-      const label = el('label', { class:'tiny muted' }, t(S.lang, 'durationMins'));
+      // Sağdaki “süre” kapsülü (yüzer)
+      const minsInput = el('input', {
+        class:'mins-float-input',
+        type:'number', min:'0', step:'1', value:String(slot.mins),
+        oninput: (ev) => {
+          slot.mins = Math.max(0, Number(ev.target.value || 0));
+          badge.textContent = `${slot.mins} ${unit}`;
+          save(data);
+        }
+      });
+      const minsFloat = el('div', { class:'mins-float' }, minsInput, el('span',{class:'mins-unit'}, unit));
 
-      const body  = el('div', { class:'tile-body' }, label, timeWrap, note);
-
-      const card  = el('div', { class:'break-tile' }, head, body);
+      const card  = el('div', { class:`break-tile tile-${slot.type}` }, head, note, minsFloat);
       root.append(card);
     });
   }
