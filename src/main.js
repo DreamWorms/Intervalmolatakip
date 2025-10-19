@@ -2,6 +2,7 @@
 import { S, setCounter, setLang, setIntervalText, sub, broadcast } from './state.js';
 import { t } from './i18n.js';
 import { openDocPiP } from './pip.js';
+import { mountBreaks } from './breaks.js';
 
 const $ = (s, root=document) => root.querySelector(s);
 
@@ -38,6 +39,8 @@ function paintTexts(){
   intervalInput.placeholder = t(S.lang, 'intervalPlaceholder');
   topLevelHint.textContent = (window.top !== window) ? t(S.lang, 'needTopLevel') : '';
   statusLine.textContent = S.interval ? '' : t(S.lang, 'intervalHidden');
+  document.getElementById('breaksTitle').textContent = t(S.lang, 'breaksTitle');
+  document.getElementById('clearBreaksBtn').textContent = t(S.lang, 'clearBreaks');
 }
 paintTexts();
 
@@ -76,3 +79,5 @@ sub('interval', (txt) => {
   if (intervalInput.value !== txt) intervalInput.value = txt || '';
   statusLine.textContent = txt ? '' : t(S.lang, 'intervalHidden');
 });
+
+mountBreaks('#breakGrid');
