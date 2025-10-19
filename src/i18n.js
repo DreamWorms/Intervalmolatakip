@@ -14,10 +14,9 @@ const I18N = {
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Molaları Sil',
-    notePlaceholder: 'Enter duration (minutes)'
     durationMins: 'Duration',
     minUnit: 'min',
-
+    notePlaceholder: 'Enter duration (minutes)',
 
     rest1: 'Rest 1',
     rest2: 'Rest 2',
@@ -47,7 +46,7 @@ const I18N = {
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Clear breaks',
-    notePlaceholder: 'Enter duration (minutes)'
+    notePlaceholder: 'Enter duration (minutes)',
     durationMins: 'Duration',
     minUnit: 'min',
 
@@ -80,7 +79,7 @@ const I18N = {
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Pausen löschen',
-    notePlaceholder: 'Enter duration (minutes)'
+    notePlaceholder: 'Enter duration (minutes)',
     durationMins: 'Duration',
     minUnit: 'min',
 
@@ -113,7 +112,7 @@ const I18N = {
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Изтриване на почивки',
-    notePlaceholder: 'Enter duration (minutes)'
+    notePlaceholder: 'Enter duration (minutes)',
     durationMins: 'Duration',
     minUnit: 'min',
 
