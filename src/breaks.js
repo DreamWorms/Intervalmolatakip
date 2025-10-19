@@ -1,10 +1,9 @@
-// src/breaks.js — Molalar (basit grid + kalıcı kayıt)
+// src/breaks.js — Molalar (şık başlık + rozet + temiz düzen)
 import { S, sub } from './state.js';
 import { t } from './i18n.js';
 
 const LS_KEY = 'kzs_breaks_v1';
 
-// Varsayılan 12 kutu (istediğimiz kadar çoğaltabiliriz)
 const DEFAULT_SLOTS = [
   { id:'rest1',   titleKey:'rest1',   mins:15, note:'' },
   { id:'rest2',   titleKey:'rest2',   mins:15, note:'' },
@@ -20,15 +19,11 @@ const DEFAULT_SLOTS = [
   { id:'custom2', titleKey:'custom2', mins:15, note:'' },
 ];
 
-function loadSlots(){
-  try{
-    const raw = localStorage.getItem(LS_KEY);
-    const arr = raw ? JSON.parse(raw) : null;
-    if (Array.isArray(arr)) return arr;
-  }catch{}
+function load(){
+  try{ const r = localStorage.getItem(LS_KEY); const a = r?JSON.parse(r):null; if(Array.isArray(a)) return a; }catch{}
   return structuredClone(DEFAULT_SLOTS);
 }
-function saveSlots(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
+function save(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
 
 function el(tag, attrs={}, ...kids){
   const e = document.createElement(tag);
@@ -45,49 +40,51 @@ export function mountBreaks(rootSel='#breakGrid'){
   const root = document.querySelector(rootSel);
   if (!root) return;
 
-  let data = loadSlots();
+  let data = load();
 
   function paint(){
     root.innerHTML = '';
     data.forEach(slot => {
-      const badge = el('span', { class:'badge' }, `${slot.mins} dk`);
-      const head  = el('div', { class:'tile-head' },
-                      el('div', { class:'tile-title' }, t(S.lang, slot.titleKey), ' ', badge)
-                    );
+      const unit = t(S.lang, 'minUnit');
 
-      const minsInput = el('input', {
-        class:'mins', type:'number', min:'0', step:'1', value:String(slot.mins),
-        oninput: (ev) => {
-          slot.mins = Math.max(0, Number(ev.target.value||0));
-          badge.textContent = `${slot.mins} dk`;
-          saveSlots(data);
-        }
-      });
+      const headTitle = el('div', { class:'tile-title' }, t(S.lang, slot.titleKey));
+      const timeWrap  = el('div', { style:'display:flex;align-items:center;gap:6px;' },
+                        el('input', {
+                          class:'mins', type:'number', min:'0', step:'1', value:String(slot.mins),
+                          oninput: (ev) => {
+                            slot.mins = Math.max(0, Number(ev.target.value||0));
+                            badge.textContent = `${slot.mins} ${unit}`;
+                            save(data);
+                          }
+                        }),
+                        el('span', { class:'badge' }, unit)
+                      );
 
-      const note = el('textarea', {
+      const badge = el('span', { class:'badge' }, `${slot.mins} ${unit}`);
+      const head  = el('div', { class:'tile-head' }, headTitle, badge);
+
+      const note  = el('textarea', {
         class:'note', placeholder: t(S.lang, 'notePlaceholder'),
-        oninput: (ev) => { slot.note = ev.target.value; saveSlots(data); }
+        oninput: (ev) => { slot.note = ev.target.value; save(data); }
       }, slot.note || '');
 
-      const body  = el('div', { class:'tile-body' },
-                      el('label', { class:'tiny muted' }, t(S.lang, 'durationMins')), minsInput, note
-                    );
+      const label = el('label', { class:'tiny muted' }, t(S.lang, 'durationMins'));
+
+      const body  = el('div', { class:'tile-body' }, label, timeWrap, note);
 
       const card  = el('div', { class:'break-tile' }, head, body);
       root.append(card);
     });
   }
 
-  // İlk çizim + dil değişince yenile
   paint();
   sub('lang', paint);
 
-  // “Molaları Sil” butonu
   const clearBtn = document.getElementById('clearBreaksBtn');
   if (clearBtn) {
     clearBtn.onclick = () => {
       data = structuredClone(DEFAULT_SLOTS);
-      saveSlots(data);
+      save(data);
       paint();
     };
   }
