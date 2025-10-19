@@ -1,8 +1,8 @@
-// src/breaks.js — 15 kutu, yalnızca CUSTOM bloklarda başlık+dk düzenleme
+// src/breaks.js — 15 kutu; Custom başlık/süre başlığa & rozete tıklayarak düzenlenir
 import { S, sub } from './state.js';
 import { t } from './i18n.js';
 
-const LS_KEY = 'kzs_breaks_v2';
+const LS_KEY = 'kzs_breaks_v3';
 
 const DEFAULT_SLOTS = [
   // 10 sabit isimli
@@ -17,7 +17,7 @@ const DEFAULT_SLOTS = [
   { id:'meet45',  type:'fixed',   titleKey:'meet45',  title:'', mins:45, note:'' },
   { id:'meet60',  type:'fixed',   titleKey:'meet60',  title:'', mins:60, note:'' },
 
-  // 5 custom (başlık + dakika kullanıcıdan)
+  // 5 custom
   { id:'custom1', type:'custom',  titleKey:'', title:'Custom 1', mins:15, note:'' },
   { id:'custom2', type:'custom',  titleKey:'', title:'Custom 2', mins:15, note:'' },
   { id:'custom3', type:'custom',  titleKey:'', title:'Custom 3', mins:15, note:'' },
@@ -31,6 +31,7 @@ function load(){
     const arr = raw ? JSON.parse(raw) : null;
     if (Array.isArray(arr)) return arr;
   }catch{}
+  // v2/v1’den yükseltme olursa varsayılanla başla
   return structuredClone(DEFAULT_SLOTS);
 }
 function save(arr){ localStorage.setItem(LS_KEY, JSON.stringify(arr)); }
@@ -57,10 +58,38 @@ export function mountBreaks(rootSel='#breakGrid'){
     root.innerHTML = '';
 
     data.forEach(slot => {
-      // Başlık (fixed ise i18n, custom ise kullanıcı başlığı)
-      const titleText = slot.type === 'fixed' ? t(S.lang, slot.titleKey) : (slot.title || 'Custom');
-      const title = el('div', { class:'tile-title' }, titleText);
-      const badge = el('span', { class:'badge pill' }, `${slot.mins} ${unit}`);
+      const isCustom = slot.type === 'custom';
+
+      // Başlık: fixed → i18n, custom → kullanıcı adı
+      const titleText = isCustom ? (slot.title || 'Custom') : t(S.lang, slot.titleKey);
+      const title = el('div', {
+        class: 'tile-title' + (isCustom ? ' editable' : ''),
+        onclick: isCustom ? () => {
+          const nv = prompt(t(S.lang, 'editNamePrompt'), slot.title || '');
+          if (nv != null) {
+            slot.title = nv.trim();
+            save(data);
+            title.textContent = slot.title || 'Custom';
+          }
+        } : null
+      }, titleText);
+
+      // Rozet: sadece custom’da tıklanabilir
+      const badge = el('span', {
+        class: 'badge pill' + (isCustom ? ' clickable' : ''),
+        onclick: isCustom ? () => {
+          const nv = prompt(t(S.lang, 'editMinsPrompt'), String(slot.mins));
+          if (nv != null) {
+            const n = Math.max(0, Number(nv));
+            if (!Number.isNaN(n)) {
+              slot.mins = n;
+              save(data);
+              badge.textContent = `${slot.mins} ${unit}`;
+            }
+          }
+        } : null
+      }, `${slot.mins} ${unit}`);
+
       const head  = el('div', { class:'tile-head' }, title, badge);
 
       // Not
@@ -69,35 +98,7 @@ export function mountBreaks(rootSel='#breakGrid'){
         oninput: ev => { slot.note = ev.target.value; save(data); }
       }, slot.note || '');
 
-      const card  = el('div', { class:`break-tile ${slot.type==='custom'?'tile-custom':'tile-fixed'}` }, head, note);
-
-      // Yalnızca CUSTOM kartlarda alt düzenleme alanı
-      if (slot.type === 'custom'){
-        const nameLbl = el('span', { class:'tiny muted' }, t(S.lang, 'labelName'));
-        const nameInp = el('input', {
-          class:'text small', value: slot.title,
-          oninput: ev => { slot.title = ev.target.value; save(data); head.firstChild.textContent = slot.title || 'Custom'; }
-        });
-
-        const durLbl  = el('span', { class:'tiny muted' }, t(S.lang, 'durationMins'));
-        const durInp  = el('input', {
-          class:'text small num', type:'number', min:'0', step:'1', value:String(slot.mins),
-          oninput: ev => {
-            slot.mins = Math.max(0, Number(ev.target.value||0));
-            save(data);
-            badge.textContent = `${slot.mins} ${unit}`;
-          }
-        });
-        const durUnit = el('span', { class:'tiny muted' }, unit);
-
-        const footer = el('div', { class:'tile-footer' },
-          nameLbl, nameInp,
-          el('span', { class:'spacer' }),
-          durLbl, durInp, durUnit
-        );
-        card.append(footer);
-      }
-
+      const card  = el('div', { class:'break-tile' }, head, note);
       root.append(card);
     });
   }

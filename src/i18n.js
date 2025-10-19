@@ -18,6 +18,9 @@ const I18N = {
     durationMins: 'Süre',
     minUnit: 'dk',
     notePlaceholder: 'Not (opsiyonel)',
+    editNamePrompt: 'Başlığı yazın',
+editMinsPrompt: 'Süre (dakika) yazın',
+
 
     // Slot başlıkları
     rest1: 'Dinlenme 1',
@@ -51,6 +54,9 @@ const I18N = {
     durationMins: 'Duration',
     minUnit: 'min',
     notePlaceholder: 'Note (optional)',
+    editNamePrompt: 'Enter title',
+editMinsPrompt: 'Enter duration (minutes)',
+
 
     rest1: 'Rest 1',
     rest2: 'Rest 2',
@@ -83,6 +89,8 @@ const I18N = {
     durationMins: 'Dauer',
     minUnit: 'Min',
     notePlaceholder: 'Notiz (optional)',
+    editNamePrompt: 'Titel eingeben',
+editMinsPrompt: 'Dauer in Minuten eingeben',
 
     rest1: 'Pause 1',
     rest2: 'Pause 2',
@@ -115,6 +123,9 @@ const I18N = {
     durationMins: 'Продължителност',
     minUnit: 'мин',
     notePlaceholder: 'Бележка (по избор)',
+editNamePrompt: 'Въведете заглавие',
+editMinsPrompt: 'Въведете продълж. (минути)',
+
 
     rest1: 'Почивка 1',
     rest2: 'Почивка 2',

@@ -152,14 +152,7 @@ h2{ margin:0 0 8px; font-size:18px }
 .break-tile .note{ width:100%; min-height:90px; resize:vertical; padding:10px; border-radius:12px;
   border:1px solid var(--border); background:#0d1220; color:var(--fg) }
 
-/* Sadece CUSTOM için alt düzenleme şeridi */
-.tile-footer{
-  display:flex; align-items:center; gap:8px; margin-top:10px;
-  border-top:1px dashed #283044; padding-top:10px;
-}
-.tile-footer .text.small{ padding:6px 8px; border-radius:8px; border:1px solid #2a3040; background:#0f1420; color:var(--fg) }
-.tile-footer .text.small.num{ width:70px; text-align:right }
-.tile-footer .spacer{ flex:1 1 auto }
-
-/* Eski yan kapsülleri tamamen kaldırıyoruz */
-.mins-float, .mins-float-input, .mins-unit { display:none !important; }
+/* Başlığa/rozete tıklanabilir görsel ipucu */
+.tile-title.editable { cursor:text; }
+.badge.clickable { cursor:pointer; }
+.badge.clickable:hover { outline:1px solid #2d6cdf; box-shadow: inset 0 0 0 1px rgba(45,108,223,.35) }
