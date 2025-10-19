@@ -38,3 +38,23 @@ h2{ margin:0 0 8px; font-size:18px }
 .counter{ display:flex; align-items:center; gap:12px; justify-content:center; margin:14px 0 }
 .count{ font-size:46px; font-weight:900; min-width:80px; text-align:center; border-radius:12px; padding:6px 10px; background:#0d1220; border:1px solid var(--border) }
 .hint{ margin-top:10px; color:var(--muted) }
+/* Break Grid (Molalar) */
+.break-grid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap:12px;
+}
+@media (max-width: 1000px){ .break-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+@media (max-width: 640px){ .break-grid{ grid-template-columns: 1fr; } }
+
+.break-tile{
+  background:#0f1420; border:1px solid var(--border); border-radius:14px; padding:10px;
+}
+.tile-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.tile-title{ font-weight:700; display:flex; align-items:center; gap:8px; }
+.badge{ font-size:12px; padding:2px 6px; border-radius:999px; border:1px solid #2a3040; opacity:.9; }
+.tile-body{ display:grid; grid-template-columns: 120px 1fr; gap:8px; align-items:center; }
+.tile-body .mins{ width:110px; padding:6px 8px; border-radius:10px; border:1px solid var(--border); background:#0d1220; color:var(--fg) }
+.tile-body .note{ min-height:46px; resize:vertical; padding:8px; border-radius:10px; border:1px solid var(--border); background:#0d1220; color:var(--fg) }
+.tiny-btn{ font-size:12px; padding:6px 10px; }
+
