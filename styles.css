@@ -1,118 +1,203 @@
+/* ===========================
+   KZS — Minimal Dark UI (v3)
+   =========================== */
+
+/* --- Tema renkleri --- */
 :root{
-  --bg:#0b0d12;
-  --panel:#111524e6;
-  --border:#2a3040;
-  --fg:#e8ecf3;
-  --muted:#98a2b3;
-  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --bg:#0c0f16;
+  --panel:#101524f0;
+  --panel-soft:#0e1220e6;
+  --border:#2a3246;
+  --fg:#e7ecf6;
+  --muted:#9aa3b4;
+  --accent:#2d6cdf;
+  --accent-2:#1fa1aa;
+  --warn:#d9a736;
+
+  --radius-lg:16px;
+  --radius-md:12px;
+  --shadow:0 10px 28px rgba(0,0,0,.35);
 }
 
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
-  font:14px/1.6 system-ui,Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  font:14px/1.55 system-ui,Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
   color:var(--fg);
-  background:radial-gradient(1200px 600px at 10% -10%,#1b2234,transparent),var(--bg);
+  background:
+    radial-gradient(1200px 640px at 10% -10%, #182033, transparent),
+    radial-gradient(900px 540px at 110% -20%, #141a2a, transparent),
+    var(--bg);
 }
 
-/* Topbar */
+/* --- Topbar --- */
 .topbar{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);
-  background:#0d1117c9;backdrop-filter:saturate(140%) blur(8px);
-  position:sticky;top:0;z-index:10;
+  position:sticky; top:0; z-index:10;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 16px; gap:12px;
+  background:#0e1320cc; backdrop-filter:saturate(140%) blur(8px);
+  border-bottom:1px solid var(--border);
 }
-.brand{font-weight:800}
-.brand .muted{color:var(--muted);font-weight:600}
-.actions{display:flex;gap:10px;align-items:center}
-select,.text{background:#0f1420;border:1px solid var(--border);color:var(--fg);padding:8px 10px;border-radius:10px;outline:none}
-button{border:1px solid var(--border);background:#0f1420;color:var(--fg);padding:8px 12px;border-radius:12px;cursor:pointer}
-button.primary{background:linear-gradient(180deg,#111a2c,#0f1420);border-color:#2e3a56;box-shadow:var(--shadow)}
-button.ghost{background:transparent}
+.brand{font-weight:800; letter-spacing:.2px}
+.brand .muted{color:var(--muted); font-weight:600}
+.actions{display:flex; gap:10px; align-items:center}
+select,.text{
+  background:#0f1423; border:1px solid var(--border); color:var(--fg);
+  padding:8px 10px; border-radius:10px; outline:none;
+}
+button{
+  border:1px solid var(--border); background:#0f1423; color:var(--fg);
+  padding:8px 12px; border-radius:12px; cursor:pointer;
+}
+button.primary{ background:linear-gradient(180deg,#14203a,#0f1423); border-color:#32405e; box-shadow:var(--shadow) }
+button.ghost{ background:transparent }
 
-/* Ortak konteyner — 1180px: 5 sütun mola rahat sığar */
-.wrap{max-width:1180px;margin:24px auto;padding:0 16px}
+/* --- Genel konteyner --- */
+.wrap{ max-width:1180px; margin:24px auto; padding:0 16px }
 
-/* Kart */
-.card{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
-h2{margin:0 0 8px;font-size:18px}
-.muted{color:var(--muted)} .tiny{font-size:12px}
-.row{display:flex;gap:10px;align-items:center;margin-top:10px}
+/* --- Kart --- */
+.card{
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);
+  padding:14px 16px;
+}
+h2{ margin:0 0 8px; font-size:16px; letter-spacing:.2px }
+.muted{ color:var(--muted) } .tiny{ font-size:12px }
+.row{ display:flex; gap:10px; align-items:center; margin-top:10px }
 
-/* ======= ÜST CLUSTER (saat + 3 kart) ======= */
+/* =========================
+   ÜST CLUSTER (saat + 3 kart)
+   ========================= */
 #dashWrap{
-  display:grid;gap:14px;
-  grid-template-columns:repeat(3,minmax(0,1fr));
+  display:grid; gap:14px;
+  grid-template-columns: repeat(3, minmax(0,1fr));
 }
-.clock-card{grid-column:1 / -1;text-align:center;padding:8px 10px}
-.clock{font-size:32px;font-weight:900;letter-spacing:.5px}
-
-/* Küçük özet kartları kompakt */
-.summary-card{
-  min-height:100px;
-  display:flex;flex-direction:column;justify-content:space-between;
+.clock-card{
+  grid-column:1 / -1;
+  text-align:center;
+  background:var(--panel-soft);
   padding:10px 12px;
 }
-.summary-card h3{margin:0 0 4px;font-size:14px;opacity:.9}
-.summary-line{color:var(--muted);font-size:12px}
-.summary-big{font-size:18px;font-weight:800;margin-top:2px}
+.clock{ font-size:34px; font-weight:900; letter-spacing:.5px }
+
+/* Özet kartlar – kompakt */
+.summary-card{
+  min-height:112px;
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+.summary-card h3{ margin:0 0 6px; font-size:15px; opacity:.95 }
+.summary-line{ color:var(--muted); font-size:12px }
+.summary-big{ font-size:20px; font-weight:800; margin-top:4px }
 
 /* Sayaç */
-.counter{display:flex;align-items:center;gap:8px;justify-content:center;margin:8px 0}
-.count{font-size:36px;font-weight:900;min-width:64px;text-align:center;border-radius:12px;padding:4px 8px;background:#0d1220;border:1px solid var(--border)}
-.hint{margin-top:8px;color:var(--muted)}
+.counter{ display:flex; align-items:center; gap:10px; justify-content:center; margin:8px 0 }
+.count{
+  font-size:36px; font-weight:900; min-width:64px; text-align:center;
+  border-radius:12px; padding:6px 10px; background:#0e1322; border:1px solid var(--border)
+}
+.hint{ margin-top:6px; color:var(--muted) }
 
-/* ======= MOLALAR (5 sütun, taşma yok) ======= */
+/* =========================
+   ÖZEL INTERVAL (iki sütun)
+   ========================= */
+#siBlock.card{ padding:16px }
+#siBlock h4{ margin:0 0 10px; font-size:15px; opacity:.95 }
+
+.si-grid{
+  display:grid;
+  grid-template-columns: 290px 1fr;
+  gap:16px; align-items:start;
+}
+@media (max-width:900px){ .si-grid{ grid-template-columns: 1fr; } }
+
+.si-left{ display:flex; flex-direction:column; gap:12px }
+.btn-group{ display:flex; gap:8px; flex-wrap:wrap }
+.chip{
+  border:1px solid var(--border); background:#0f1423; color:var(--fg);
+  padding:6px 12px; border-radius:999px; cursor:pointer; font-weight:700;
+}
+.chip.active{ outline:1px solid var(--accent); box-shadow:inset 0 0 0 1px rgba(45,108,223,.35) }
+
+/* Time-pill */
+.time-pill{
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 10px; border:1px solid var(--border);
+  background:#0f1423; border-radius:12px;
+}
+.time-pill select{
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  background:#0f1423; color:var(--fg);
+  border:1px solid var(--border); border-radius:10px;
+  padding:6px 10px; font-weight:700; min-width:70px; text-align:center;
+}
+.time-pill .sep{ opacity:.7; font-weight:800 }
+
+/* Büyük metin alanı – konuya göre geniş ve kompakt */
+#siLines{
+  width:100%; height:240px;
+  resize:vertical; padding:10px; border-radius:12px;
+  border:1px solid var(--border); background:#0e1322; color:var(--fg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+.si-actions{ display:flex; align-items:center; gap:10px; margin-top:6px }
+#siInfo{ color:var(--muted) }
+
+/* =========================
+   BREAKS — 5 sütun, taşma yok
+   ========================= */
 .break-grid{
   display:grid;
-  grid-template-columns:repeat(5, minmax(190px,1fr));
+  grid-template-columns: repeat(5, minmax(190px,1fr));
   gap:14px;
 }
-@media (max-width:1260px){ .break-grid{grid-template-columns:repeat(4,minmax(190px,1fr));} }
-@media (max-width:1000px){ .break-grid{grid-template-columns:repeat(3,minmax(190px,1fr));} }
-@media (max-width:760px) { .break-grid{grid-template-columns:repeat(2,minmax(190px,1fr));} }
-@media (max-width:520px) { .break-grid{grid-template-columns:1fr;} }
+@media (max-width:1260px){ .break-grid{ grid-template-columns:repeat(4,minmax(190px,1fr)); } }
+@media (max-width:1000px){ .break-grid{ grid-template-columns:repeat(3,minmax(190px,1fr)); } }
+@media (max-width:760px) { .break-grid{ grid-template-columns:repeat(2,minmax(190px,1fr)); } }
+@media (max-width:520px) { .break-grid{ grid-template-columns:1fr; } }
 
 .break-tile{
   position:relative;
-  background:linear-gradient(180deg,rgba(18,20,35,.75),rgba(14,16,28,.85));
-  border:1px solid #2a3040;border-radius:16px;padding:12px 80px 12px 12px; /* sağa yer aç */
-  box-shadow:0 8px 28px rgba(0,0,0,.35);
-  transition:transform .12s ease,box-shadow .12s ease,border-color .12s ease;
+  background:linear-gradient(180deg,rgba(18,22,34,.78),rgba(12,16,28,.88));
+  border:1px solid var(--border);
+  border-radius:14px; padding:12px 84px 12px 12px; /* sağda kapsül için alan */
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+  transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
 }
-.break-tile:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(0,0,0,.45);border-color:#3a4564}
-.tile-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.tile-title{font-weight:800;letter-spacing:.2px}
-.badge{font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid #2a3040;background:rgba(10,12,20,.6)}
-.badge-rest{border-color:#4a5066}
-.badge-lunch{border-color:#2d6cdf;box-shadow:inset 0 0 0 1px rgba(45,108,223,.35)}
-.badge-wellness{border-color:#1fa1aa;box-shadow:inset 0 0 0 1px rgba(31,161,170,.35)}
-.badge-meeting{border-color:#d9a736;box-shadow:inset 0 0 0 1px rgba(217,167,54,.35)}
-.badge-custom{border-color:#6b6f82}
-.break-tile .note{width:100%;min-height:72px;resize:vertical;padding:10px;border-radius:12px;border:1px solid var(--border);background:#0d1220;color:var(--fg)}
+.break-tile:hover{ transform:translateY(-2px); box-shadow:0 12px 34px rgba(0,0,0,.45); border-color:#3a4564 }
 
-/* Sağdaki dakika kapsülü – artık içeride */
+.tile-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px }
+.tile-title{ font-weight:800; letter-spacing:.2px }
+.badge{
+  font-size:12px; padding:2px 8px; border-radius:999px; border:1px solid var(--border);
+  background:#0b1020; color:var(--fg); opacity:.95;
+}
+.badge-rest{border-color:#4a5066}
+.badge-lunch{border-color:var(--accent)}
+.badge-wellness{border-color:var(--accent-2)}
+.badge-meeting{border-color:var(--warn)}
+
+.break-tile .note{
+  width:100%; min-height:76px;
+  resize:vertical; padding:10px; border-radius:12px;
+  border:1px solid var(--border); background:#0e1322; color:var(--fg)
+}
+
+/* Süre kapsülü (kartın içinde, sağ üst) */
 .mins-float{
-  position:absolute; right:10px; top:50%; transform:translateY(-50%);
+  position:absolute; right:10px; top:10px; transform:none;
   display:flex; align-items:center; gap:6px;
-  background:#0b1020; border:1px solid #2a3040; border-radius:12px;
+  background:#0b1020; border:1px solid var(--border); border-radius:12px;
   padding:6px 8px; box-shadow:0 6px 22px rgba(0,0,0,.35);
 }
-.mins-float-input{width:54px;text-align:right;padding:6px 8px;border-radius:8px;border:1px solid #2a3040;background:#0f1420;color:var(--fg)}
-.mins-unit{font-size:12px;color:var(--muted)}
+.mins-float-input{
+  width:54px; text-align:right;
+  padding:6px 8px; border-radius:8px; border:1px solid var(--border);
+  background:#0f1423; color:var(--fg)
+}
+.mins-unit{ font-size:12px; color:var(--muted) }
 
-/* Başlığa/rozete tıklanabilir ipucu */
-.tile-title.editable{cursor:text}
-.badge.clickable{cursor:pointer}
-.badge.clickable:hover{outline:1px solid #2d6cdf;box-shadow:inset 0 0 0 1px rgba(45,108,223,.35)}
-
-/* Özel Interval UI – mevcut kuralların sade hali (görsel iyileştirme ayrı dosyada) */
-.si .si-row{gap:10px;align-items:center;flex-wrap:wrap}
-.si .btn-group .chip{padding:4px 12px;border-radius:999px;cursor:pointer}
-.si .btn-group .chip.active{outline:1px solid #2d6cdf;box-shadow:inset 0 0 0 1px rgba(45,108,223,.35)}
-.si .si-actions{align-items:center;gap:8px}
-.text.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-
-/* Mobil tek sütuna düşür */
-@media (max-width:1000px){ #dashWrap{grid-template-columns:1fr} }
+/* Küçük ipuçları */
+.tiny-btn{ font-size:12px; padding:6px 10px }
