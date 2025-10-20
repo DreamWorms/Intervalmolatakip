@@ -207,3 +207,31 @@ button.ghost{ background:transparent }
 
 /* ── yardımcı sınıflar */
 .muted{ color:var(--muted) } .tiny{ font-size:12px }
+
+
+/* ===== Compact fix for summary cards & top row ===== */
+
+/* Üst grid aralığı ve saat kartı boyutu */
+#dashWrap{ gap:12px; }
+.clock-card{ padding:6px 10px; }
+.clock{ font-size:30px; }
+
+/* Boşluk şişmesini durdur: space-between yerine gap kullan */
+.summary-card{
+  min-height:96px;              /* istersen 90–110 arası oynat */
+  padding:12px 14px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;   /* <<< kritik değişiklik */
+  gap:6px;                      /* aralara küçük ritim */
+}
+
+/* Sayaç kartının içi de küçülsün */
+.counter{ margin:6px 0; gap:8px; }
+.count{ font-size:28px; min-width:56px; padding:4px 6px; }
+
+/* Kart başlıkları biraz daha kompakt */
+.summary-card h3{ margin:0 0 4px; font-size:14px; }
+
+/* Üstte ve altta gereksiz büyük marjları kırp */
+.wrap{ margin:18px auto; }
