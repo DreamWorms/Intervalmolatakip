@@ -28,16 +28,32 @@
     </div>
 
     <div class="card summary-card" id="taskCard">
-      <h3 id="taskTitle">Görev</h3>
-      <div class="summary-line"><span id="taskStatus">—</span></div>
-      <div class="summary-big" id="taskAmount">0</div>
+  <div class="metric-card">
+    <div class="metric-header">
+      <span class="pill pill-blue" id="taskTitle">Mevcut Interval</span>
+      <span class="metric-sub">Hedef</span>
     </div>
 
-    <div class="card summary-card" id="nextBreakCard">
-      <h3 id="nextBreakTitle">Sıradaki Mola</h3>
-      <div class="summary-line" id="nextBreakName">—</div>
-      <div class="summary-big" id="nextBreakEta">--:--:--</div>
+    <div class="metric-body">
+      <span class="metric-value" id="taskAmount">0</span>
     </div>
+  </div>
+</div>
+
+
+    <div class="card summary-card" id="nextBreakCard">
+  <div class="metric-card">
+    <div class="metric-header">
+      <span class="pill pill-pink" id="nextBreakTitle">Sıradaki Mola</span>
+      <span class="metric-sub" id="nextBreakName">—</span>
+    </div>
+
+    <div class="metric-body">
+      <span class="metric-time" id="nextBreakEta">--:--:--</span>
+    </div>
+  </div>
+</div>
+
 
     <!-- YENİ Sayaç (pad + kısayollar) -->
 <section class="card summary-card" id="counterCard">
