@@ -219,42 +219,43 @@ h2{ margin:0 0 8px; font-size:18px }
 .text.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace }
 
 
-/* ==== Sayfa konteynerini tekilleştir (3 bölme aynı genişlik) ==== */
-:root{
-  --page-max: 1180px;   /* istersen 1100–1280 arası bir değer ver */
-  --page-pad: 20px;     /* sağ/sol iç boşluk */
-}
+/* === KZS yerleşim paketi (override için daha spesifik seçiciler) === */
 
-/* .wrap olan her bölüm aynı genişlikte, ortalı olsun */
-.wrap{
-  max-width: var(--page-max);
+/* Üç bölme (üst cluster, özel interval, molalar) aynı konteyner genişliği */
+body #dashWrap,
+body #siRow,
+body main.wrap {
+  max-width: 1180px;       /* genişliği burada oynatabilirsin */
   margin-inline: auto;
-  padding-inline: var(--page-pad);
+  padding-inline: 20px;
 }
 
-/* Üst panel, özel interval ve molalar arasında aynı düşey ritim */
-#dashWrap{ margin-block: 18px 22px; }
-#siRow   { margin-block: 0 22px; }
-main.wrap > .card{ width: 100%; } /* Molalar kartı tam genişlik */
-
-/* Üst panelde 3 kart satırını hizala ve yükseklikleri eşitle */
-#dashWrap{
+/* Üst cluster: saat + 3 kart (eşit sütunlar) */
+body #dashWrap {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
   gap: 18px;
-  grid-template-columns: repeat(3, 1fr);
 }
-.clock-card{ grid-column: 1 / -1; text-align: center; }
-#dashWrap .summary-card,
-#dashWrap #counterCard{
+
+/* Saat kartı tüm satırı kaplasın */
+body #dashWrap .clock-card { grid-column: 1 / -1; text-align:center; }
+
+/* 2. satırdaki üç kartın yüksekliklerini eşitle */
+body #taskCard,
+body #nextBreakCard,
+body #counterCard {
   display: flex;
   flex-direction: column;
-  min-height: 170px; /* kart yüksekliklerini eşitlemek için */
+  min-height: 176px;          /* burayı ister 160–200 arası ayarla */
 }
 
-/* Özel interval kartı tam genişlikte görünsün */
-#siRow .card{ width: 100%; }
+/* Özel interval kartı ve Molalar kartı tam genişlik */
+body #siRow > .card,
+body main.wrap > .card { width: 100%; }
 
-/* (İsteğe bağlı) alt bölüm ile kenarlar tam hizalansın diye
-   grid içindeki kartların iç boşluklarını aynı tut */
-.card{ padding: 16px 18px; }
+/* Düşey ritim – bölmeler arası boşluklar aynı olsun */
+body #dashWrap { margin-block: 18px 22px; }
+body #siRow   { margin-block: 0 22px; }
 
+/* Kartların iç padding’lerini hizalamak için */
+body .card { padding: 16px 18px; }
