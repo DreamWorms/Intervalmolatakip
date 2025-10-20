@@ -39,21 +39,25 @@
       <div class="summary-big" id="nextBreakEta">--:--:--</div>
     </div>
 
-    <!-- SAYAÇ: artık burada, 3’lü sıranın üçüncüsü -->
-    <div class="card summary-card" id="counterCard">
-      <h2 id="counterTitle">Sayaç</h2>
-      <div class="counter">
-        <button id="minusBtn">−1</button>
-        <div id="countVal" class="count">0</div>
-        <button id="plusBtn">+1</button>
-      </div>
-      <div class="row">
-        <button id="resetBtn" class="ghost">Sıfırla</button>
-      </div>
-      <p class="hint tiny" id="kbHint">Klavye: ↑ / ↓ / R / + / −</p>
-      <p class="hint" id="topLevelHint"></p>
-    </div>
-  </section>
+    <!-- YENİ Sayaç (pad + kısayollar) -->
+<section class="card summary-card" id="counterCard">
+  <h3 id="counterTitle">Sayaç</h3>
+
+  <button id="counterPad" class="counter-pad" title="Sol tık +1 • Sağ tık −1">
+    <span id="countVal" class="count-face">0</span>
+  </button>
+
+  <div class="counter-actions">
+    <button class="chip" data-step="2">+2</button>
+    <button class="chip" data-step="4">+4</button>
+    <button class="chip" data-step="8">+8</button>
+    <button id="resetBtn" class="ghost">Sıfırla</button>
+  </div>
+
+  <p class="hint tiny" id="kbHint">Klavye: ↑ / ↓ / R / + / −</p>
+  <p class="hint" id="topLevelHint"></p>
+</section>
+
 
   <!-- ÖZEL INTERVAL -->
 <section id="siRow" class="wrap">

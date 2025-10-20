@@ -57,10 +57,36 @@ function paintTexts(){
 }
 paintTexts();
 
-// Sayaç etkileşimi
-if (plusBtn)  plusBtn.onclick  = () => { setCounter(S.counter + 1); broadcast('counter', S.counter); };
-if (minusBtn) minusBtn.onclick = () => { setCounter(S.counter - 1); broadcast('counter', S.counter); };
+// Sayaç — PAD + kısayollar (sol tık +1 / sağ tık −1)
+const counterPad   = document.getElementById('counterPad');
+const shortcutBtns = document.querySelectorAll('.counter-actions [data-step]');
+
+const bump = (delta) => {
+  setCounter(S.counter + delta);
+  broadcast('counter', S.counter);   // PiP vb. her yere yayılsın
+};
+
+if (counterPad) {
+  // Sol tık +1, Sağ tık −1
+  counterPad.addEventListener('pointerdown', (e) => {
+    if (e.button === 2) bump(-1);
+    else               bump(+1);
+  });
+  // Sağ tık menüsü çıkmasın
+  counterPad.addEventListener('contextmenu', (e) => e.preventDefault());
+}
+
+// +2 / +4 / +8 kısa yolları
+shortcutBtns.forEach(btn => {
+  btn.addEventListener('click', () => bump(Number(btn.dataset.step)));
+});
+
+// Sıfırla
 if (resetBtn) resetBtn.onclick = () => { setCounter(0); broadcast('counter', S.counter); };
+
+// (artık plusBtn/minusBtn yok; ama sayfada kalırsa sorun olmasın diye)
+if (plusBtn)  plusBtn.onclick  = () => bump(+1);
+if (minusBtn) minusBtn.onclick = () => bump(-1);
 
 // Klavye kısayolları
 window.addEventListener('keydown', (e) => {

@@ -291,3 +291,33 @@ button.ghost{ background:transparent }
 #counterCard #resetBtn{ padding:6px 10px; font-size:12px; align-self:flex-start; }
 #counterCard h2{ margin:0 0 4px; font-size:14px; }
 #counterCard .hint{ margin-top:2px; font-size:11px; }
+
+/* === Sayaç (pad) === */
+#counterCard{ display:flex; flex-direction:column; gap:10px; }
+
+.counter-pad{
+  display:flex; align-items:center; justify-content:center;
+  width:100%; min-height:120px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background: linear-gradient(180deg, rgba(18,20,35,.75), rgba(14,16,28,.85));
+  box-shadow: 0 8px 28px rgba(0,0,0,.35);
+  cursor: zoom-in;          /* + gibi his verir */
+  user-select:none;
+  transition: transform .06s ease, box-shadow .12s ease, border-color .12s ease;
+}
+.counter-pad:hover{ border-color:#3a4564; box-shadow:0 12px 36px rgba(0,0,0,.45); }
+.counter-pad:active{ transform: scale(.995); }
+
+.count-face{
+  font-size:40px; font-weight:900; line-height:1;
+  padding:10px 18px;
+  border-radius:12px;
+  background:#0d1220; border:1px solid var(--border);
+  min-width:72px; text-align:center;
+}
+
+.counter-actions{
+  display:flex; gap:8px; justify-content:center; flex-wrap:wrap;
+}
+.counter-actions .chip{ padding:6px 12px; border-radius:999px; }
