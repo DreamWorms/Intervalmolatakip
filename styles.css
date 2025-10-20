@@ -384,3 +384,72 @@ button.ghost{ background:transparent }
 
 /* Eski küçük ipucunu gizle (yeni başlıkta gösteriyoruz) */
 #kbHint{ display:none !important; }
+
+/* ==== Üst 2 kart: header + içerik düzeni, boşlukları sıkılaştır ==== */
+#taskCard,
+#nextBreakCard{
+  /* header + içerik (iki satır) */
+  display:grid;
+  grid-template-rows: auto auto;
+  gap:10px;
+  padding:12px 14px;          /* iç boşluğu eşitle */
+  min-height:auto;            /* içerik kadar olsun, şişmesin */
+}
+
+/* Başlık satırı: pill solda, küçük etiket sağda */
+#taskCard .metric-header,
+#nextBreakCard .metric-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  min-height:28px;
+}
+
+/* Eski küçük satırı (Hedef / Lunch 15:30) başlık hizasında dursun */
+#taskCard .metric-sub,
+#nextBreakCard .metric-sub{
+  margin-left:auto;
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* Ara satırları boşluk yapmasın */
+#taskCard .summary-line,
+#nextBreakCard .summary-line{ margin:0; }
+
+/* Alt kapsüller: sola, alta otursun (boşluk hissi kaybolur) */
+#taskAmount,
+#nextBreakEta{
+  justify-self:start;
+  align-self:end;
+}
+
+/* Sayı kapsülü (Mevcut Interval değeri) */
+#taskAmount{
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:12px;
+  border:1px solid #2a3146;
+  background:#0b1220;
+  font-weight:900;
+  font-size:26px;
+  line-height:1;
+  min-width:80px;
+  text-align:center;
+}
+
+/* Zaman kapsülü (Sıradaki Mola ETA) */
+#nextBreakEta{
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:12px;
+  border:1px solid #2a3146;
+  background:linear-gradient(180deg, rgba(21,27,44,.65), rgba(12,18,32,.85));
+  font-weight:800;
+  font-size:24px;
+  line-height:1;
+  letter-spacing:.5px;
+  min-width:170px;
+  text-align:center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
