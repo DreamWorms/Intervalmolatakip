@@ -204,3 +204,37 @@ button.ghost{ background:transparent }
 @media (max-width:980px){  #breakGrid.break-grid{ grid-template-columns:repeat(3, minmax(200px,1fr)); } }
 @media (max-width:720px){  #breakGrid.break-grid{ grid-template-columns:repeat(2, minmax(200px,1fr)); } }
 @media (max-width:520px){  #breakGrid.break-grid{ grid-template-columns:1fr; } }
+
+
+/* Üst sıradaki üç kart aynı boyda olsun */
+#dashWrap .summary-card{
+  min-height: 108px;                 /* 100–120 arası istersen oynat */
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  gap:6px;
+  padding:12px 14px;
+}
+
+/* Sayaç kartının içini kompakt tut (yükseklik sebebi buydu) */
+#counterCard{ display:flex; flex-direction:column; }
+
+#counterCard .counter-pad{
+  height:56px;                       /* sabitle */
+  min-height:56px;
+  margin:0;                          /* ekstra boşluk olmasın */
+}
+
+#counterCard .count-face{
+  font-size:28px;
+  min-width:56px;
+  padding:6px 10px;
+  line-height:1;
+}
+
+#counterCard .counter-actions{
+  margin-top:6px;
+  display:flex; gap:8px; justify-content:center; flex-wrap:wrap;
+}
+
+#counterCard h3{ margin:0 0 4px; font-size:14px; }

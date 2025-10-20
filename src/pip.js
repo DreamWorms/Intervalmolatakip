@@ -88,3 +88,25 @@ async function openDocPiP(){
 }
 
 export { openDocPiP };
+
+// src/pip.js  — DİL SENKRON
+import { S, sub } from './state.js';
+import { t } from './i18n.js';
+
+// PiP içine yazıları boyayan tek yer:
+function paintPipTexts(doc){
+  // PiP içindeki eleman ID’leri (kendine göre değiştirmen yeterli)
+  const title  = doc.getElementById('pipCounterTitle');
+  const reset  = doc.getElementById('pipResetBtn');
+  const hint   = doc.getElementById('pipKbHint');
+
+  if (title) title.textContent = t(S.lang, 'counterTitle'); // "Sayaç"
+  if (reset) reset.textContent = t(S.lang, 'reset');        // "Sıfırla"
+  if (hint)  hint.textContent  = t(S.lang, 'kbHint');       // "Klavye: ↑ / ↓ / R / + / −"
+}
+
+/**
+ * openDocPiP() içinde, PiP dokümanı hazır olduktan sonra bunu çağır:
+ *   paintPipTexts(pipDocument);
+ *   sub('lang', () => paintPipTexts(pipDocument));
+ */
