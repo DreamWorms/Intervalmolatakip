@@ -11,7 +11,7 @@ const I18N = {
     intervalHelp: 'Boş bırakırsan PiP’te gizlenir.',
     intervalHidden: '— PiP’te gizlenecek —',
     intervalPlaceholder: 'ör. Lunch 12:00–12:45',
-    taskTitle: 'Mevcut Interval'
+    taskTitle: 'Mevcut Interval',
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Molaları Sil',
