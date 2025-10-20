@@ -13,6 +13,7 @@ const I18N = {
     intervalPlaceholder: 'ör. Lunch 12:00–12:45',
     taskTitle: 'Mevcut Interval',
     taskActive: 'Hedef',
+    nextBreakTitle: 'Sıradaki Mola',
     
     breaksTitle: 'Breaks',
     clearBreaks: 'Molaları Sil',
@@ -53,6 +54,9 @@ const I18N = {
     intervalHelp: 'If empty, it stays hidden in PiP.',
     intervalHidden: '— Will be hidden in PiP —',
     intervalPlaceholder: 'e.g., Lunch 12:00–12:45',
+    taskTitle: 'Current Interval',
+    taskActive: 'Target',
+    nextBreakTitle: 'Next Break',
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Clear breaks',
@@ -93,6 +97,9 @@ const I18N = {
     intervalHelp: 'Wenn leer, bleibt es im PiP verborgen.',
     intervalHidden: '— Im PiP ausgeblendet —',
     intervalPlaceholder: 'z.B. Mittag 12:00–12:45',
+    taskTitle: 'Aktuelles Intervall',
+    taskActive: 'Ziel',
+    nextBreakTitle: 'Nächste Pause',
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Pausen löschen',
@@ -133,6 +140,9 @@ const I18N = {
     intervalHelp: 'Ако е празно, остава скрито в PiP.',
     intervalHidden: '— Ще бъде скрито в PiP —',
     intervalPlaceholder: 'напр. Lunch 12:00–12:45',
+    taskTitle: 'Tekusht interval',
+    taskActive: 'Tsel',
+    nextBreakTitle: 'Sledvashta Pochivka',
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Изтриване на почивки',
