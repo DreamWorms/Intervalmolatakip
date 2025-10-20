@@ -266,47 +266,28 @@ button.ghost{ background:transparent }
 .counter{ margin:6px 0; gap:8px; }
 .count{ font-size:28px; min-width:56px; padding:4px 6px; }
 
-/* === Sayaç kartı — kompakt düzen === */
+/* Üst sıradaki 3 kart aynı yüksekliği kullansın */
+#dashWrap{ align-items: stretch; }           /* grid item'lar gerilsin */
+#dashWrap .summary-card{
+  min-height: 120px;                         /* tek referans yükseklik */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* (Emniyetli mod) – sınıf ekleyemediysen #counterCard'ı da aynı kurala dahil et */
+#dashWrap .summary-card,
 #counterCard{
-  display:flex;
-  flex-direction:column;
-  gap:8px;                 /* içerik aralığı */
-  padding:12px 14px;       /* daha az iç boşluk */
-  min-height:auto;         /* içeriği kadar kalsın */
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-/* başlık ve ipucu yazıları küçült */
+/* Sayaç içini kompakt tut */
+#counterCard .counter{ margin:0; gap:8px; justify-content:flex-start; }
+#counterCard .count{ height:32px; min-width:56px; font-size:22px; padding:0 8px; border-radius:10px; display:grid; place-items:center; }
+#counterCard .counter button{ width:40px; height:32px; padding:0; border-radius:10px; font-weight:700; display:grid; place-items:center; }
+#counterCard #resetBtn{ padding:6px 10px; font-size:12px; align-self:flex-start; }
 #counterCard h2{ margin:0 0 4px; font-size:14px; }
-#counterCard .hint{ font-size:11px; margin-top:2px; color:var(--muted); }
-
-/* butonlar ve değer hizası */
-#counterCard .counter{
-  margin:0;                /* fazladan dikey boşluk yok */
-  gap:8px;                 /* -1 / değer / +1 arası */
-  justify-content:flex-start;
-}
-
-/* -1 / +1 butonları: küçük, pilli görünüm */
-#counterCard .counter button{
-  width:40px; height:32px;           /* sabit ve minik */
-  padding:0;
-  display:grid; place-items:center;  /* sayı ortalansın */
-  border-radius:10px;
-  font-weight:700;
-}
-
-/* orta sayı kutusu */
-#counterCard .count{
-  height:32px;
-  min-width:56px;
-  padding:0 8px;
-  display:grid; place-items:center;
-  font-size:22px;                    /* daha küçük */
-  border-radius:10px;
-}
-
-/* Sıfırla butonu da minik */
-#counterCard #resetBtn{
-  padding:6px 10px;
-  font-size:12px;
-}
+#counterCard .hint{ margin-top:2px; font-size:11px; }
