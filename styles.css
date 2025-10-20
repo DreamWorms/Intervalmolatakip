@@ -291,3 +291,45 @@ body .break-grid{
   margin: 24px auto !important;
   padding: 0 16px !important;
 }
+
+/* === Üst 3 kartı sıkıştır (boşlukları azalt) === */
+#dashWrap .card:not(.clock-card){ min-height:120px !important; padding:14px 16px !important; }
+.clock-card{ padding-block: 8px !important; }
+.summary-big{ font-size:20px !important; margin-top:4px !important; }
+
+/* === Molalar 5 sütun, taşma yok === */
+.break-grid{
+  display:grid !important;
+  grid-template-columns: repeat(5, minmax(0,1fr)) !important;
+  gap:16px !important;
+}
+/* viewport daralınca kademeli düşsün */
+@media (max-width: 1200px){ .break-grid{ grid-template-columns: repeat(4, minmax(0,1fr)) !important; } }
+@media (max-width: 980px){  .break-grid{ grid-template-columns: repeat(3, minmax(0,1fr)) !important; } }
+@media (max-width: 700px){  .break-grid{ grid-template-columns: repeat(2, minmax(0,1fr)) !important; } }
+@media (max-width: 480px){  .break-grid{ grid-template-columns: 1fr !important; } }
+
+/* dakika kapsülü kartın içinde kalsın */
+.break-tile{ padding-right:84px !important; }
+.mins-float{ right:10px !important; }
+
+/* === Özel interval – geniş iki sütun düzeni === */
+.si .si-grid{ display:grid; grid-template-columns: clamp(240px, 32%, 360px) 1fr; gap:16px; }
+#siLines{ width:100%; height:260px; }
+
+/* Pill saat seçici */
+.sr-only{
+  position:absolute !important; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+}
+.time-pill{
+  display:inline-flex; align-items:center; gap:6px;
+  background:#0f1420; border:1px solid var(--border);
+  padding:6px 10px; border-radius:12px;
+}
+.pill-select{
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  background:transparent; border:none; color:var(--fg);
+  font-weight:800; font-size:16px; padding:2px 4px; outline:none; cursor:pointer;
+}
+.time-pill .colon{ font-weight:900; opacity:.7; }

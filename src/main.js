@@ -103,4 +103,36 @@ sub('interval', (txt) => {
 // Modüller
 mountBreaks('#breakGrid');
 mountSpecialIntervalUI();
+// --- Yeni: pill saat seçiciyi doldur & #siStart ile senkronla ---
+function mountTimePill(){
+  const hourSel = document.getElementById('siHour');
+  const minSel  = document.getElementById('siMinute');
+  const hidden  = document.getElementById('siStart');
+  if (!hourSel || !minSel || !hidden) return;
+
+  // seçenekleri doldur
+  for (let h=0; h<24; h++){
+    const v = String(h).padStart(2,'0');
+    hourSel.add(new Option(v, v));
+  }
+  for (let m=0; m<60; m++){
+    const v = String(m).padStart(2,'0');
+    minSel.add(new Option(v, v));
+  }
+
+  // başlangıç değeri
+  const [ih, im] = (hidden.value || '00:00').split(':');
+  hourSel.value = ih || '00';
+  minSel.value  = im || '00';
+  hidden.value  = `${hourSel.value}:${minSel.value}`;
+
+  // değişince gizli inputa yaz
+  const sync = ()=> hidden.value = `${hourSel.value}:${minSel.value}`;
+  hourSel.onchange = minSel.onchange = sync;
+}
+
+// mevcut satırlar…
+mountBreaks('#breakGrid');
+mountSpecialIntervalUI();
+mountTimePill();                 // <<< eklenen satır
 startDashboardTicker();

@@ -76,14 +76,15 @@
 
           <div class="si-row">
             <label id="siStartLabel" class="muted tiny">Vardiya</label>
-            <input id="siStart" class="text big" type="time" step="60">
-          </div>
-
-          <div class="si-actions">
-            <button id="siSave" class="primary tiny-btn">Kaydet</button>
-            <span id="siInfo" class="muted tiny"></span>
-          </div>
-        </div>
+            <input id="siStart" class="text sr-only" type="time" step="60">
+          
+            <div class="time-pill" id="siStartPill"></div>
+              <select id="siHour" class="pill-select"></select>
+              <span class="colon">:</span>
+              <select id="siMinute" class="pill-select"></select>
+              </div>
+            </div>
+          
 
         <!-- Sağ: değer listesi (büyük alan) -->
         <div class="si-right">
