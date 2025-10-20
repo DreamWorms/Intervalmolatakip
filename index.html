@@ -21,32 +21,26 @@
     </div>
   </header>
 
-  <!-- Dashboard: Clock + Summaries -->
-<section class="wrap" id="dashWrap">
-  <div class="card clock-card">
-    <div id="liveClock" class="clock">--:--:--</div>
-  </div>
-
-  <div class="card summary-card" id="taskCard">
-    <h3 id="taskTitle">Görev</h3>
-    <div class="summary-line">
-      <span id="taskStatus">—</span>
+  <!-- ÜST SIRA: Saat (tam), altta 3’lü: Görev – Sıradaki Mola – Sayaç -->
+  <section class="wrap" id="dashWrap">
+    <div class="card clock-card">
+      <div id="liveClock" class="clock">--:--:--</div>
     </div>
-    <div class="summary-big" id="taskAmount">0</div>
-  </div>
 
-  <div class="card summary-card" id="nextBreakCard">
-    <h3 id="nextBreakTitle">Sıradaki Mola</h3>
-    <div class="summary-line" id="nextBreakName">—</div>
-    <div class="summary-big" id="nextBreakEta">--:--:--</div>
-  </div>
+    <div class="card summary-card" id="taskCard">
+      <h3 id="taskTitle">Görev</h3>
+      <div class="summary-line"><span id="taskStatus">—</span></div>
+      <div class="summary-big" id="taskAmount">0</div>
+    </div>
 
-  <!-- sağda mevcut sayaç kartın kalması için boş bırakıyoruz -->
-</section>
+    <div class="card summary-card" id="nextBreakCard">
+      <h3 id="nextBreakTitle">Sıradaki Mola</h3>
+      <div class="summary-line" id="nextBreakName">—</div>
+      <div class="summary-big" id="nextBreakEta">--:--:--</div>
+    </div>
 
-  <main class="wrap">
-    <!-- Sayaç -->
-    <section class="card">
+    <!-- SAYAÇ: artık burada, 3’lü sıranın üçüncüsü -->
+    <div class="card" id="counterCard">
       <h2 id="counterTitle">Sayaç</h2>
       <div class="counter">
         <button id="minusBtn">−1</button>
@@ -58,55 +52,56 @@
       </div>
       <p class="hint tiny" id="kbHint">Klavye: ↑ / ↓ / R / + / −</p>
       <p class="hint" id="topLevelHint"></p>
-    </section>
-
-    <!-- Interval -->
-    <section class="card">
-      <h2 id="intervalTitle">Interval</h2>
-      <p class="muted" id="intervalHelp">Boş bırakırsan PiP’te gizlenir.</p>
-      <input id="intervalInput" class="text" placeholder="ör. Lunch 12:00–12:45">
-      <!-- ÖZEL INTERVAL -->
-<div id="siBlock" class="si">
-  <h4 id="siTitle">Özel interval</h4>
-
-  <div class="row si-row">
-    <label id="siLenLabel" class="muted tiny">Dakika</label>
-    <div id="siLen" class="btn-group">
-      <button class="chip" data-len="5">5</button>
-      <button class="chip" data-len="10">10</button>
-      <button class="chip" data-len="15">15</button>
-      <button class="chip" data-len="20">20</button>
     </div>
-  </div>
+  </section>
 
-  <div class="row si-row">
-    <label id="siStartLabel" class="muted tiny">Vardiya</label>
-    <input id="siStart" class="text" type="time" step="60">
-  </div>
+  <!-- ÖZEL INTERVAL: Molalar’ın üstünde tek kart -->
+  <section class="wrap" id="siRow">
+    <div class="card" id="siCard">
+      <div id="siBlock" class="si">
+        <h4 id="siTitle">Özel interval</h4>
 
-  <div class="row">
-    <label id="siLinesLabel" class="muted tiny">Değerler (her satır bir sayı)</label>
-    <textarea id="siLines" class="text mono" rows="6" placeholder="ör.\n15\n34\n5\n44"></textarea>
-  </div>
+        <div class="row si-row">
+          <label id="siLenLabel" class="muted tiny">Dakika</label>
+          <div id="siLen" class="btn-group">
+            <button class="chip" data-len="5">5</button>
+            <button class="chip" data-len="10">10</button>
+            <button class="chip" data-len="15">15</button>
+            <button class="chip" data-len="20">20</button>
+          </div>
+        </div>
 
-  <div class="row si-actions">
-    <button id="siSave" class="primary tiny-btn">Kaydet</button>
-    <span id="siInfo" class="muted tiny"></span>
-  </div>
-</div>
+        <div class="row si-row">
+          <label id="siStartLabel" class="muted tiny">Vardiya</label>
+          <input id="siStart" class="text" type="time" step="60">
+        </div>
 
-      <div class="row muted tiny" id="statusLine"></div>
+        <div class="row">
+          <label id="siLinesLabel" class="muted tiny">Değerler (her satır bir sayı)</label>
+          <textarea id="siLines" class="text mono" rows="6" placeholder="ör.
+15
+34
+5
+44"></textarea>
+        </div>
+
+        <div class="row si-actions">
+          <button id="siSave" class="primary tiny-btn">Kaydet</button>
+          <span id="siInfo" class="muted tiny"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="wrap">
+    <!-- Molalar -->
+    <section class="card">
+      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px">
+        <h2 id="breaksTitle">Molalar</h2>
+        <button id="clearBreaksBtn" class="ghost tiny-btn">Molaları Sil</button>
+      </div>
+      <div id="breakGrid" class="break-grid"></div>
     </section>
-
-  <!-- Molalar -->
-<section class="card">
-  <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px">
-    <h2 id="breaksTitle">Molalar</h2>
-    <button id="clearBreaksBtn" class="ghost tiny-btn">Molaları Sil</button>
-  </div>
-  <div id="breakGrid" class="break-grid"></div>
-</section>
-
   </main>
 
   <script type="module" src="./src/main.js"></script>
