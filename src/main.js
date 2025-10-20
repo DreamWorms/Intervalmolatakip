@@ -100,9 +100,7 @@ sub('interval', (txt) => {
   if (statusLine) statusLine.textContent = txt ? '' : t(S.lang, 'intervalHidden');
 });
 
-// Modüller
-mountBreaks('#breakGrid');
-mountSpecialIntervalUI();
+
 // --- Yeni: pill saat seçiciyi doldur & #siStart ile senkronla ---
 function mountTimePill(){
   const hourSel = document.getElementById('siHour');
@@ -131,8 +129,8 @@ function mountTimePill(){
   hourSel.onchange = minSel.onchange = sync;
 }
 
-// mevcut satırlar…
+// Modüller
 mountBreaks('#breakGrid');
 mountSpecialIntervalUI();
-mountTimePill();                 // <<< eklenen satır
+mountTimePill();       // (pill saat seçici)
 startDashboardTicker();

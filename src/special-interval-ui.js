@@ -17,6 +17,11 @@ export function mountSpecialIntervalUI(){
   const startLbl= document.getElementById('siStartLabel');
   const linesLbl= document.getElementById('siLinesLabel');
 
+  if (!lenWrap || !startIn || !linesTa || !saveBtn || !info || !title || !lenLbl || !startLbl || !linesLbl) {
+    console.warn('[si] eksik eleman:', { lenWrap, startIn, linesTa, saveBtn });
+    return;
+  }
+  
   function paintTexts(){
     title.textContent   = t(S.lang, 'siTitle');
     lenLbl.textContent  = t(S.lang, 'siLen');
