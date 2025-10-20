@@ -37,7 +37,7 @@ export async function openDocPiP(){
       display:flex; align-items:center; justify-content:center;
       cursor:zoom-in; user-select:none;
       transition:transform .06s ease, box-shadow .12s ease, border-color .12s ease;
-      box-shadow:0 8px 28px rgba(0,0,0,.35);
+      box-shadow:0 8px 28px rgba(255, 252, 252, 0.35);
     }
     .pad:hover{ border-color:#3a4564; box-shadow:0 12px 36px rgba(255, 255, 255, 0.45); }
     .pad:active{ transform:scale(.995); }
