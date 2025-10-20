@@ -333,3 +333,54 @@ body .break-grid{
   font-weight:800; font-size:16px; padding:2px 4px; outline:none; cursor:pointer;
 }
 .time-pill .colon{ font-weight:900; opacity:.7; }
+
+/* ====== KZS layout v2 ====== */
+
+/* Kart içeriklerini sıkılaştır (üstteki büyük boşlukları küçült) */
+.clock-card { padding: 10px 16px; }
+.clock      { font-size: 36px; letter-spacing: .5px; }
+
+#dashWrap .card { padding: 14px 16px; }
+.summary-card{
+  min-height: 120px;               /* eskisinden belirgin daha kısa */
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+.summary-card h3{ margin:0 0 6px; font-size:15px; }
+.summary-big   { font-size:20px; margin-top:4px; }
+
+/* === Molalar: 5 sütun sabit (taşmadan) === */
+.break-grid{
+  display:grid;
+  grid-template-columns: repeat(5, minmax(200px, 1fr));  /* 5 kolon */
+  gap:16px;
+}
+@media (max-width: 1260px){ .break-grid{ grid-template-columns: repeat(4, minmax(200px,1fr)); } }
+@media (max-width: 1000px){ .break-grid{ grid-template-columns: repeat(3, minmax(200px,1fr)); } }
+@media (max-width: 760px){  .break-grid{ grid-template-columns: repeat(2, minmax(200px,1fr)); } }
+@media (max-width: 520px){  .break-grid{ grid-template-columns: 1fr; } }
+
+/* Tile’ları biraz daha kompakt yap */
+.break-tile .note{ min-height: 78px; }  /* eskisi 90+ idi */
+
+/* === Özel interval kartı yeni düzen === */
+.si-grid{ display:grid; grid-template-columns: 260px 1fr; gap:16px; align-items:start; }
+@media (max-width: 900px){ .si-grid{ grid-template-columns: 1fr; } }
+
+.si .control{ display:flex; flex-direction:column; gap:12px; }
+
+.time-pill{ display:flex; gap:8px; align-items:center; }
+.time-pill select{
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  background:#0f1420; border:1px solid var(--border); color:var(--fg);
+  padding:8px 12px; border-radius:12px; font-weight:700; min-width:72px;
+  text-align:center;
+}
+.time-pill .sep{ opacity:.6; font-weight:700; }
+
+.biglist{ height: 260px; min-height: 220px; width:100%; }
+
+/* Buton çiplerinin aktif hali daha belirgin */
+.btn-group .chip.active{
+  outline:1px solid #2d6cdf;
+  box-shadow: inset 0 0 0 1px rgba(45,108,223,.35);
+}

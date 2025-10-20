@@ -55,47 +55,49 @@
     </div>
   </section>
 
-  <!-- ÖZEL INTERVAL -->
-<section id="siRow" class="wrap">
-  <div class="card">
-    <div id="siBlock" class="si">
-      <h2 id="siTitle">Özel interval</h2>
+ <!-- ÖZEL INTERVAL (yeni) -->
+<div id="siBlock" class="card si">
+  <h3 id="siTitle">Özel interval</h3>
 
-      <div class="si-grid">
-        <!-- Sol: ayarlar -->
-        <div class="si-left">
-          <div class="si-row">
-            <label id="siLenLabel" class="muted tiny">Dakika</label>
-            <div id="siLen" class="btn-group">
-              <button class="chip" data-len="5">5</button>
-              <button class="chip" data-len="10">10</button>
-              <button class="chip" data-len="15">15</button>
-              <button class="chip" data-len="20">20</button>
-            </div>
-          </div>
-
-          <div class="si-row">
-            <label id="siStartLabel" class="muted tiny">Vardiya</label>
-            <input id="siStart" class="text sr-only" type="time" step="60">
-          
-            <div class="time-pill" id="siStartPill"></div>
-              <select id="siHour" class="pill-select"></select>
-              <span class="colon">:</span>
-              <select id="siMinute" class="pill-select"></select>
-              </div>
-            </div>
-          
-
-        <!-- Sağ: değer listesi (büyük alan) -->
-        <div class="si-right">
-          <label id="siLinesLabel" class="muted tiny">Değerler (her satır bir sayı)</label>
-          <textarea id="siLines" class="text mono" rows="12"
-            placeholder="ör.&#10;15&#10;34&#10;5&#10;44"></textarea>
+  <div class="si-grid">
+    <!-- sol: kontroller -->
+    <div class="control">
+      <div>
+        <label id="siLenLabel" class="muted tiny">Dakika</label>
+        <div id="siLen" class="btn-group">
+          <button class="chip" data-len="5">5</button>
+          <button class="chip" data-len="10">10</button>
+          <button class="chip" data-len="15">15</button>
+          <button class="chip" data-len="20">20</button>
         </div>
       </div>
+
+      <div>
+        <label id="siStartLabel" class="muted tiny">Vardiya</label>
+        <div class="time-pill">
+          <select id="siHour"></select>
+          <span class="sep">:</span>
+          <select id="siMinute"></select>
+          <!-- state.js / special-interval-ui.js burada bu inputu okuyor -->
+          <input id="siStart" type="hidden" value="00:00">
+        </div>
+      </div>
+
+      <div class="si-actions">
+        <button id="siSave" class="primary tiny-btn">Kaydet</button>
+        <span id="siInfo" class="muted tiny"></span>
+      </div>
+    </div>
+
+    <!-- sağ: büyük liste -->
+    <div>
+      <label id="siLinesLabel" class="muted tiny">Değerler (her satır bir sayı)</label>
+      <textarea id="siLines" class="text mono biglist"
+        placeholder="ör.&#10;15&#10;34&#10;5&#10;44"></textarea>
     </div>
   </div>
-</section>
+</div>
+
 
 
   <main class="wrap">
