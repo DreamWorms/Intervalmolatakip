@@ -28,19 +28,20 @@ function findNextBreak(now=new Date()){
   for (const it of items){
     const t = firstTimeInNote(it.note);
     if (!t) continue;
-    // bugüne ait hedef
     const dt = new Date(now);
     dt.setHours(t.H, t.M, 0, 0);
-    if (dt >= now){
-      list.push({ title: (it.type==='fixed' ? it.titleKey : (it.title||'Custom')), when: dt, raw: it });
-    }
+    // GEÇMİŞSE YARINA AL
+    if (dt < now) dt.setDate(dt.getDate() + 1);
+
+    const title = it.type==='fixed' ? t(S.lang, it.titleKey) : (it.title || 'Custom');
+    list.push({ title, when: dt });
   }
   list.sort((a,b)=>a.when-b.when);
   const pick = list[0];
   if (!pick) return null;
 
   const diffMs = pick.when - now;
-  const s = Math.floor(diffMs/1000);
+  const s = Math.max(0, Math.floor(diffMs/1000));
   const hh = two(Math.floor(s/3600));
   const mm = two(Math.floor((s%3600)/60));
   const ss = two(s%60);
@@ -50,6 +51,7 @@ function findNextBreak(now=new Date()){
     eta: `${hh}:${mm}:${ss}`,
   };
 }
+
 
 function painthtmlClock(now){
   const el = document.getElementById('liveClock');
@@ -93,12 +95,14 @@ export function startDashboardTicker(){
     const nb = findNextBreak(now);
     paintNextBreak(nb);
 
-    // PiP'e gönder
-    broadcast('dashboard', {
+    const snap = {
       clock: document.getElementById('liveClock')?.textContent || '',
       task: { len: a.len || cfg.len, active: a.active, amount: a.amount },
       next: nb || null,
-    });
+    };
+    // ÖN BELLEK
+    window.__KZS_LAST_DASH__ = snap;
+    broadcast('dashboard', snap);
   }
   tick();
   return window.setInterval(tick, 1000);

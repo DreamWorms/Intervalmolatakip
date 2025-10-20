@@ -34,6 +34,23 @@ async function openDocPiP(){
     </div>
   `;
 
+  const applyDash = (d)=>{
+    if (!d) return;
+    pip.document.getElementById('pipClock').textContent = d.clock || '--:--:--';
+    pip.document.getElementById('pipTaskStatus').textContent = d.task?.active ? 'Active' : '—';
+    pip.document.getElementById('pipTaskAmount').textContent = String(d.task?.amount ?? 0);
+    if (d.next){
+      pip.document.getElementById('pipNextName').textContent = `${d.next.keyOrName} ${d.next.at}`;
+      pip.document.getElementById('pipNextEta').textContent = d.next.eta;
+    }else{
+      pip.document.getElementById('pipNextName').textContent = '—';
+      pip.document.getElementById('pipNextEta').textContent = '--:--:--';
+    }
+  };
+
+  // AÇILIŞTA ANINDA DOLDUR
+  applyDash(window.__KZS_LAST_DASH__);
+
   const $ = (s, root=pip.document) => root.querySelector(s);
   const v = $('#v'), m = $('#m'), p = $('#p'), r = $('#r');
 
