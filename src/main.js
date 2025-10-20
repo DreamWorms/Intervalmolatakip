@@ -3,6 +3,7 @@ import { S, setCounter, setLang, setIntervalText, sub, broadcast } from './state
 import { t } from './i18n.js';
 import { openDocPiP } from './pip.js';
 import { mountBreaks } from './breaks.js';
+import { mountIntervalComposer } from './interval-composer.js';
 
 const $ = (s, root=document) => root.querySelector(s);
 
@@ -81,3 +82,4 @@ sub('interval', (txt) => {
 });
 
 mountBreaks('#breakGrid');
+mountIntervalComposer();
