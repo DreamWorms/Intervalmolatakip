@@ -55,43 +55,47 @@
     </div>
   </section>
 
-  <!-- ÖZEL INTERVAL: Molalar’ın üstünde tek kart -->
-  <section class="wrap" id="siRow">
-    <div class="card" id="siCard">
-      <div id="siBlock" class="si">
-        <h4 id="siTitle">Özel interval</h4>
+  <!-- ÖZEL INTERVAL -->
+<section id="siRow" class="wrap">
+  <div class="card">
+    <div id="siBlock" class="si">
+      <h2 id="siTitle">Özel interval</h2>
 
-        <div class="row si-row">
-          <label id="siLenLabel" class="muted tiny">Dakika</label>
-          <div id="siLen" class="btn-group">
-            <button class="chip" data-len="5">5</button>
-            <button class="chip" data-len="10">10</button>
-            <button class="chip" data-len="15">15</button>
-            <button class="chip" data-len="20">20</button>
+      <div class="si-grid">
+        <!-- Sol: ayarlar -->
+        <div class="si-left">
+          <div class="si-row">
+            <label id="siLenLabel" class="muted tiny">Dakika</label>
+            <div id="siLen" class="btn-group">
+              <button class="chip" data-len="5">5</button>
+              <button class="chip" data-len="10">10</button>
+              <button class="chip" data-len="15">15</button>
+              <button class="chip" data-len="20">20</button>
+            </div>
+          </div>
+
+          <div class="si-row">
+            <label id="siStartLabel" class="muted tiny">Vardiya</label>
+            <input id="siStart" class="text big" type="time" step="60">
+          </div>
+
+          <div class="si-actions">
+            <button id="siSave" class="primary tiny-btn">Kaydet</button>
+            <span id="siInfo" class="muted tiny"></span>
           </div>
         </div>
 
-        <div class="row si-row">
-          <label id="siStartLabel" class="muted tiny">Vardiya</label>
-          <input id="siStart" class="text" type="time" step="60">
-        </div>
-
-        <div class="row">
+        <!-- Sağ: değer listesi (büyük alan) -->
+        <div class="si-right">
           <label id="siLinesLabel" class="muted tiny">Değerler (her satır bir sayı)</label>
-          <textarea id="siLines" class="text mono" rows="6" placeholder="ör.
-15
-34
-5
-44"></textarea>
-        </div>
-
-        <div class="row si-actions">
-          <button id="siSave" class="primary tiny-btn">Kaydet</button>
-          <span id="siInfo" class="muted tiny"></span>
+          <textarea id="siLines" class="text mono" rows="12"
+            placeholder="ör.&#10;15&#10;34&#10;5&#10;44"></textarea>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
 
   <main class="wrap">
     <!-- Molalar -->
