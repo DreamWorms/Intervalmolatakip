@@ -235,3 +235,33 @@ button.ghost{ background:transparent }
 
 /* Üstte ve altta gereksiz büyük marjları kırp */
 .wrap{ margin:18px auto; }
+
+/* === TOP ROW (Saat + 3 kart) gerçekten kompakt === */
+#dashWrap{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap:12px;                      /* kartlar arası boşluk */
+  align-items:start;             /* satır yüksekliğini kısalt */
+}
+
+.clock-card{ padding:6px 10px; }
+.clock{ font-size:30px; line-height:1.1; }
+
+/* Tek ve net .summary-card kuralı (diğerlerini silebilirsin) */
+.summary-card{
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;    /* space-between şişmesini bitir */
+  gap:6px;                       /* aralara küçük ritim */
+  min-height:auto;               /* kart içeriği kadar büyüsün */
+  padding:12px 14px;
+}
+
+/* Başlık ve değerler daha kompakt */
+.summary-card h3{ margin:0 0 4px; font-size:14px; }
+.summary-line{ font-size:12px; }
+.summary-big{ font-size:18px; margin-top:2px; }
+
+/* Sayaç kartının içini de küçült */
+.counter{ margin:6px 0; gap:8px; }
+.count{ font-size:28px; min-width:56px; padding:4px 6px; }
