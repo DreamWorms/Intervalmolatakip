@@ -257,3 +257,4 @@ main.wrap > .card{ width: 100%; } /* Molalar kartı tam genişlik */
 /* (İsteğe bağlı) alt bölüm ile kenarlar tam hizalansın diye
    grid içindeki kartların iç boşluklarını aynı tut */
 .card{ padding: 16px 18px; }
+
