@@ -238,3 +238,33 @@ button.ghost{ background:transparent }
 }
 
 #counterCard h3{ margin:0 0 4px; font-size:14px; }
+
+
+/* === COUNTER CARD: üst sıradaki diğer 2 kartla birebir eşit görünüm === */
+
+/* grid satırı tüm kartları aynı yüksekliğe germeli */
+#dashWrap{ align-items: stretch; }
+
+/* üst sıradaki 3 kartın referans yüksekliği */
+#dashWrap .summary-card,
+#counterCard{
+  min-height: 120px;          /* istersen 110–130 arası oynat */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* sayaç içini kompaktlaştır (yüksekliği şişirmesin) */
+#counterCard h3{ margin:0 0 4px; font-size:14px; }
+#counterCard .counter-actions{ margin-top:6px; gap:8px; justify-content:flex-start; }
+
+/* pad ve sayı yüzünü küçült → kart toplam yüksekliği diğerleriyle eşit olur */
+#counterCard .counter-pad{ height:44px; padding:0; }
+#counterCard .count-face{ font-size:22px; min-width:56px; padding:4px 8px; }
+
+/* tuşlar da kompakt */
+#counterCard .counter-actions .chip{ padding:4px 10px; border-radius:999px; }
+#counterCard #resetBtn{ padding:4px 10px; font-size:12px; }
+
+/* alttaki ipucu küçük kalsın (istersen display:none yapabilirsin) */
+#counterCard .hint{ font-size:11px; margin-top:2px; }
