@@ -18,6 +18,14 @@ const I18N = {
     minUnit: 'min',
     notePlaceholder: 'Enter your break time HH:MM',
 
+    siTitle: 'Özel interval',
+    siLen: 'Dakika',
+    siStart: 'Vardiya',
+    siLines: 'Değerler (her satır bir sayı)',
+    siSave: 'Kaydet',
+    siSaved: 'Kaydedildi.',
+
+
     rest1: 'Rest 1',
     rest2: 'Rest 2',
     lunch: 'Lunch',
@@ -49,6 +57,13 @@ const I18N = {
     notePlaceholder: 'Enter your break time HH:MM',
     durationMins: 'Duration',
     minUnit: 'min',
+
+    siTitle: 'Custom interval',
+    siLen: 'Minutes',
+    siStart: 'Shift start',
+    siLines: 'Values (one per line)',
+    siSave: 'Save',
+    siSaved: 'Saved.',
 
 
     rest1: 'Rest 1',
@@ -83,6 +98,13 @@ const I18N = {
     durationMins: 'Duration',
     minUnit: 'min',
 
+    siTitle: 'Benutzerdef. Intervall',
+    siLen: 'Minuten',
+    siStart: 'Schichtbeginn',
+    siLines: 'Werte (eine Zeile = ein Wert)',
+    siSave: 'Speichern',
+    siSaved: 'Gespeichert.',
+
 
     rest1: 'Rest 1',
     rest2: 'Rest 2',
@@ -115,6 +137,13 @@ const I18N = {
     notePlaceholder: 'Enter your break time HH:MM',
     durationMins: 'Duration',
     minUnit: 'min',
+
+    siTitle: 'Специален интервал',
+    siLen: 'Минути',
+    siStart: 'Начало на смяна',
+    siLines: 'Стойности (по една на ред)',
+    siSave: 'Запази',
+    siSaved: 'Запазено.',
 
 
     rest1: 'Rest 1',
