@@ -1,57 +1,66 @@
-// src/main.js — UI bağlama
+// src/main.js — UI bağlama (null-güvenli)
 import { S, setCounter, setLang, setIntervalText, sub, broadcast } from './state.js';
 import { t } from './i18n.js';
 import { openDocPiP } from './pip.js';
 import { mountBreaks } from './breaks.js';
 import { startDashboardTicker } from './dashboard.js';
 import { mountSpecialIntervalUI } from './special-interval-ui.js';
-import { getCfg, setCfg } from './special-interval.js';
-
 
 const $ = (s, root=document) => root.querySelector(s);
 
-// Elemanlar
-const labelLang = $('#labelLang');
-const langSelect = $('#langSelect');
-const openDocPipBtn = $('#openDocPipBtn');
-const countVal = $('#countVal');
-const plusBtn = $('#plusBtn');
-const minusBtn = $('#minusBtn');
-const resetBtn = $('#resetBtn');
+// Elemanlar (bazıları HTML'de olmayabilir)
+const labelLang    = $('#labelLang');
+const langSelect   = $('#langSelect');
+const openDocPipBtn= $('#openDocPipBtn');
+
+const countVal     = $('#countVal');
+const plusBtn      = $('#plusBtn');
+const minusBtn     = $('#minusBtn');
+const resetBtn     = $('#resetBtn');
 const counterTitle = $('#counterTitle');
-const kbHint = $('#kbHint');
+const kbHint       = $('#kbHint');
 const topLevelHint = $('#topLevelHint');
-const intervalTitle = $('#intervalTitle');
+
+const intervalTitle= $('#intervalTitle');
 const intervalHelp = $('#intervalHelp');
-const intervalInput = $('#intervalInput');
-const statusLine = $('#statusLine');
+const intervalInput= $('#intervalInput');   // KARTI KALDIRDIYSAN null olur
+const statusLine   = $('#statusLine');
 
 // İlk durum
-langSelect.value = S.lang;
-countVal.textContent = String(S.counter);
-intervalInput.value = S.interval;
+if (langSelect) langSelect.value = S.lang;
+if (countVal)   countVal.textContent = String(S.counter);
+if (intervalInput) intervalInput.value = S.interval;
 
 // Metinleri boyayan fonksiyon
 function paintTexts(){
-  labelLang.textContent = t(S.lang, 'labelLang');
-  openDocPipBtn.textContent = t(S.lang, 'docpip');
-  counterTitle.textContent = t(S.lang, 'counterTitle');
-  resetBtn.textContent = t(S.lang, 'reset');
-  kbHint.textContent = t(S.lang, 'kbHint');
-  intervalTitle.textContent = t(S.lang, 'intervalTitle');
-  intervalHelp.textContent = t(S.lang, 'intervalHelp');
-  intervalInput.placeholder = t(S.lang, 'intervalPlaceholder');
-  topLevelHint.textContent = (window.top !== window) ? t(S.lang, 'needTopLevel') : '';
-  statusLine.textContent = S.interval ? '' : t(S.lang, 'intervalHidden');
-  document.getElementById('breaksTitle').textContent = t(S.lang, 'breaksTitle');
-  document.getElementById('clearBreaksBtn').textContent = t(S.lang, 'clearBreaks');
+  if (labelLang)     labelLang.textContent = t(S.lang, 'labelLang');
+  if (openDocPipBtn) openDocPipBtn.textContent = t(S.lang, 'docpip');
+
+  if (counterTitle)  counterTitle.textContent = t(S.lang, 'counterTitle');
+  if (resetBtn)      resetBtn.textContent = t(S.lang, 'reset');
+  if (kbHint)        kbHint.textContent = t(S.lang, 'kbHint');
+
+  if (intervalTitle) intervalTitle.textContent = t(S.lang, 'intervalTitle');
+  if (intervalHelp)  intervalHelp.textContent = t(S.lang, 'intervalHelp');
+  if (intervalInput) intervalInput.placeholder = t(S.lang, 'intervalPlaceholder');
+
+  if (topLevelHint)  topLevelHint.textContent =
+    (window.top !== window) ? t(S.lang, 'needTopLevel') : '';
+
+  if (statusLine)    statusLine.textContent =
+    S.interval ? '' : t(S.lang, 'intervalHidden');
+
+  const bt = document.getElementById('breaksTitle');
+  if (bt) bt.textContent = t(S.lang, 'breaksTitle');
+  const cb = document.getElementById('clearBreaksBtn');
+  if (cb) cb.textContent = t(S.lang, 'clearBreaks');
 }
 paintTexts();
 
 // Sayaç etkileşimi
-plusBtn.onclick  = () => { setCounter(S.counter + 1); broadcast('counter', S.counter); };
-minusBtn.onclick = () => { setCounter(S.counter - 1); broadcast('counter', S.counter); };
-resetBtn.onclick = () => { setCounter(0); broadcast('counter', S.counter); };
+if (plusBtn)  plusBtn.onclick  = () => { setCounter(S.counter + 1); broadcast('counter', S.counter); };
+if (minusBtn) minusBtn.onclick = () => { setCounter(S.counter - 1); broadcast('counter', S.counter); };
+if (resetBtn) resetBtn.onclick = () => { setCounter(0); broadcast('counter', S.counter); };
 
 // Klavye kısayolları
 window.addEventListener('keydown', (e) => {
@@ -63,27 +72,35 @@ window.addEventListener('keydown', (e) => {
 });
 
 // Dil
-langSelect.onchange = () => { setLang(langSelect.value); broadcast('lang', S.lang); paintTexts(); };
+if (langSelect) langSelect.onchange = () => {
+  setLang(langSelect.value);
+  broadcast('lang', S.lang);
+  paintTexts();
+};
 sub('lang', paintTexts);
 
-// Interval
-intervalInput.oninput = () => {
-  const v = intervalInput.value.trim();
-  setIntervalText(v);
-  broadcast('interval', v);
-  statusLine.textContent = v ? '' : t(S.lang, 'intervalHidden');
-};
+// Interval (opsiyonel panel için)
+if (intervalInput) {
+  intervalInput.oninput = () => {
+    const v = intervalInput.value.trim();
+    setIntervalText(v);
+    broadcast('interval', v);
+    if (statusLine) statusLine.textContent = v ? '' : t(S.lang, 'intervalHidden');
+  };
+}
 
 // Doc PiP
-openDocPipBtn.onclick = () => openDocPiP();
+if (openDocPipBtn) openDocPipBtn.onclick = () => openDocPiP();
 
 // Senkron
-sub('counter', (val) => { countVal.textContent = String(val); });
+sub('counter', (val) => { if (countVal) countVal.textContent = String(val); });
+
 sub('interval', (txt) => {
-  if (intervalInput.value !== txt) intervalInput.value = txt || '';
-  statusLine.textContent = txt ? '' : t(S.lang, 'intervalHidden');
+  if (intervalInput && intervalInput.value !== txt) intervalInput.value = txt || '';
+  if (statusLine) statusLine.textContent = txt ? '' : t(S.lang, 'intervalHidden');
 });
 
+// Modüller
 mountBreaks('#breakGrid');
 mountSpecialIntervalUI();
 startDashboardTicker();
