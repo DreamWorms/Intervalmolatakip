@@ -33,7 +33,7 @@ export async function openDocPiP(){
       min-height:120px;            /* burayı istersen 100–160 arası oynatabilirsin */
       border:1px solid var(--stroke);
       border-radius:14px;
-      background:linear-gradient(180deg, rgba(18,20,35,.78), rgba(14,16,28,.9));
+      background:linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.9));
       display:flex; align-items:center; justify-content:center;
       cursor:zoom-in; user-select:none;
       transition:transform .06s ease, box-shadow .12s ease, border-color .12s ease;
