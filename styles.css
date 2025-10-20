@@ -219,43 +219,42 @@ h2{ margin:0 0 8px; font-size:18px }
 .text.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace }
 
 
-/* === KZS yerleşim paketi (override için daha spesifik seçiciler) === */
+/* === KZS layout fix — üç bölüm aynı genişlik ve hizalama === */
 
-/* Üç bölme (üst cluster, özel interval, molalar) aynı konteyner genişliği */
-body #dashWrap,
-body #siRow,
-body main.wrap {
-  max-width: 1180px;       /* genişliği burada oynatabilirsin */
-  margin-inline: auto;
-  padding-inline: 20px;
+/* Hepsi aynı konteyner genişliğinde (kenarlar aynı hizaya gelir) */
+#dashWrap.wrap,
+#siRow.wrap,
+main.wrap {
+  max-width: 1180px !important;   /* istersen 1100–1280 arası ayarla */
+  margin: 24px auto !important;
+  padding: 0 16px !important;
 }
 
-/* Üst cluster: saat + 3 kart (eşit sütunlar) */
-body #dashWrap {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0,1fr));
-  gap: 18px;
+/* ÜST CLUSTER: Saat + 3 kart */
+#dashWrap.wrap {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0,1fr)) !important;
+  gap: 18px !important;
+}
+#dashWrap .clock-card { grid-column: 1 / -1; text-align: center; }
+
+/* İKİ SÜTUNU KAPAT: özel interval ve ana <main> tek sütun olsun */
+#siRow.wrap,
+main.wrap {
+  display: block !important;                  /* grid değil */
+  grid-template-columns: none !important;     /* önceki .wrap kuralını etkisiz yap */
 }
 
-/* Saat kartı tüm satırı kaplasın */
-body #dashWrap .clock-card { grid-column: 1 / -1; text-align:center; }
-
-/* 2. satırdaki üç kartın yüksekliklerini eşitle */
-body #taskCard,
-body #nextBreakCard,
-body #counterCard {
+/* Üst cluster’daki üç kartın yüksekliğini eşitle */
+#dashWrap .card:not(.clock-card) {
   display: flex;
   flex-direction: column;
-  min-height: 176px;          /* burayı ister 160–200 arası ayarla */
+  min-height: 176px;          /* 160–200 arası istediğin gibi oynatabilirsin */
 }
 
-/* Özel interval kartı ve Molalar kartı tam genişlik */
-body #siRow > .card,
-body main.wrap > .card { width: 100%; }
-
-/* Düşey ritim – bölmeler arası boşluklar aynı olsun */
-body #dashWrap { margin-block: 18px 22px; }
-body #siRow   { margin-block: 0 22px; }
-
-/* Kartların iç padding’lerini hizalamak için */
-body .card { padding: 16px 18px; }
+/* Kart iç paddinglerini aynıla (kenarlar temiz dursun) */
+#dashWrap .card,
+#siRow .card,
+main.wrap > .card {
+  padding: 16px 18px !important;
+}
