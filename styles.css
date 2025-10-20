@@ -186,3 +186,10 @@ h2{ margin:0 0 8px; font-size:18px }
 @media (max-width:900px){
   #dashWrap{ grid-template-columns: 1fr; }
 }
+
+/* Özel Interval UI */
+.si .si-row{ gap:10px; align-items:center; flex-wrap:wrap }
+.si .btn-group .chip{ padding:4px 12px; border-radius:999px; cursor:pointer }
+.si .btn-group .chip.active{ outline:1px solid #2d6cdf; box-shadow: inset 0 0 0 1px rgba(45,108,223,.35) }
+.si .si-actions{ align-items:center; gap:8px }
+.text.mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace }

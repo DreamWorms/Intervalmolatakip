@@ -3,8 +3,8 @@ import { S, setCounter, setLang, setIntervalText, sub, broadcast } from './state
 import { t } from './i18n.js';
 import { openDocPiP } from './pip.js';
 import { mountBreaks } from './breaks.js';
-import { mountIntervalComposer } from './interval-composer.js';
 import { startDashboardTicker } from './dashboard.js';
+import { mountSpecialIntervalUI } from './special-interval-ui.js';
 import { getCfg, setCfg } from './special-interval.js';
 
 
@@ -85,5 +85,5 @@ sub('interval', (txt) => {
 });
 
 mountBreaks('#breakGrid');
-mountIntervalComposer();
+mountSpecialIntervalUI();
 startDashboardTicker();
