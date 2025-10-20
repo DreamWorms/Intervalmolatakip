@@ -173,3 +173,16 @@ h2{ margin:0 0 8px; font-size:18px }
   border:1px solid #2a3040; min-height:28px
 }
 .ic .spacer{ flex:1 1 auto }
+
+/* ===== Dashboard ===== */
+#dashWrap{ grid-template-columns: 1fr 1fr 1fr; }
+.clock-card{ grid-column: 1 / -1; text-align:center; }
+.clock{ font-size:42px; font-weight:900; letter-spacing:1px }
+
+.summary-card h3{ margin:0 0 8px; font-size:16px; opacity:.9 }
+.summary-line{ color:var(--muted) }
+.summary-big{ font-size:22px; font-weight:800; margin-top:6px }
+
+@media (max-width:900px){
+  #dashWrap{ grid-template-columns: 1fr; }
+}

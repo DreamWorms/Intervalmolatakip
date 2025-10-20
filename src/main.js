@@ -4,6 +4,9 @@ import { t } from './i18n.js';
 import { openDocPiP } from './pip.js';
 import { mountBreaks } from './breaks.js';
 import { mountIntervalComposer } from './interval-composer.js';
+import { startDashboardTicker } from './dashboard.js';
+import { getCfg, setCfg } from './special-interval.js';
+
 
 const $ = (s, root=document) => root.querySelector(s);
 
@@ -83,3 +86,4 @@ sub('interval', (txt) => {
 
 mountBreaks('#breakGrid');
 mountIntervalComposer();
+startDashboardTicker();

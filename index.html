@@ -21,6 +21,29 @@
     </div>
   </header>
 
+  <!-- Dashboard: Clock + Summaries -->
+<section class="wrap" id="dashWrap">
+  <div class="card clock-card">
+    <div id="liveClock" class="clock">--:--:--</div>
+  </div>
+
+  <div class="card summary-card" id="taskCard">
+    <h3 id="taskTitle">Görev</h3>
+    <div class="summary-line">
+      <span id="taskStatus">—</span>
+    </div>
+    <div class="summary-big" id="taskAmount">0</div>
+  </div>
+
+  <div class="card summary-card" id="nextBreakCard">
+    <h3 id="nextBreakTitle">Sıradaki Mola</h3>
+    <div class="summary-line" id="nextBreakName">—</div>
+    <div class="summary-big" id="nextBreakEta">--:--:--</div>
+  </div>
+
+  <!-- sağda mevcut sayaç kartın kalması için boş bırakıyoruz -->
+</section>
+
   <main class="wrap">
     <!-- Sayaç -->
     <section class="card">
