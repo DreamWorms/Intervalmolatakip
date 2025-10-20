@@ -108,29 +108,22 @@ function mountTimePill(){
   const hidden  = document.getElementById('siStart');
   if (!hourSel || !minSel || !hidden) return;
 
-  // seçenekleri doldur
-  for (let h=0; h<24; h++){
-    const v = String(h).padStart(2,'0');
-    hourSel.add(new Option(v, v));
-  }
-  for (let m=0; m<60; m++){
-    const v = String(m).padStart(2,'0');
-    minSel.add(new Option(v, v));
+  // drop-down'ları doldur
+  if (!hourSel.options.length) {
+    for (let h=0; h<24; h++) hourSel.add(new Option(String(h).padStart(2,'0')));
+    for (let m=0; m<60; m++) minSel.add(new Option(String(m).padStart(2,'0')));
   }
 
-  // başlangıç değeri
+  // başlangıç senkronu
   const [ih, im] = (hidden.value || '00:00').split(':');
   hourSel.value = ih || '00';
   minSel.value  = im || '00';
-  hidden.value  = `${hourSel.value}:${minSel.value}`;
-
-  // değişince gizli inputa yaz
-  const sync = ()=> hidden.value = `${hourSel.value}:${minSel.value}`;
+  const sync = () => hidden.value = `${hourSel.value}:${minSel.value}`;
   hourSel.onchange = minSel.onchange = sync;
+  sync();
 }
 
-// Modüller
 mountBreaks('#breakGrid');
 mountSpecialIntervalUI();
-mountTimePill();       // (pill saat seçici)
+mountTimePill();           // << burası önemli
 startDashboardTicker();
