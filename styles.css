@@ -218,7 +218,7 @@ button.ghost{ background:transparent }
 
 /* Boşluk şişmesini durdur: space-between yerine gap kullan */
 .summary-card{
-  min-height:96px;              /* istersen 90–110 arası oynat */
+  min-height:90px;              /* istersen 90–110 arası oynat */
   padding:12px 14px;
   display:flex;
   flex-direction:column;
