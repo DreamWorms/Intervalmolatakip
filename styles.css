@@ -333,3 +333,54 @@ button.ghost{ background:transparent }
   box-shadow:inset 0 0 0 1px rgba(91,140,255,.18);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
+
+/* === Üst üçlü: net hizalama ve ortak ritim === */
+#dashWrap{ gap:14px; align-items:stretch; }
+#dashWrap .summary-card{
+  display:flex; flex-direction:column;
+  padding:14px 16px;
+  gap:10px;                 /* başlık ↔ içerik aralığı */
+  min-height:118px;         /* üç kart aynı yükseklik */
+}
+
+/* Başlık şeridi (hepsi aynı) */
+.metric-header{
+  display:flex; align-items:center; justify-content:space-between;
+  min-height:28px;
+}
+.pill{ padding:4px 12px; border-radius:999px; border:1px solid #2a3040;
+       background:linear-gradient(180deg,#12182a,#0c1425); font-weight:700; }
+.pill-blue{  border-color:#2d6cdf; box-shadow:inset 0 0 0 1px rgba(45,108,223,.28); }
+.pill-pink{  border-color:#ff6fb1; box-shadow:inset 0 0 0 1px rgba(255,111,177,.28); }
+.pill-violet{border-color:#8b7bff; box-shadow:inset 0 0 0 1px rgba(139,123,255,.28);}
+
+.metric-sub{ color:var(--muted); font-size:12px; opacity:.95; }
+
+/* İç gövde kapsülü */
+.metric-body{ display:flex; align-items:flex-end; gap:10px; }
+
+/* Değer/time kapsülleri tek tip */
+.metric-value,
+.metric-time{
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:12px;
+  border:1px solid #2a3146;
+  background:linear-gradient(180deg, rgba(21,27,44,.65), rgba(12,18,32,.85));
+}
+.metric-value{
+  font-weight:900; font-size:26px; line-height:1; min-width:80px; text-align:center;
+  background:#0b1220;
+}
+.metric-time{
+  font-weight:800; font-size:24px; line-height:1;
+  letter-spacing:.5px; min-width:170px; text-align:center;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* Sayaç kartı: pad’i daha kompakt ve simetrik yap */
+#counterCard .counter-pad{ min-height:72px; }
+#counterCard .counter-actions{ margin-top:2px; }
+
+/* Eski küçük ipucunu gizle (yeni başlıkta gösteriyoruz) */
+#kbHint{ display:none !important; }
