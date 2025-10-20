@@ -42,6 +42,31 @@
       <h2 id="intervalTitle">Interval</h2>
       <p class="muted" id="intervalHelp">Boş bırakırsan PiP’te gizlenir.</p>
       <input id="intervalInput" class="text" placeholder="ör. Lunch 12:00–12:45">
+      <!-- Interval Composer -->
+<div id="icBlock" class="ic">
+  <div class="row ic-row">
+    <label id="icSlotLabel" class="muted tiny">Mola</label>
+    <select id="icSlot"></select>
+
+    <label id="icStartLabel" class="muted tiny">Başlangıç</label>
+    <input id="icStart" class="text" type="time" step="60">
+
+    <label id="icMinsLabel" class="muted tiny">Süre</label>
+    <input id="icMins" class="text num" type="number" min="1" step="1" value="15">
+
+    <button id="icNow" class="ghost tiny-btn">Şimdi</button>
+    <button id="icSet" class="primary tiny-btn">Ayarla</button>
+  </div>
+
+  <div class="row ic-tools">
+    <button class="chip" data-add="10">+10</button>
+    <button class="chip" data-add="15">+15</button>
+    <button class="chip" data-add="20">+20</button>
+
+    <span class="spacer"></span>
+    <span id="icPreview" class="ic-preview"></span>
+  </div>
+</div>
       <div class="row muted tiny" id="statusLine"></div>
     </section>
 

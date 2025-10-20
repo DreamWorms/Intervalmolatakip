@@ -156,3 +156,20 @@ h2{ margin:0 0 8px; font-size:18px }
 .tile-title.editable { cursor:text; }
 .badge.clickable { cursor:pointer; }
 .badge.clickable:hover { outline:1px solid #2d6cdf; box-shadow: inset 0 0 0 1px rgba(45,108,223,.35) }
+
+/* Interval Composer */
+.ic .ic-row{ flex-wrap:wrap; gap:8px; align-items:center }
+.ic .ic-row label{ min-width:70px }
+.ic .ic-row #icSlot{ min-width:170px }
+
+.ic .ic-tools{ gap:8px; align-items:center }
+.chip{
+  border-radius:999px; padding:4px 10px; border:1px solid var(--border);
+  background:#0f1420; cursor:pointer;
+}
+.chip:hover{ outline:1px solid #21314f }
+.ic-preview{
+  padding:6px 10px; border-radius:999px; background:#0b1020;
+  border:1px solid #2a3040; min-height:28px
+}
+.ic .spacer{ flex:1 1 auto }
