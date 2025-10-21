@@ -538,6 +538,7 @@ button, .btn, .counter-btn {
 button.increment-btn, .btn.primary { border-color: var(--accent); }
 button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
 
+
 /* üstteki büyük saat şeridi */
 .time-display-top, .top-timebar {
   border: 1px solid var(--accent);
@@ -549,4 +550,46 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
 .card--warning, .display-box.break, .break-head .badge {
   border-color: var(--accent2) !important;
   box-shadow: 0 0 10px color-mix(in srgb, var(--accent2) 35%, transparent) inset;
+}
+
+/* === Sezon Rozetleri (XMAS + Halloween) ================================== */
+.season-badges{
+  display:flex; justify-content:center; align-items:center;
+  gap:12px;
+  margin:-4px 0 8px;   /* üst saatin tepesine “yapışık” dursun */
+}
+
+/* Ortak rozet görünümü */
+.kchip{
+  display:flex; align-items:center; gap:8px;
+  padding:8px 12px; border-radius:14px;
+  color:var(--text-light);
+  background: rgba(255,255,255,.06);
+  border:1px solid var(--glass-border);
+  box-shadow: 0 6px 18px rgba(0,0,0,.35), inset 0 0 8px rgba(255,255,255,.05);
+  backdrop-filter: blur(6px) saturate(110%);
+}
+.kchip .face{ font-size:18px; filter:drop-shadow(0 1px 0 rgba(0,0,0,.25)); }
+.kchip .label{ font:700 12px/1.1 Inter,system-ui; opacity:.9 }
+.kchip .count{
+  font:800 12px/1 Orbitron, ui-monospace, monospace;
+  padding:2px 6px; border-radius:8px;
+  background: rgba(255,255,255,.10);
+  border:1px solid var(--glass-border);
+}
+
+/* Tema aksanını çipe yedir (glow + kenar) */
+.kchip[data-kind="xmas"] .count{
+  border-color: var(--accent-green, #86efac);
+  box-shadow: inset 0 0 6px rgba(134,239,172,.35);
+}
+.kchip[data-kind="halloween"] .count{
+  border-color: var(--accent-pink, #fb923c);
+  box-shadow: inset 0 0 6px rgba(251,146,60,.35);
+}
+
+/* Ekran daralınca rozetler hâlâ okunur kalsın */
+@media (max-width: 520px){
+  .kchip{ padding:7px 10px; gap:6px }
+  .kchip .label{ font-weight:800 }
 }
