@@ -49,7 +49,7 @@ html[data-theme="cp77"]{
 html[data-theme="berserk1"]{
   --fg:#ffe9ed; --muted:#f0c9cf;
   --surface:rgba(43,11,16,.46); --bd:rgba(230,57,70,.35);
-  --accent:#38d7ff; --accent2:#e63946;
+  --accent:#fa0808; --accent2:#e63946;
 }
 
 /* Berserk 2 */
