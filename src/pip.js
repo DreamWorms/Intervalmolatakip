@@ -11,11 +11,6 @@ export async function openDocPiP(){
   // === UI (tam ekran pad) ===
   pip.document.body.innerHTML = `
   <style>
-  html, body{ height:100%; background:transparent !important; }  /* beyazlık yok */
-#pipBackdrop{
-  position:fixed; inset:0; z-index:-1;              /* tüm pencereyi kapla */
-  background:#0b0d12 center/cover no-repeat fixed;  /* fallback + cover */
-}
    :root{
       --bg:#0b0d12; --stroke:#273246; --fg:#e9edf4; --muted:#9aa6b2;
     }
