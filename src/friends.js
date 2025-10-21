@@ -186,6 +186,13 @@
     return out;
   }
 
+  function renderPip(overlaps){
+  const pip = document.getElementById('frPipPanel');
+  if (!pip) return; // DOM henüz yoksa sessizce çık
+  pip.setAttribute('aria-hidden', String(!st.pipVisible));
+  pip.dataset.collapsed = st.pipCollapsed ? 'true' : 'false';
+}
+
   // Sol üst PiP panel
   function renderPip(overlaps){
     pip.setAttribute('aria-hidden', String(!st.pipVisible));
