@@ -91,7 +91,32 @@
       <button class="kzModal-close" data-close="friendsModal" aria-label="Kapat">✕</button>
     </div>
 
-    
+    <div class="kzModal-body" id="friendsBody">
+  <!-- ÜST ARAÇ ÇUBUĞU -->
+  <div class="frToolbar">
+    <label>Arkadaş adı</label>
+    <input id="frName" type="text" class="text" placeholder="Örn: Arkadaş 1">
+    <label class="frPipLbl">
+      <input id="frPip" type="checkbox">
+      PiP’te göster
+    </label>
+  </div>
+
+  <!-- İKİ KOLON: SOLDA ARKADAŞ BLOKLARI, SAĞDA KESİŞİMLER -->
+  <div class="frWrap">
+    <div class="frLeft">
+      <h4 class="frSecTitle">Seçili arkadaşın mola blokları</h4>
+      <div id="frGrid" class="frGrid"><!-- kutular JS ile gelecektir --></div>
+      <p class="kzHint">Süre ve başlangıç saatlerini yazdıkça sağdaki “Kesişen Molalar” anında güncellenir.</p>
+    </div>
+
+    <aside class="olapPanel">
+      <div class="olapHead">Kesişen Molalar (Sen ↔ Arkadaş)</div>
+      <div id="olapList" class="olapList kzHint">Kesişim bulunamadı.</div>
+    </aside>
+  </div>
+</div>
+
 
 <!-- WELLNESS -->
 <div class="kzModal" id="wellnessBookModal" hidden>

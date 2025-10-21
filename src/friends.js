@@ -1,245 +1,150 @@
-// ===== FRIENDS HUB =====
-(function () {
-  const $ = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+// ===== FRIENDS (eski stil, canlı hesap, autosync "benim molalarım") =====
+(function(){
+  const $  = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
   const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
-  const LS_KEY = 'kzs_friends_v1';
+  // --- SLot tanımları (soldaki kutular)
+  const SLOT_DEFS = [
+    ['Rest 1',15], ['Rest 2',15], ['Lunch',45], ['Wellness 1',16], ['Wellness 2',16],
+    ['Wellness 3',62], ['Meeting',15], ['Meeting/Quiz',30], ['Meeting/Training',45],
+    ['Meeting/Training 2',60], ['Özel 1',15], ['Özel 2',15], ['Özel 3',15], ['Özel 4',15], ['Özel 5',15],
+  ];
 
-  const state = {
-    myBreaks: [],   // [{label,start,end}]
-    friends: []     // [{id,name,slots:[{label,start,end}]}]
-  };
-
-  // time helpers
+  // --- Zaman yardımcıları
   const toMin = (hhmm) => {
-    if (!hhmm) return null;
-    const [h, m] = hhmm.split(':').map(Number);
-    return (h*60 + m);
+    if (!hhmm || !/^\d{2}:\d{2}$/.test(hhmm)) return null;
+    const [h,m] = hhmm.split(':').map(Number);
+    return h*60 + m;
   };
   const fromMin = (mins) => {
-    const m = ((mins % 1440)+1440)%1440;
+    const m = ((mins%1440)+1440)%1440;
     const h = String(Math.floor(m/60)).padStart(2,'0');
-    const mm = String(m%60).padStart(2,'0');
+    const mm= String(m%60).padStart(2,'0');
     return `${h}:${mm}`;
   };
-  const addDur = (startHHMM, dur) => fromMin(toMin(startHHMM) + Number(dur||0));
+  const endByDur = (start, dur) => fromMin(toMin(start) + Number(dur||0));
 
-  // storage
-  const load = () => {
-    try {
-      const raw = localStorage.getItem(LS_KEY);
-      if (raw) {
-        const data = JSON.parse(raw);
-        state.myBreaks = data.myBreaks || [];
-        state.friends  = data.friends  || [];
-      }
-    } catch(e){}
-  };
-  const save = () => localStorage.setItem(LS_KEY, JSON.stringify({
-    myBreaks: state.myBreaks, friends: state.friends
-  }));
+  // --- Durum
+  let myBreaks = []; // [{label,start,end}]
+  const friend = { name:'', slots:[] }; // [{label,start,min,end,note}]
 
-  // UI refs
-  const modal = $('#friendsModal');
-  const formMy = $('#myBreaksForm');
-  const formFriend = $('#friendForm');
-  const slotsWrap = $('#slotsWrap');
-  const list = $('#friendsList');
+  // --- UI refs
+  const openBtn = $('#openFriends');
+  const grid = $('#frGrid');
+  const olapList = $('#olapList');
+  const frName = $('#frName');
 
-  // ---- My breaks form
-  const collectMyBreaks = () => {
-    const f = new FormData(formMy);
-    const items = [];
-    const push = (label, keyStart, keyMin) => {
-      const s = f.get(keyStart);
-      const d = Number(f.get(keyMin) || 0);
-      if (s && d > 0) items.push({ label, start: s, end: addDur(s, d) });
-    };
-    push('Rest 1', 'rest1_start', 'rest1_min');
-    push('Rest 2', 'rest2_start', 'rest2_min');
-    push('Lunch',  'lunch_start', 'lunch_min');
-    push('Wellness 1', 'well1_start', 'well1_min');
-    push('Wellness 2', 'well2_start', 'well2_min');
-    state.myBreaks = items;
-    save(); renderFriends();
-  };
-
-  on(formMy, 'submit', (e)=>{ e.preventDefault(); collectMyBreaks(); });
-  on($('#myBreaksClear'), 'click', ()=>{
-    formMy.reset(); state.myBreaks = []; save(); renderFriends();
-  });
-
-  // ---- Friend form
-  const slotRowTpl = (i, slot={label:'Rest', start:'', min:15}) => {
-    return `<div class="slotRow" data-i="${i}">
-      <select name="type_${i}">
-        <option ${slot.label==='Rest'?'selected':''}>Rest</option>
-        <option ${slot.label==='Lunch'?'selected':''}>Lunch</option>
-        <option ${slot.label==='Meeting'?'selected':''}>Meeting</option>
-        <option ${slot.label==='Wellness'?'selected':''}>Wellness</option>
-        <option ${slot.label==='Other'?'selected':''}>Other</option>
-      </select>
-      <input type="time" name="start_${i}" value="${slot.start||''}">
-      <input type="number" name="min_${i}" min="1" max="240" value="${slot.min??15}">
-      <button type="button" class="kzBtn" data-del="${i}" title="Sil">✕</button>
-    </div>`;
-  };
-
-  const rebuildSlots = (slots) => {
-    slotsWrap.innerHTML = '';
-    (slots && slots.length ? slots : [{},{},{}]).forEach((s, i)=>{
-      slotsWrap.insertAdjacentHTML('beforeend', slotRowTpl(i, s));
+  // --- Soldaki kutuları oluştur
+  function renderSlots(){
+    if (!grid) return;
+    grid.innerHTML = '';
+    SLOT_DEFS.forEach(([label, defMin], i)=>{
+      const id = `slot_${i}`;
+      const tile = document.createElement('div');
+      tile.className = 'frTile';
+      tile.dataset.label = label;
+      tile.innerHTML = `
+        <div class="tileHead">
+          <div class="label">${label}</div>
+          <span class="pill" id="${id}_pill">${defMin} dk</span>
+        </div>
+        <div class="tileBody">
+          <input id="${id}_start" type="time">
+          <input id="${id}_min" type="number" class="mins" min="1" max="240" value="${defMin}">
+        </div>
+        <textarea id="${id}_note" class="note" placeholder=""></textarea>
+      `;
+      grid.appendChild(tile);
+      // canlı haberleşme
+      const startEl = $(`#${id}_start`);
+      const minEl   = $(`#${id}_min`);
+      const noteEl  = $(`#${id}_note`);
+      const pill    = $(`#${id}_pill`);
+      const push = ()=>{
+        const s = startEl.value;
+        const m = Number(minEl.value||0);
+        pill.textContent = (m>0? m : defMin) + ' dk';
+        // slotu friend.slots içine yaz
+        const idx = friend.slots.findIndex(x=>x.id===id);
+        const obj = { id, label, start:s||'', min:m||0, end: s && m>0 ? endByDur(s,m) : '', note: (noteEl.value||'') };
+        if (idx>=0) friend.slots[idx] = obj; else friend.slots.push(obj);
+        calcOverlaps(); // her değişimde canlı hesap
+      };
+      on(startEl,'input',push);
+      on(minEl,'input',push);
+      on(noteEl,'input',push);
     });
-  };
+  }
 
-  on(slotsWrap, 'click', (e)=>{
-    const i = e.target.getAttribute('data-del');
-    if (!i) return;
-    const row = slotsWrap.querySelector(`.slotRow[data-i="${i}"]`);
-    row && row.remove();
-  });
-
-  on($('#addSlot'), 'click', ()=>{
-    const i = slotsWrap.querySelectorAll('.slotRow').length;
-    slotsWrap.insertAdjacentHTML('beforeend', slotRowTpl(i, {}));
-  });
-
-  const fillFriendForm = (friend) => {
-    formFriend.reset();
-    formFriend.elements.id.value   = friend?.id || '';
-    formFriend.elements.name.value = friend?.name || '';
-    const slots = (friend?.slots || []).map(s=>({
-      label:s.label, start:s.start, min: Math.max(1, toMin(s.end)-toMin(s.start))
-    }));
-    rebuildSlots(slots);
-  };
-
-  const collectFriend = () => {
-    const f = new FormData(formFriend);
-    const id = f.get('id') || String(Date.now());
-    const name = (f.get('name')||'').trim();
-    const rows = $$('.slotRow', slotsWrap);
-    const slots = rows.map(r=>{
-      const i = r.getAttribute('data-i');
-      const label = f.get(`type_${i}`) || 'Other';
-      const start = f.get(`start_${i}`) || '';
-      const min = Number(f.get(`min_${i}`) || 0);
-      if (!start || !min) return null;
-      return { label, start, end: addDur(start, min) };
-    }).filter(Boolean);
-    return { id, name, slots };
-  };
-
-  on($('#resetFriendForm'), 'click', ()=> fillFriendForm(null));
-
-  on(formFriend, 'submit', (e)=>{
-    e.preventDefault();
-    const fr = collectFriend();
-    if (!fr.name || fr.slots.length===0) return alert('İsim ve en az 1 slot gerekli.');
-    const idx = state.friends.findIndex(x=>x.id===fr.id);
-    if (idx>=0) state.friends[idx] = fr; else state.friends.push(fr);
-    save(); renderFriends(); fillFriendForm(null);
-  });
-
-  // ---- Intersection
-  const overlap = (a, b) => {
+  // --- Kesişim hesap
+  function overlap(a,b){
     const s = Math.max(toMin(a.start), toMin(b.start));
-    const e = Math.min(toMin(a.end), toMin(b.end));
-    if (e > s) return { start: fromMin(s), end: fromMin(e), min: e - s };
+    const e = Math.min(toMin(a.end),   toMin(b.end));
+    if (isFinite(s) && isFinite(e) && e > s) return { start: fromMin(s), end: fromMin(e), min: e-s };
     return null;
-  };
+  }
 
-  const friendOverlaps = (fr) => {
+  function calcOverlaps(){
+    // friend.slots -> geçerli olanlar
+    const slots = friend.slots.filter(x=>x.start && x.min>0)
+                              .map(x=>({label:x.label, start:x.start, end:endByDur(x.start,x.min)}));
     const out = [];
-    state.myBreaks.forEach(m=>{
-      fr.slots.forEach(s=>{
+    slots.forEach(s=>{
+      myBreaks.forEach(m=>{
         const o = overlap(m,s);
-        if (o) out.push({ me:m.label, friend: s.label, start:o.start, end:o.end, min:o.min });
+        if (o) out.push({ me:m.label, fr:s.label, start:o.start, end:o.end, min:o.min });
       });
     });
     out.sort((a,b)=> toMin(a.start)-toMin(b.start));
-    return out;
+    olapList.innerHTML = out.length
+      ? out.map(r=>`<div>• <strong>${r.me}</strong> ↔ <em>${r.fr}</em>: ${r.start}–${r.end} (${r.min} dk)</div>`).join('')
+      : 'Kesişim bulunamadı.';
+  }
+
+  // --- Benim molalarımı otomatik çek
+  // 1) Tercih edilen: main.js tarafı bize bildirir
+  window.kzSetMyBreaks = (arr /* [{label,start,min}] veya [{label,start,end}] */) => {
+    myBreaks = (arr||[]).map(x=>{
+      const start = x.start;
+      const end   = x.end || (x.min ? endByDur(x.start, x.min) : '');
+      return start && end ? {label:x.label||'-', start, end} : null;
+    }).filter(Boolean);
+    calcOverlaps();
   };
 
-  // ---- Render list
-  const renderFriends = () => {
-    list.innerHTML = '';
-    if (state.friends.length===0){
-      list.innerHTML = `<div class="kzHint">Henüz arkadaş yok. Üstte ekleyebilirsin.</div>`;
-      return;
-    }
-    state.friends.forEach(fr=>{
-      const card = document.createElement('div');
-      card.className = 'kzCard';
-      const pills = fr.slots.map(s=>`<span class="kzPill">${s.label}: ${s.start}–${s.end}</span>`).join(' ');
-      card.innerHTML = `
-        <div class="kzCardHead">
-          <strong>${fr.name}</strong>
-          <span>${pills}</span>
-          <div class="kzCardBtns">
-            <button class="kzBtn" data-act="olap" data-id="${fr.id}">Kesişim</button>
-            <button class="kzBtn" data-act="edit" data-id="${fr.id}">Düzenle</button>
-            <button class="kzBtn danger" data-act="del" data-id="${fr.id}">Sil</button>
-          </div>
-        </div>
-        <div class="kzOlap kzHint" id="olap_${fr.id}" style="margin-top:8px;"></div>
-      `;
-      list.appendChild(card);
-    });
+  // 2) Yedek: DOM’dan data-attr okuyalım (break tile üreten koduna 2 satır eklemen yeter)
+  function readMyBreaksFromDOM(){
+    const tiles = $$('#breakGrid [data-start][data-min]');
+    if (!tiles.length) return;   // henüz ekli değilse boş bırak
+    myBreaks = tiles.map(el=>{
+      const label = el.getAttribute('data-label') || (el.querySelector('.tile-title')?.textContent?.trim() || 'Break');
+      const start = el.getAttribute('data-start');
+      const min   = Number(el.getAttribute('data-min')||0);
+      const end   = start && min>0 ? endByDur(start, min) : '';
+      return (start && end) ? {label, start, end} : null;
+    }).filter(Boolean);
+    calcOverlaps();
+  }
+
+  // 3) Yedeklerin yedeği: #breakGrid değişince yeniden dene
+  const tryObserveBreakGrid = ()=>{
+    const grid = $('#breakGrid');
+    if (!grid) return;
+    const mo = new MutationObserver(()=> readMyBreaksFromDOM());
+    mo.observe(grid, {subtree:true, childList:true, attributes:true});
   };
 
-  on(list, 'click', (e)=>{
-    const id = e.target.getAttribute('data-id');
-    const act = e.target.getAttribute('data-act');
-    if (!id || !act) return;
-    const fr = state.friends.find(x=>x.id===id);
-    if (!fr) return;
-    if (act==='del'){
-      if (confirm('Silinsin mi?')){
-        state.friends = state.friends.filter(x=>x.id!==id);
-        save(); renderFriends();
-      }
-    } else if (act==='edit'){
-      fillFriendForm(fr);
-    } else if (act==='olap'){
-      const res = friendOverlaps(fr);
-      const box = $(`#olap_${id}`);
-      if (res.length===0){ box.innerHTML = 'Kesişim yok.'; return; }
-      box.innerHTML = res.map(r=>`<div>• <strong>${r.me}</strong> ↔ <em>${r.friend}</em>: ${r.start}–${r.end} (${r.min} dk)</div>`).join('');
-    }
+  // Arkadaş adı canlı
+  on(frName, 'input', ()=>{ friend.name = frName.value.trim(); });
+
+  // Modal açılırken kurulum
+  on(openBtn, 'click', ()=>{
+    renderSlots();
+    // main.js bize data veriyorsa hemen hesap olur; yoksa DOM düşer
+    readMyBreaksFromDOM();
+    tryObserveBreakGrid();
+    calcOverlaps();
   });
 
-  // ---- Export / Import / Clear
-  on($('#exportFriends'), 'click', ()=>{
-    const blob = new Blob([ JSON.stringify({myBreaks:state.myBreaks,friends:state.friends}, null, 2) ], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = Object.assign(document.createElement('a'), {href:url, download:'friends_export.json'});
-    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  });
-  on($('#importFriends'), 'click', ()=> $('#importFriendsFile').click());
-  on($('#importFriendsFile'), 'change', async (e)=>{
-    const file = e.target.files[0]; if(!file) return;
-    const txt = await file.text();
-    try{
-      const data = JSON.parse(txt);
-      state.myBreaks = data.myBreaks||[]; state.friends = data.friends||[];
-      save(); renderFriends();
-      alert('İçe aktarıldı.');
-    }catch(err){ alert('JSON okunamadı.'); }
-    e.target.value = '';
-  });
-  on($('#clearFriends'), 'click', ()=>{
-    if (confirm('Arkadaşlar ve Benim Molalarım sıfırlansın mı?')){
-      state.myBreaks = []; state.friends = []; save(); renderFriends(); formMy.reset(); fillFriendForm(null);
-    }
-  });
-
-  // open modal refresh
-  on($('#openFriends'), 'click', ()=>{
-    load(); renderFriends(); fillFriendForm(null);
-  });
-
-  // init
-  load();
 })();
