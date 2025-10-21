@@ -61,3 +61,64 @@
   }catch(e){}
 })();
 
+
+// tiny helpers
+const $  = (s,r=document)=>r.querySelector(s);
+
+// DOM hazır + elementler hazır olana kadar bekle
+function ready(cb){
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', cb, {once:true});
+  else cb();
+}
+function waitFor(selectors, cb, timeout=5000){
+  const missing = new Set(selectors);
+  const iv = setInterval(()=>{
+    for (const s of [...missing]) if ($(s)) missing.delete(s);
+    if (missing.size === 0){ clearInterval(iv); cb(); }
+  }, 100);
+  setTimeout(()=>{
+    if (missing.size){
+      clearInterval(iv);
+      console.warn('[topbar] bulunamadı:', [...missing]);
+      cb(); // yine de dener; bulunanlarla bağlar
+    }
+  }, timeout);
+}
+
+function cycleSelect(sel, dir=+1){
+  if (!sel || !sel.options?.length) return;
+  const i = sel.selectedIndex < 0 ? 0 : sel.selectedIndex;
+  sel.selectedIndex = (i + dir + sel.options.length) % sel.options.length;
+  sel.dispatchEvent(new Event('change', {bubbles:true}));
+}
+
+function bindTopbar(){
+  const btnTheme = $('#btnTheme');
+  const btnLang  = $('#btnLang');
+  const selTheme = $('#themeSelect') || document.querySelector('[data-role="theme"]');
+  const selLang  = $('#langSelect')  || document.querySelector('[data-role="lang"]');
+
+  // Debug izleri
+  console.log('[topbar] bağla:', {btnTheme:!!btnTheme, btnLang:!!btnLang, selTheme:!!selTheme, selLang:!!selLang});
+
+  // tema
+  btnTheme?.addEventListener('click',    ()=> cycleSelect(selTheme, +1));
+  btnTheme?.addEventListener('contextmenu', e=>{ e.preventDefault(); cycleSelect(selTheme, -1); });
+
+  // dil
+  btnLang?.addEventListener('click',     ()=> cycleSelect(selLang, +1));
+  btnLang?.addEventListener('contextmenu',  e=>{ e.preventDefault(); cycleSelect(selLang, -1); });
+
+  // dil değişince üstbar yazıları güncelle (i18n tarafın S.lang kullanıyorsa senkronla)
+  selLang?.addEventListener('change', ()=>{
+    try{ if (window.S) window.S.lang = selLang.value; }catch{}
+    if (window.paintIconbarLabels) window.paintIconbarLabels();
+  });
+}
+
+// çalıştır
+ready(()=>{
+  // buton ve selectlerin gerçek ID’lerini buraya yaz
+  waitFor(['#btnTheme','#btnLang','#themeSelect','#langSelect'], bindTopbar);
+});
