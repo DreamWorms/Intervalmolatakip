@@ -1,4 +1,4 @@
-// src/pip.js — PiP: üst bar (interval • saat • mola ETA) + büyük sayaç
+// src/pip.js
 import { S, sub, setCounter, broadcast } from './state.js';
 import { t } from './i18n.js';
 
@@ -6,122 +6,91 @@ export async function openDocPiP(){
   if (window.top !== window) { alert('Lütfen siteyi top-level aç (Netlify/GitHub).'); return; }
   if (!('documentPictureInPicture' in window)) { alert('Tarayıcı Document PiP desteklemiyor.'); return; }
 
-  const pip = await window.documentPictureInPicture.requestWindow({ width: 460, height: 340 });
+  const pip = await window.documentPictureInPicture.requestWindow({ width: 420, height: 320 });
 
+  // ============ HTML + CSS ============
   pip.document.body.innerHTML = `
   <style>
-    html,body{height:100%; background:transparent !important; overflow:hidden}
-    *{box-sizing:border-box}
-
-    /* Arka planı ana sayfadaki #themeBackdrop'tan kopyalayacağız */
-    #pipBackdrop{
-      position:fixed; inset:0; z-index:-1;
-      background:#0b0d12 center/cover no-repeat fixed;
-    }
-
     :root{
-  --bg:#0b0d12; 
-  --panel:rgba(18,16,26,.55);
-  --stroke:rgba(144,224,255,.25); 
-  --fg:#e9edf4; 
-  --muted:#9aa6b2;
-}
-    body{
-      margin:0; color:var(--fg);
-      font:14px/1.55 system-ui,Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      /* Ana ekrandan kopyalanacak; şimdilik yedek değerler */
+      --fg:#e9edf4; --muted:#9aa6b2; --surface:rgba(12,16,22,.58); --bd:rgba(144,224,255,.22);
+      --accent:#19d4ff; --accent2:#ff2d95; --chip-bg:rgba(255,255,255,.06); --chip-bd:rgba(255,255,255,.16);
     }
-    .wrap{
-      height:100%;
-      padding:10px;
-      display:grid;
-      grid-template-rows:auto 1fr auto;
-      gap:8px;
-    }
+    html, body{ height:100%; background:transparent !important; }
+    body{ margin:0; font:14px/1.55 Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif; color:var(--fg); }
 
-    /* ÜST BAR — 3 sütun: interval • saat • mola ETA */
-    .topbar{
-      display:grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items:center;
-      gap:12px;
-      padding:6px 8px;
-      border:1px solid var(--stroke);
-      border-radius:12px;
-      background:var(--panel);
-      backdrop-filter:saturate(120%) blur(6px);
-    }
-    .seg{min-width:0; display:flex; align-items:center; gap:6px}
-    .seg.l{justify-content:flex-start}
-    .seg.c{justify-content:center}
-    .seg.r{justify-content:flex-end; text-align:right}
+    /* Duvar kâğıdı (ana ekrandan gelir) */
+    #pipBackdrop{ position:fixed; inset:0; z-index:-1; background:#0b0d12 center/cover no-repeat fixed; }
 
-    .k{font-weight:800; opacity:.9; font-size:clamp(11px,2.5vw,12px)}
-    .v{font-weight:800; font-size:clamp(14px,3.6vw,18px)}
-    .sub{color:var(--muted); font-size:clamp(11px,2.8vw,12px)}
-    .clock{
-      font-weight:900;
-      font-size:clamp(18px,6.2vw,28px);
-      text-shadow:0 2px 10px rgba(0,0,0,.45);
-    }
+    .wrap{ padding:10px; display:grid; gap:8px; }
 
-    /* SAYAÇ alanı: tüm kalan alanı doldurur */
-    .counter{
-      display:flex; flex-direction:column; gap:6px; min-height:0;
+    /* ÜST HUD: sol (interval), orta (saat), sağ (sıradaki) — tek satır, taşmadan */
+    .hud{
+      display:grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+      align-items:center; gap:8px;
+      background:var(--surface); border:1px solid var(--bd); border-radius:12px; padding:8px 10px;
     }
+    .hud .cell{ min-width:0; }
+    .hud .label{ font-weight:800; font-size:clamp(11px,2.6vw,12px); opacity:.9; }
+    .hud .val{ font-weight:900; font-size:clamp(13px,3.4vw,16px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .hud .center{ text-align:center; }
+    .clock{ font-size:clamp(18px,6vw,28px); font-weight:900; letter-spacing:.5px; }
+
+    /* Sayaç kartı: alt tarafta tek büyük pad */
+    .counter-card{
+      display:flex; flex-direction:column; gap:6px;
+      background:var(--surface); border:1px solid var(--bd); border-radius:12px; padding:8px;
+    }
+    .top-hint{ text-align:right; font-size:clamp(11px,2.2vw,12px); color:var(--muted); }
+
     .pad{
       flex:1 1 auto; width:100%;
-      min-height:clamp(110px, 26vh, 200px);
-      border:1px solid var(--stroke);
-      border-radius:12px;
+      min-height:clamp(96px,26vh,150px);
+      border:1px solid var(--bd); border-radius:12px;
       background:linear-gradient(180deg, rgba(14,16,28,.92), rgba(12,14,22,.88));
       display:flex; align-items:center; justify-content:center;
       cursor:zoom-in; user-select:none;
       transition:transform .06s ease, box-shadow .12s ease, border-color .12s ease;
       box-shadow:0 8px 24px rgba(0,0,0,.35);
     }
-    .pad:hover{ border-color:#3a4564; box-shadow:0 12px 32px rgba(0,0,0,.45) }
+    .pad:hover{ border-color:var(--accent); box-shadow:0 12px 32px rgba(0,0,0,.45) }
     .pad:active{ transform:scale(.995) }
 
     .face{
-      color:#fff;
-      font-size:clamp(40px, 12vw, 68px);
-      font-weight:900; line-height:1;
-      padding:10px 16px; border-radius:10px;
-      min-width:clamp(74px, 30vw, 120px);
-      text-align:center;
-      background:#0d1220; border:1px solid var(--stroke);
-      text-shadow:0 2px 10px rgba(0,0,0,.35);
+      font-size:clamp(34px,10.5vw,56px); font-weight:900; line-height:1;
+      padding:10px 16px; border-radius:10px; min-width:clamp(72px,26vw,110px); text-align:center;
+      background:#0d1220; border:1px solid var(--accent); color:#fff;
+      box-shadow: inset 0 0 10px color-mix(in srgb, var(--accent) 55%, transparent);
     }
 
     .row{ display:flex; gap:6px; align-items:center; justify-content:center; flex-wrap:wrap }
     .chip{
-      padding:6px 12px; border-radius:999px; border:1px solid var(--stroke);
-      background:#0c1425; color:var(--fg); cursor:pointer;
+      padding:6px 12px; border-radius:999px; border:1px solid var(--bd);
+      background:var(--chip-bg); color:var(--fg); cursor:pointer;
       font-weight:800; font-size:clamp(12px,2.6vw,14px)
     }
     .ghost{ background:transparent }
   </style>
 
-  <div id="pipBackdrop" aria-hidden="true"></div>
+  <div id="pipBackdrop"></div>
 
   <div class="wrap">
-    <div class="topbar">
-      <div class="seg l">
-        <span class="k" id="tbTaskLabel">Interval</span>
-        <span class="v" id="tbTaskVal">0</span>
+    <div class="hud">
+      <div class="cell left">
+        <div class="label" id="pipTaskLabel">Mevcut Interval</div>
+        <div class="val"   id="pipTaskAmount">0</div>
       </div>
-      <div class="seg c">
-        <div id="pipClock" class="clock">--:--:--</div>
+      <div class="cell center">
+        <div class="clock" id="pipClock">--:--:--</div>
       </div>
-      <div class="seg r">
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;min-width:0">
-          <div><span class="k" id="tbNextLabel">Next</span> · <span class="v" id="tbNextEta">--:--:--</span></div>
-          <div class="sub" id="tbNextName">—</div>
-        </div>
+      <div class="cell right" style="text-align:right">
+        <div class="label" id="pipNextLabel">Sıradaki Mola</div>
+        <div class="val"   id="pipNextEta">--:--:--</div>
       </div>
     </div>
 
-    <div class="counter">
+    <div class="counter-card">
+      <div class="top-hint" id="pipHint">Sol tık +1 · Sağ tık −1</div>
       <button id="pad" class="pad" title="Sol tık +1 · Sağ tık −1">
         <span id="v" class="face">0</span>
       </button>
@@ -137,76 +106,76 @@ export async function openDocPiP(){
 
   const $ = (s, root=pip.document) => root.querySelector(s);
 
-  /* === Tema/WALLPAPER senkronu === */
+  // ——— Tema: değişkenleri ve duvar kâğıdını ana ekrandan aynen al
+  const copyThemeVarsToPip = () => {
+    const names = ['--fg','--muted','--surface','--bd','--accent','--accent2','--chip-bg','--chip-bd'];
+    const cs = getComputedStyle(document.documentElement);
+    names.forEach(n => {
+      pip.document.documentElement.style.setProperty(n, cs.getPropertyValue(n).trim());
+    });
+  };
+
   const copyWallpaperToPip = () => {
-    const src  = document.getElementById('themeBackdrop');
+    const src = document.getElementById('themeBackdrop');
     const wall = pip.document.getElementById('pipBackdrop');
     if (!src || !wall) return;
     const cs = getComputedStyle(src);
-    wall.style.backgroundImage      = cs.backgroundImage;
-    wall.style.backgroundColor      = (cs.backgroundColor && cs.backgroundColor !== 'rgba(0, 0, 0, 0)') ? cs.backgroundColor : '#0b0d12';
-    wall.style.backgroundPosition   = cs.backgroundPosition || 'center';
-    wall.style.backgroundRepeat     = 'no-repeat';
-    wall.style.backgroundSize       = 'cover';
+    wall.style.backgroundImage  = cs.backgroundImage;
+    wall.style.backgroundColor  = cs.backgroundColor || '#0b0d12';
+    wall.style.backgroundPosition = cs.backgroundPosition || 'center';
+    wall.style.backgroundRepeat   = 'no-repeat';
+    wall.style.backgroundSize     = 'cover';
     wall.style.backgroundAttachment = 'fixed';
   };
+
+  copyThemeVarsToPip();
   copyWallpaperToPip();
-  const themeObserver = new MutationObserver(copyWallpaperToPip);
-  themeObserver.observe(document.documentElement, { attributes:true, attributeFilter:['data-theme'] });
 
-  /* === i18n === */
+  // Tema değiştikçe ve #themeBackdrop güncellendikçe senkron tut
+  const mo = new MutationObserver(() => { copyThemeVarsToPip(); copyWallpaperToPip(); });
+  mo.observe(document.documentElement, { attributes:true, attributeFilter:['data-theme'] });
+
+  // ——— i18n
   const paintTexts = () => {
-    $('#tbTaskLabel').textContent = t(S.lang,'taskTitle')      || 'Interval';
-    $('#tbNextLabel').textContent = t(S.lang,'nextBreakTitle') || 'Next';
-    $('#r').textContent           = t(S.lang,'reset')          || 'Reset';
-
-    // Pad ipucu başlıkta kalsın
-    const hint = t(S.lang,'pipPadHint') || 'Sol tık +1 · Sağ tık −1';
-    $('#pad').title = hint;
+    $('#pipTaskLabel').textContent = t(S.lang, 'taskTitle')          || 'Task';
+    $('#pipNextLabel').textContent = t(S.lang, 'nextBreakTitle')     || 'Next';
+    $('#r').textContent            = t(S.lang, 'reset')              || 'Reset';
+    $('#pipHint').textContent      = t(S.lang, 'pipPadHint')         || 'Sol tık +1 · Sağ tık −1';
+    $('#pad').title                = $('#pipHint').textContent;
   };
   paintTexts();
   const unLang = sub('lang', paintTexts);
 
-  /* === Sayaç === */
+  // ——— Sayaç
   const v   = $('#v');
   const pad = $('#pad');
   v.textContent = String(S.counter);
 
   pad.addEventListener('click', () => {
-    setCounter(S.counter + 1);
-    broadcast('counter', S.counter);
+    setCounter(S.counter + 1); broadcast('counter', S.counter);
   });
   pad.addEventListener('contextmenu', (e) => {
-    e.preventDefault();
-    setCounter(S.counter - 1);
-    broadcast('counter', S.counter);
+    e.preventDefault(); setCounter(S.counter - 1); broadcast('counter', S.counter);
   });
   pip.document.querySelectorAll('.chip[data-step]').forEach(btn=>{
     btn.addEventListener('click', () => {
       const inc = Number(btn.getAttribute('data-step')) || 0;
-      setCounter(S.counter + inc);
-      broadcast('counter', S.counter);
+      setCounter(S.counter + inc); broadcast('counter', S.counter);
     });
   });
   $('#r').addEventListener('click', () => { setCounter(0); broadcast('counter', S.counter); });
+
   const unCounter = sub('counter', (val) => { v.textContent = String(val); });
 
-  /* === Dashboard snapshot: üst barı doldur === */
+  // ——— Dashboard snapshot
   const applyDash = (d) => {
     if (!d) return;
-    $('#pipClock').textContent = d.clock || '--:--:--';
-
-    // Sol segment: mevcut interval (eski "task" miktarını kullanıyoruz)
-    $('#tbTaskVal').textContent = String(d.task?.amount ?? 0);
-
-    // Sağ segment: sıradaki mola
+    $('#pipClock').textContent   = d.clock || '--:--:--';
+    $('#pipTaskAmount').textContent  = String(d.task?.amount ?? 0);
     if (d.next){
-      const nameAt = `${d.next.keyOrName} ${d.next.at}`;
-      $('#tbNextName').textContent = nameAt;
-      $('#tbNextEta').textContent  = d.next.eta;
+      $('#pipNextEta').textContent  = d.next.eta;
     }else{
-      $('#tbNextName').textContent = '—';
-      $('#tbNextEta').textContent  = '--:--:--';
+      $('#pipNextEta').textContent  = '--:--:--';
     }
   };
 
@@ -214,12 +183,11 @@ export async function openDocPiP(){
   const syncTimer = setInterval(() => {
     if (pip.closed) { clearInterval(syncTimer); return; }
     applyDash(window.__KZS_LAST_DASH__);
+    copyThemeVarsToPip();
     copyWallpaperToPip();
   }, 1000);
 
-  pip.addEventListener('resize', () => { /* layout, clamp ile otomatik */ });
-
   pip.addEventListener('pagehide', () => {
-    unCounter(); unLang(); clearInterval(syncTimer); themeObserver.disconnect();
+    unCounter(); unLang(); mo.disconnect();
   });
 }

@@ -1,0 +1,81 @@
+/* GENEL varsayılanlar */
+:root{
+  --fg:#e9edf4;           /* yazı   */
+  --muted:#9aa6b2;        /* soluk yazı */
+  --surface:rgba(12,16,22,.58);  /* kart zemini (glass) */
+  --bd:rgba(144,224,255,.22);    /* kart kenarı */
+  --accent:#19d4ff;       /* mavi – ana vurgu */
+  --accent2:#ff2d95;      /* pembe – ikincil vurgu */
+  --chip-bg:rgba(255,255,255,.06);
+  --chip-bd:rgba(255,255,255,.16);
+}
+
+/* XARP (alien) */
+html[data-theme="xarp"]{
+  --fg:#e8f0ff; --muted:#a6b0c3;
+  --surface:rgba(9,12,18,.55); --bd:rgba(88,211,255,.28);
+  --accent:#58d3ff; --accent2:#bf85ff;
+}
+
+/* Hello Kitty */
+html[data-theme="hellokitty"]{
+  --fg:#ffeef7; --muted:#ffc7de;
+  --surface:rgba(63,12,48,.36); --bd:rgba(255,159,208,.30);
+  --accent:#ff9fd0; --accent2:#ff5fa3;
+}
+
+/* Halloween */
+html[data-theme="halloween"]{
+  --fg:#fff4e6; --muted:#e4c8a6;
+  --surface:rgba(26,12,8,.36); --bd:rgba(255,209,102,.28);
+  --accent:#ffd166; --accent2:#ff8c42;
+}
+
+/* Generals */
+html[data-theme="generals"]{
+  --fg:#eaf1ff; --muted:#b9c6d6;
+  --surface:rgba(9,12,18,.46); --bd:rgba(215,173,86,.30);
+  --accent:#d7ad56; --accent2:#3da2e6;
+}
+
+/* Cyberpunk 2077 */
+html[data-theme="cp77"]{
+  --fg:#f9ffe6; --muted:#c6d0d0;
+  --surface:rgba(6,8,10,.52); --bd:rgba(252,238,9,.28);
+  --accent:#fcee09; --accent2:#00e5ff;
+}
+
+/* Berserk 1 */
+html[data-theme="berserk1"]{
+  --fg:#ffe9ed; --muted:#f0c9cf;
+  --surface:rgba(43,11,16,.46); --bd:rgba(230,57,70,.35);
+  --accent:#38d7ff; --accent2:#e63946;
+}
+
+/* Berserk 2 */
+html[data-theme="berserk2"]{
+  --fg:#f5f6f7; --muted:#cfd3d6;
+  --surface:rgba(8,8,10,.50); --bd:rgba(217,4,41,.32);
+  --accent:#d90429; --accent2:#9aa0a6;
+}
+
+/* Pirates */
+html[data-theme="pirates"]{
+  --fg:#eaf6ff; --muted:#b7cfde;
+  --surface:rgba(6,16,26,.55); --bd:rgba(47,184,198,.32);
+  --accent:#2fb8c6; --accent2:#d6b45a;
+}
+
+/* Telus */
+html[data-theme="telus"]{
+  --fg:#eef7ee; --muted:#b8c2bf;
+  --surface:rgba(10,16,14,.40); --bd:rgba(102,204,0,.28);
+  --accent:#66cc00; --accent2:#4b286d;
+}
+
+/* XMAS */
+html[data-theme="xmas"]{
+  --fg:#f7fff9; --muted:#d5ead8;
+  --surface:rgba(16,32,24,.50); --bd:rgba(246,208,129,.40);
+  --accent:#f6d081; --accent2:#22c55e;
+}
