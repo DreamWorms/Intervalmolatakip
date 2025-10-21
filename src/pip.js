@@ -16,7 +16,7 @@ export async function openDocPiP(){
   position:fixed; inset:0; z-index:-1;              /* tüm pencereyi kapla */
   background:#0b0d12 center/cover no-repeat fixed;  /* fallback + cover */
 }
-    :root{
+   :root{
     --bg:#0b0d12; --panel:#0f1522cc; --stroke:#273246; --fg:#e9edf4; --muted:#9aa6b2;
   }
   *{box-sizing:border-box}
@@ -87,6 +87,36 @@ export async function openDocPiP(){
     font-weight:700; font-size:clamp(11px,2.2vw,13px)
   }
   .ghost{ background:transparent }
+  </style>
+
+  <div id="pipBackdrop"></div>
+  <div class="wrap">
+    <div id="pipClock" class="clock">--:--:--</div>
+
+    <div class="grid">
+      <div class="card">
+        <div id="pipTaskLabel" class="label">Task</div>
+        <div id="pipTaskStatus" class="muted">—</div>
+         <div id="pipTaskAmount" class="value-lg">0</div>
+      </div>
+
+      <div class="card">
+        <div id="pipNextLabel" class="label">Next</div>
+        <div id="pipNextName" class="muted">—</div>
+        <div id="pipNextEta"    class="value-lg">--:--:--</div>
+      </div>
+
+      <!-- Sayaç -->
+      <div class="card counter-card">
+        <div class="top-hint" id="pipHint">Sol tık +1 · Sağ tık −1</div>
+        <button id="pad" class="pad" title="Sol tık +1 · Sağ tık −1">
+          <span id="v" class="face">0</span>
+        </button>
+        <div class="row">
+          <button class="chip" data-step="2">+2</button>
+          <button class="chip" data-step="4">+4</button>
+          <button class="chip" data-step="8">+8</button>
+          <button id="r" class="chip ghost">Sıfırla</button>
         </div>
       </div>
     </div>
