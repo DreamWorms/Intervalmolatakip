@@ -39,7 +39,7 @@
   on(btnWn, 'click', () => { $('#openWellness')?.click(); });
 
   // Doc PiP ⇒ gizli orijinal butonu tetikle
-  on(btnPip, 'click', () => { $('#openDocPipBtn')?.click(); });
+  on(btnPip, 'click', () => { document.querySelector('#openDocPipBtn')?.click(); });
 
   // i18n değişirse başlıkları güncelle (varsa)
  try{
@@ -146,3 +146,10 @@ window.paintIconbarLabels = paintIconbarLabels;
 })();
 
 
+// Evrensel delege — tek kez ekle
+document.addEventListener('click', (e) => {
+  const pipBtn = e.target.closest('#btnDocPip, #tbPip, [data-action="docpip"]');
+  if (!pipBtn) return;
+  const proxy = document.querySelector('#openDocPipBtn');
+  if (proxy) proxy.click(); // openDocPiP user-gesture içinde çağrılır
+});
