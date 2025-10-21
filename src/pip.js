@@ -136,6 +136,36 @@ html,body{height:100%}
   </div>
   `;
 
+  // --- PiP wallpaper URL'leri (yalnız wallpaper temaları) ---
+const WALLPAPERS = {
+  xmas:     "https://i.ibb.co/zhvjDvTH/XMAX.png",
+  telus:    "https://i.ibb.co/0RKMsTXD/Telus-Digital.png",
+  xarp:     "https://i.ibb.co/jvDFh0rY/alien-xenomorph-3840x2160-18665.jpg",
+  hellokitty:"https://i.ibb.co/M55jMCph/Ads-z-tasar-m-3.png",
+  halloween:"https://i.ibb.co/twQcSH2r/Ads-z-tasar-m-5.png",
+  generals: "https://i.ibb.co/Psx5Wvd9/Ads-z-tasar-m-7.png",
+  pirates:  "https://i.ibb.co/5XkJHz99/Pirates-Of-Keyframe-2.png",
+  tdog:     "https://i.ibb.co/1Y3PjMYQ/TDOG2.png",
+  cp77:     "https://i.ibb.co/dJw3jdvK/CP77.png",
+  berserk1: "https://i.ibb.co/N25fFpHt/Berserk-1.jpg",
+  berserk2: "https://i.ibb.co/HLWJqfXp/Berserk-2.jpg",
+};
+
+// PiP'te wallpaper'ı uygula
+const setWP = (themeKey) => {
+  const url = WALLPAPERS[themeKey];
+  const wp  = pip.document.getElementById('wp');
+  if (url)  wp.style.backgroundImage = `url("${url}")`;
+  else      wp.style.backgroundImage = 'none'; // tema yoksa düz zemin
+};
+
+// Açılışta uygula (S.theme varsa onu kullan)
+setWP(S.theme || S.appTheme || (document.documentElement.dataset?.theme));
+
+// Tema değişimini dinle (state.js'deki key 'theme' ise)
+let unTheme;
+try { unTheme = sub('theme', setWP); } catch(_) {}
+
  // === Tema/WALLPAPER'ı PiP'e kopyala (cover, center, no-repeat) ===
 const copyWallpaperToPip = () => {
   const src = document.getElementById('themeBackdrop');
@@ -241,7 +271,7 @@ _mo.observe(document.documentElement, { attributes:true, attributeFilter:['data-
 
   // Temizlik
   pip.addEventListener('pagehide', () => {
-    unCounter(); unLang(); clearInterval(syncTimer);
+    unCounter(); unLang(); if (unTheme) unTheme(); clearInterval(syncTimer);
     _mo.disconnect();
   });
 }
