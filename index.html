@@ -91,39 +91,7 @@
       <button class="kzModal-close" data-close="friendsModal" aria-label="Kapat">✕</button>
     </div>
 
-    <div class="kzModal-body" id="friendsBody">
-  <!-- Üst çubuk: seçim ve canlı düzenleme -->
-  <div class="fr-toolbar">
-    <div class="row-left">
-      <label class="muted tiny">Arkadaş</label>
-      <select id="friendPick"></select>
-      <input id="friendName" type="text" placeholder="Yeni arkadaş adı…" />
-      <button id="friendAdd"  class="kzBtn">Ekle</button>
-      <button id="friendDel"  class="kzBtn danger">Sil</button>
-    </div>
-    <div class="row-right">
-      <label><input id="liveIntersect" type="checkbox" checked> Canlı kesişim</label>
-    </div>
-  </div>
-
-  <div class="fwrap">
-    <!-- SOL: Arkadaşın blokları -->
-    <section class="fleft">
-      <h4>Seçili arkadaşın mola blokları</h4>
-      <div id="fSlots" class="fgrid"><!-- JS dolduracak --></div>
-      <p class="kzHint">Her kutuya <strong>başlangıç saatlerini</strong> yaz: ör. <code>09:45, 13:10, 17:30</code>. Sağ üstteki sarı “dk” kutusundan süreyi değiştir.</p>
-    </section>
-
-    <!-- SAĞ: Kesişim paneli -->
-    <aside class="fright">
-      <h4>Kesişen Molalar (Sen ↔ Arkadaş)</h4>
-      <div id="olapPanel" class="olap-list">Kesişim bulunamadı.</div>
-      <p class="kzHint">“Benim molalarım” ana ekrandan <em>otomatik</em> okunur: #breakGrid içindeki kutuların <strong>not</strong> alanına saatleri yazman yeterli.<br>
-      Örnek: Rest 1 notuna <code>09:45, 13:10</code> yaz → süre de kutudaki “dk” değeridir.</p>
-    </aside>
-  </div>
-</div>
-
+    
 
 <!-- WELLNESS -->
 <div class="kzModal" id="wellnessBookModal" hidden>
