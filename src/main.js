@@ -245,3 +245,77 @@ import './season-badges.js';
   new MutationObserver(check).observe(etaEl, { childList: true, characterData: true, subtree: true });
   setInterval(check, 1000);
 })();
+
+
+// yardımcı
+const $  = (s,r=document)=>r.querySelector(s);
+const on = (el,ev,fn)=>el&&el.addEventListener(ev,fn);
+
+/* ---- ÜST BAR ETİKETLERİ ---- */
+function paintIconbarLabels(){
+  const tkey = (k,fallback)=> (window.t ? t(window.S?.lang||'tr', k) : fallback||k);
+
+  const setTxt = (sel, key, fallback)=>{ const el=$(sel); if (el) el.textContent = key ? tkey(key,fallback) : (fallback||''); };
+  setTxt('#tbThemeLbl','navTheme','Tema');
+  setTxt('#tbLangLbl','labelLang','Dil');
+  setTxt('#tbFriendsLbl','navFriends','Arkadaşlar');
+
+  const wl = $('#tbWellnessLbl'); if (wl) wl.textContent = 'Wellness';        // ÇEVİRME
+  const pip = $('#tbPipLbl');      if (pip) pip.textContent = 'PiP';
+
+  // title'lar
+  const L = window.S?.lang || 'tr';
+  $('#btnTheme')?.setAttribute('title', t(L,'navTheme') || 'Tema');
+  $('#btnLang')?.setAttribute('title',  t(L,'labelLang') || 'Dil');
+  $('#openFriends')?.setAttribute('title', t(L,'navFriends') || 'Arkadaşlar');
+  $('#openWellness')?.setAttribute('title', 'Wellness');
+  $('#openDocPipBtn')?.setAttribute('title', 'PiP');
+}
+paintIconbarLabels();
+
+// S.lang reactive ise:
+window.sub?.('lang', paintIconbarLabels);
+
+// Emniyet: select değişirse de boyayalım
+on($('#langSelect'),'change', ()=>{
+  // eğer global S.lang kullanıyorsan burada da senkronla
+  if (window.S) window.S.lang = $('#langSelect').value;
+  paintIconbarLabels();
+});
+
+/* ---- BUTONLARI ÇALIŞTIR ---- */
+// Tıklayınca ilgili <select>’te sıradakine geç ve change tetikle
+function cycleSelect(sel){
+  if (!sel || !sel.options?.length) return;
+  const i = sel.selectedIndex < 0 ? 0 : sel.selectedIndex;
+  sel.selectedIndex = (i + 1) % sel.options.length;
+  sel.dispatchEvent(new Event('change', {bubbles:true}));
+}
+
+on($('#btnTheme'), ()=> {
+  const sel = $('#themeSelect') || document.querySelector('select[data-role="theme"]');
+  cycleSelect(sel);
+});
+
+on($('#btnLang'), ()=> {
+  const sel = $('#langSelect') || document.querySelector('select[data-role="lang"]');
+  cycleSelect(sel);
+});
+
+// (İstersen uzun basılı tutunca geri yönde gezsin)
+$('#btnTheme')?.addEventListener('contextmenu', e=>{
+  e.preventDefault();
+  const sel = $('#themeSelect') || document.querySelector('select[data-role="theme"]');
+  if (!sel) return;
+  const i = sel.selectedIndex < 0 ? 0 : sel.selectedIndex;
+  sel.selectedIndex = (i - 1 + sel.options.length) % sel.options.length;
+  sel.dispatchEvent(new Event('change', {bubbles:true}));
+});
+$('#btnLang')?.addEventListener('contextmenu', e=>{
+  e.preventDefault();
+  const sel = $('#langSelect') || document.querySelector('select[data-role="lang"]');
+  if (!sel) return;
+  const i = sel.selectedIndex < 0 ? 0 : sel.selectedIndex;
+  sel.selectedIndex = (i - 1 + sel.options.length) % sel.options.length;
+  sel.dispatchEvent(new Event('change', {bubbles:true}));
+});
