@@ -1,3 +1,10 @@
+// --- Global bridge (module olmayan script'ler için) ---
+if (typeof window !== 'undefined') {
+  window.I18N = I18N;
+  window.t = window.t || ((lang, key) =>
+    (I18N[lang] && I18N[lang][key]) || I18N.tr[key] || key);
+}
+
 // src/i18n.js — çok dilli metinler (TR/EN/DE/BG)
 const I18N = {
   tr: {
