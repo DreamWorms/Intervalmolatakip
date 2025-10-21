@@ -127,26 +127,25 @@
       const el = document.createElement('div');
       el.className='frTile'; el.dataset.label = label;
       el.innerHTML = `
-  <div class="tileHead"><div class="label">${label}</div></div>
-  <div class="tileBody">
-    <input id="${id}_start" type="time" placeholder="--:--">
-  </div>
-  <textarea id="${id}_note" class="note" placeholder=""></textarea>
-`;
+        <div class="tileHead"><div class="label">${label}</div><span class="pill" id="${id}_pill">${def} dk</span></div>
+        <div class="tileBody">
+          <input id="${id}_start" type="time" placeholder="--:--">
+          <input id="${id}_min" class="mins" type="number" min="1" max="240" value="${def}">
+        </div>
+        <textarea id="${id}_note" class="note" placeholder=""></textarea>
+      `;
+      grid.appendChild(el);
 
-const startEl = $(`#${id}_start`);
-const noteEl  = $(`#${id}_note`);
-const push = ()=>{
-  const f = cur(); if(!f) return;
-  let s = f.slots.find(x=>x.id===id);
-  if(!s){ s = {id,label,start:'',min:def,end:'',note:''}; f.slots.push(s); }
-  s.start = startEl.value || '';
-  s.min   = def;                                   // dakika sabit
-  s.end   = s.start ? endBy(s.start, s.min) : '';
-  s.note  = noteEl.value || '';
-  save(); updateAll();
-};
-on(startEl,'input',push); on(noteEl,'input',push);
+      const startEl = $(`#${id}_start`), minEl = $(`#${id}_min`), noteEl = $(`#${id}_note`), pill = $(`#${id}_pill`);
+      const push = ()=>{
+        const f = cur(); if(!f) return;
+        const m = Number(minEl.value||0); pill.textContent = (m>0?m:def) + ' dk';
+        let s = f.slots.find(x=>x.id===id);
+        if(!s){ s = {id,label,start:'',min:def,end:'',note:''}; f.slots.push(s); }
+        s.start = startEl.value || ''; s.min = m||0; s.end = s.start && s.min>0 ? endBy(s.start,s.min) : '';
+        s.note  = noteEl.value || ''; save(); updateAll();
+      };
+      on(startEl,'input',push); on(minEl,'input',push); on(noteEl,'input',push);
     });
   }
 
