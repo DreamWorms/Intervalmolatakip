@@ -1138,7 +1138,7 @@ html, body{ overflow-x:hidden; }
   position: relative;
   overflow: visible;              /* taşan ışık görünsün */
   border: 1px solid hsl(var(--pipHue) 100% 70% / .65);
-  background: radial-gradient(120% 120% at 30% 20%,
+  background: radial-gradient(100% 100% at 30% 20%,
               hsl(var(--pipHue) 100% 65% / .16),
               hsl(var(--pipHue) 100% 50% / .06) 40%,
               transparent 70%);
