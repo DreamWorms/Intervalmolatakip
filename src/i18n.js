@@ -35,6 +35,15 @@ const I18N = {
     frConfirmDelete: 'Bu arkadaşı silmek istiyor musun?',
     frNewFriend: 'Yeni Arkadaş',
 
+    // Wellness Defteri
+    wnTitle: 'Wellness Defteri',
+    wnAuto: 'Otomatik kaydet',
+    wnResetWeek: 'Haftayı sıfırla',
+    wnUndo: 'Geri al',
+    wnTotal: 'Toplam',
+    wnPlan: 'Plan',
+    wnWeekSep: '→',  
+
     // — PiP 2 dk overlay
     pipSoonTitle: 'Mola Yaklaşıyor',
     pipPrepareHint: 'Hazırlan: su al, esneme yap, gözleri dinlendir…',
@@ -89,6 +98,16 @@ const I18N = {
     frConfirmDelete: 'Delete this friend?',
     frNewFriend: 'New Friend',
 
+    // Wellness Defteri
+    wnTitle: 'Wellness Book',
+    wnAuto: 'Auto log',
+    wnResetWeek: 'Reset week',
+    wnUndo: 'Undo',
+    wnTotal: 'Total',
+    wnPlan: 'Plan',
+    wnWeekSep: '→',
+
+
     // — PiP overlay
     pipSoonTitle: 'Break Starting Soon',
     pipPrepareHint: 'Get ready: grab water, stretch, rest your eyes…',
@@ -141,6 +160,16 @@ const I18N = {
     frOverlapsNone: 'Keine Überschneidung gefunden.',
     frConfirmDelete: 'Diesen Freund löschen?',
     frNewFriend: 'Neuer Freund',
+    
+    // Wellness Defteri
+    wnTitle: 'Wellness-Buch',
+    wnAuto: 'Auto-Log',
+    wnResetWeek: 'Woche zurücksetzen',
+    wnUndo: 'Rückgängig',
+    wnTotal: 'Summe',
+    wnPlan: 'Plan',
+    wnWeekSep: '→',
+
 
     // — PiP overlay
     pipSoonTitle: 'Pause steht bevor',
@@ -194,6 +223,16 @@ const I18N = {
     frOverlapsNone: 'Няма пресичане.',
     frConfirmDelete: 'Да изтрия ли този приятел?',
     frNewFriend: 'Нов приятел',
+
+    // Wellness Defteri
+    wnTitle: 'Wellness Книга',
+    wnAuto: 'Авто запис',
+    wnResetWeek: 'Нулирай седмицата',
+    wnUndo: 'Отмени',
+    wnTotal: 'Общо',
+    wnPlan: 'План',
+    wnWeekSep: '→',
+
 
     // — PiP overlay
     pipSoonTitle: 'Почивката наближава',
