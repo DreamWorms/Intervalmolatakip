@@ -28,37 +28,47 @@ export async function openDocPiP(){
     background:transparent; /* wallpaper arkadan gelsin */
   }
 
-  /* daha sıkı, daha okunur yerleşim */
+  /* daha kompakt ama okunur yerleşim — HEP 2 SÜTUN */
   .wrap{ padding:10px; display:grid; gap:8px; }
   .clock{
-    font-size:clamp(16px,4.2vw,26px);
+    font-size:clamp(18px,5.6vw,28px);
     font-weight:900; text-align:center; margin:0 0 4px;
   }
 
-  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; align-items:start }
-  @media (max-width:420px){ .grid{ grid-template-columns:1fr } } /* dar alanda tek sütun */
+  .grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:8px; align-items:start;
+    min-width:0;
+  }
+  /* NOT: tek sütuna geçiren @media kuralı YOK! */
 
   .card{
     background:rgba(10,14,22,.70);
     backdrop-filter:saturate(120%) blur(6px);
     border:1px solid var(--stroke);
     border-radius:12px;
-    padding:8px;
+    padding:clamp(6px,1.6vw,10px);
     min-width:0;
   }
-  .label{ opacity:.85; font-weight:800; letter-spacing:.2px; margin-bottom:2px;
-          font-size:clamp(11px,2.2vw,13px) }
-  .muted{ color:var(--muted); font-size:clamp(11px,2.4vw,13px) }
-  .value-lg{ font-size:clamp(16px,4vw,20px); font-weight:800; margin-top:4px }
+  .label{
+    opacity:.9; font-weight:800; letter-spacing:.2px; margin-bottom:2px;
+    font-size:clamp(12px,2.6vw,14px);
+  }
+  .muted{
+    color:var(--muted);
+    font-size:clamp(12px,2.8vw,14px);
+  }
+  .value-lg{               /* görev miktarı ve ETA için */
+    font-size:clamp(18px,3.4vw,22px);
+    font-weight:800; margin-top:4px;
+  }
 
   /* Sayaç */
   .counter-card{ grid-column:1 / -1; display:flex; flex-direction:column; gap:6px; }
-  .top-hint{ text-align:right; font-size:clamp(10px,2vw,12px); color:var(--muted); }
-  @media (max-height:280px){ .top-hint{ display:none } } /* yükseklik çok kısaysa ipucu gizle */
+  .top-hint{ text-align:right; font-size:clamp(11px,2.2vw,12px); color:var(--muted); }
 
   .pad{
     flex:1 1 auto; width:100%;
-    min-height:clamp(80px,24vh,130px);
+    min-height:clamp(100px,28vh,150px);
     border:1px solid var(--stroke);
     border-radius:12px;
     background:linear-gradient(180deg, rgba(14,16,28,.92), rgba(12,14,22,.88));
@@ -72,19 +82,19 @@ export async function openDocPiP(){
 
   .face{
     color:#fff;
-    font-size:clamp(32px,9.5vw,48px);
+    font-size:clamp(36px,10.5vw,56px);
     font-weight:900; line-height:1;
-    padding:8px 14px; border-radius:10px;
-    min-width:clamp(64px,22vw,96px);
+    padding:10px 16px; border-radius:10px;
+    min-width:clamp(74px,26vw,110px);
     text-align:center;
     background:#0d1220; border:1px solid var(--stroke);
   }
 
   .row{ display:flex; gap:6px; align-items:center; justify-content:center; flex-wrap:wrap }
   .chip{
-    padding:6px 10px; border-radius:999px; border:1px solid var(--stroke);
+    padding:6px 12px; border-radius:999px; border:1px solid var(--stroke);
     background:#0c1425; color:var(--fg); cursor:pointer;
-    font-weight:700; font-size:clamp(11px,2.2vw,13px)
+    font-weight:800; font-size:clamp(12px,2.6vw,14px)
   }
   .ghost{ background:transparent }
   </style>
