@@ -940,3 +940,52 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
   padding:8px 10px; border:1px solid rgba(255,255,255,.10);
   border-radius:12px; background: rgba(255,255,255,.04);
 }
+
+/* ===== Topbar ikon bar ===== */
+.iconbar{ display:flex; align-items:center; gap:8px; }
+.tb-icn{
+  position:relative;
+  width:40px; height:40px; display:grid; place-items:center;
+  border-radius:12px; border:1px solid rgba(255,255,255,.14);
+  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
+  color:#eaf1ff; cursor:pointer;
+  box-shadow:0 8px 24px rgba(0,0,0,.3);
+  transition:transform .12s ease, box-shadow .2s ease, border-color .2s ease, filter .2s ease;
+}
+.tb-icn:hover{ transform:translateY(-1px); box-shadow:0 12px 32px rgba(0,0,0,.4); border-color:rgba(255,255,255,.22); }
+
+/* Doc PiP — dikkat çeken parıltı */
+.tb-icn.tb-pip{
+  border-color: color-mix(in srgb, var(--accent2) 58%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent2) 30%, transparent),
+              0 10px 26px rgba(0,0,0,.45);
+  isolation:isolate;
+}
+.tb-icn.tb-pip .pip-pulse{
+  position:absolute; inset:-3px; border-radius:12px;
+  pointer-events:none; z-index:-1;
+  animation:pipPulse 1.8s ease-in-out infinite;
+  background: radial-gradient(60% 60% at 50% 50%, rgba(255,111,177,.22), transparent 60%);
+  filter:blur(0.2px);
+}
+@keyframes pipPulse{
+  0%{ opacity:.55; box-shadow:0 0 0 0 rgba(255,111,177,.45); transform:scale(.98); }
+  50%{ opacity:.9; box-shadow:0 0 30px 8px rgba(255,111,177,.25); transform:scale(1.02); }
+  100%{ opacity:.55; box-shadow:0 0 0 0 rgba(255,111,177,.0); transform:scale(.98); }
+}
+
+/* Popover */
+.tb-pop{
+  position:absolute; top:56px; right:16px;
+  width:min(220px, 86vw); padding:10px; z-index:1200;
+  border-radius:14px; border:1px solid rgba(255,255,255,.14);
+  background:linear-gradient(180deg, rgba(18,22,30,.95), rgba(18,22,30,.86));
+  box-shadow:0 24px 60px rgba(0,0,0,.55);
+  animation:tbIn .14s ease;
+}
+@keyframes tbIn{ from{ opacity:0; transform:translateY(-6px) scale(.98); } to{ opacity:1; transform:translateY(0) scale(1); } }
+.tb-pop-head{ font-weight:800; color:#eaf1ff; margin-bottom:8px; }
+.tb-pop select{ width:100%; }
+
+/* KZ Dock’u gizle (artık üst barda ikonlar var) */
+.kzDock{ display:none !important; }
