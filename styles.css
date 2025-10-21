@@ -1211,12 +1211,27 @@ html, body{ overflow-x:hidden; }
   .tb-icn.pip-glow::after{ animation: none; }
 }
 
-/* PiP butonu tıklanabilir kalsın */
-#btnDocPip,
-.tb-icn.pip-glow{ position:relative; overflow:visible; cursor:pointer; }
+// topbar.js (uygun bir yere, bir kere çalışsın)
+import { openDocPiP } from './pip.js';
 
-/* Neon katmanları tıklamayı engellemesin */
-.tb-icn.pip-glow::before,
-.tb-icn.pip-glow::after{
-  pointer-events: none;
-}
+document.addEventListener('click', async (e) => {
+  const btn = e.target.closest('#btnDocPip');
+  if (!btn) return;
+
+  try {
+    await openDocPiP();                 // <- kullanıcı jesti içinde çağrılıyor
+  } catch (err) {
+    console.error('PiP açılamadı:', err);
+    alert(err?.message || 'Doc PiP açılamadı.');
+  }
+});
+
+// Klavye ile de açılabilsin
+document.addEventListener('keydown', (e) => {
+  const btn = document.activeElement?.closest?.('#btnDocPip');
+  if (!btn) return;
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    btn.click();
+  }
+});
