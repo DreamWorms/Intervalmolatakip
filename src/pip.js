@@ -1,4 +1,4 @@
-// src/pip.js — PiP: saat + görev + sıradaki mola + sayaç (auto-compact + theme sync)
+// src/pip.js — PiP: saat + görev + sıradaki mola + sayaç (auto-compact + theme sync, sayaç hep görünür)
 import { S, sub, setCounter, broadcast } from './state.js';
 import { t } from './i18n.js';
 
@@ -8,13 +8,12 @@ export async function openDocPiP(){
 
   const pip = await window.documentPictureInPicture.requestWindow({ width: 460, height: 360 });
 
-  // === UI ===
   pip.document.body.innerHTML = `
   <style>
     html,body{height:100%; background:transparent !important; overflow:hidden}
     *{box-sizing:border-box}
 
-    /* --- Wallpaper: ana sayfadaki #themeBackdrop'tan kopyalanır --- */
+    /* Ana sayfadaki #themeBackdrop kopyalanır */
     #pipBackdrop{
       position:fixed; inset:0; z-index:-1;
       background:#0b0d12 center/cover no-repeat fixed;
@@ -31,7 +30,6 @@ export async function openDocPiP(){
       font:14px/1.55 system-ui,Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
     }
 
-    /* Yerleşim: saat + (iki kart / ya da compact'ta mini-özet) + sayaç */
     .wrap{ padding:10px; display:grid; gap:8px; min-height:100% }
 
     .clock{
@@ -40,7 +38,7 @@ export async function openDocPiP(){
       text-shadow:0 2px 10px rgba(0,0,0,.45);
     }
 
-    /* Normal görünüm: iki kart yan yana */
+    /* İki kart + sayaç aynı grupta, ama compact'ta sadece kartları saklayacağız */
     .grid{
       display:grid; grid-template-columns:1fr 1fr; gap:8px; align-items:start; min-width:0;
     }
@@ -52,14 +50,11 @@ export async function openDocPiP(){
       padding:clamp(6px,1.6vw,10px);
       min-width:0;
     }
-    .label{
-      opacity:.9; font-weight:800; letter-spacing:.2px; margin-bottom:2px;
-      font-size:clamp(12px,2.6vw,14px);
-    }
+    .label{ opacity:.9; font-weight:800; letter-spacing:.2px; margin-bottom:2px; font-size:clamp(12px,2.6vw,14px); }
     .muted{ color:var(--muted); font-size:clamp(12px,2.8vw,14px); }
     .value-lg{ font-size:clamp(18px,3.6vw,22px); font-weight:800; margin-top:4px; }
 
-    /* Mini-özet satırı: sadece compact modda görünür */
+    /* Mini özet satırı (compact'ta görünür) */
     .mini-row{ display:none; gap:6px; }
     .stat{
       flex:1 1 0; display:flex; align-items:baseline; justify-content:space-between; gap:6px;
@@ -68,7 +63,7 @@ export async function openDocPiP(){
     .stat .k{ font-weight:800; opacity:.9; font-size:clamp(11px,2.5vw,12px) }
     .stat .v{ font-weight:800; font-size:clamp(14px,3vw,16px) }
 
-    /* Sayaç bloğu */
+    /* Sayaç — hep görünür */
     .counter-card{ grid-column:1 / -1; display:flex; flex-direction:column; gap:6px; }
     .top-hint{ text-align:right; font-size:clamp(11px,2.2vw,12px); color:var(--muted); }
 
@@ -101,12 +96,14 @@ export async function openDocPiP(){
     .chip{
       padding:6px 12px; border-radius:999px; border:1px solid var(--stroke);
       background:#0c1425; color:var(--fg); cursor:pointer;
-      font-weight:800; font-size:clamp(12px,2.6vw,14px)
+      font-weight:800; font-size:clamp(12px,2.6vw,14px);
     }
     .ghost{ background:transparent }
 
-    /* --- COMPACT MOD: çok dar veya alçaksa alanı kurtar --- */
-    body.compact .grid{ display:none; }
+    /* --- COMPACT MOD --- */
+    /* Hata: önce .grid'i saklıyorduk; sayaç da saklanıyordu. Artık sadece .info kartlarını saklıyoruz. */
+    body.compact .info{ display:none; }         /* sadece iki bilgi kartını kapat */
+    body.compact .grid{ grid-template-columns:1fr; gap:6px; }
     body.compact .mini-row{ display:flex; }
     body.compact .pad{ min-height:clamp(84px,26vh,120px); }
     body.compact .clock{ font-size:clamp(16px,6.2vw,22px); }
@@ -133,15 +130,15 @@ export async function openDocPiP(){
       </div>
     </div>
 
-    <!-- Normal kartlar (compact dışı) -->
+    <!-- Kartlar + sayaç (sayaç hep görünür) -->
     <div class="grid">
-      <div class="card">
+      <div class="card info">
         <div id="pipTaskLabel" class="label">Task</div>
         <div id="pipTaskStatus" class="muted">—</div>
         <div id="pipTaskAmount" class="value-lg">0</div>
       </div>
 
-      <div class="card">
+      <div class="card info">
         <div id="pipNextLabel" class="label">Next</div>
         <div id="pipNextName" class="muted">—</div>
         <div id="pipNextEta" class="value-lg">--:--:--</div>
@@ -165,13 +162,13 @@ export async function openDocPiP(){
 
   const $ = (s, root=pip.document) => root.querySelector(s);
 
-  /* === Wallpaper/tema senkronu — ana sayfadaki #themeBackdrop'u kopyala === */
+  /* === Wallpaper/tema senkronu === */
   const copyWallpaperToPip = () => {
     const src  = document.getElementById('themeBackdrop');
     const wall = pip.document.getElementById('pipBackdrop');
     if (!src || !wall) return;
     const cs = getComputedStyle(src);
-    wall.style.backgroundImage      = cs.backgroundImage;                         // url(...) +/ veya gradient(...)
+    wall.style.backgroundImage      = cs.backgroundImage;
     wall.style.backgroundColor      = (cs.backgroundColor && cs.backgroundColor !== 'rgba(0, 0, 0, 0)') ? cs.backgroundColor : '#0b0d12';
     wall.style.backgroundPosition   = cs.backgroundPosition || 'center';
     wall.style.backgroundRepeat     = 'no-repeat';
@@ -182,7 +179,7 @@ export async function openDocPiP(){
   const themeObserver = new MutationObserver(copyWallpaperToPip);
   themeObserver.observe(document.documentElement, { attributes:true, attributeFilter:['data-theme'] });
 
-  /* === Auto-compact: pencere çok dar/alçaksa bilgileri “çipe” indir === */
+  /* === Auto-compact eşiği === */
   function fitMode(){
     const compact = (pip.innerWidth < 430) || (pip.innerHeight < 320);
     pip.document.body.classList.toggle('compact', compact);
@@ -206,7 +203,7 @@ export async function openDocPiP(){
   paintTexts();
   const unLang = sub('lang', paintTexts);
 
-  /* === Sayaç etkileşimi + senkron === */
+  /* === Sayaç === */
   const v   = $('#v');
   const pad = $('#pad');
   v.textContent = String(S.counter);
@@ -230,17 +227,15 @@ export async function openDocPiP(){
   $('#r').addEventListener('click', () => { setCounter(0); broadcast('counter', S.counter); });
   const unCounter = sub('counter', (val) => { v.textContent = String(val); });
 
-  /* === Dashboard snapshot'ını uygula (kart + mini-özet birlikte) === */
+  /* === Snapshot uygula (kart + mini-özet) === */
   const applyDash = (d) => {
     if (!d) return;
     $('#pipClock').textContent = d.clock || '--:--:--';
 
-    // Görev
     $('#pipTaskStatus').textContent = d.task?.active ? (t(S.lang,'taskActive') || 'Active') : '—';
     $('#pipTaskAmount').textContent = String(d.task?.amount ?? 0);
     $('#miniTaskV').textContent     = String(d.task?.amount ?? 0);
 
-    // Sıradaki mola
     if (d.next){
       const nameAt = `${d.next.keyOrName} ${d.next.at}`;
       $('#pipNextName').textContent = nameAt;
@@ -257,7 +252,6 @@ export async function openDocPiP(){
     }
   };
 
-  // Açılışta doldur + her saniye snapshot & wallpaper tazele
   applyDash(window.__KZS_LAST_DASH__);
   const syncTimer = setInterval(() => {
     if (pip.closed) { clearInterval(syncTimer); return; }
@@ -265,11 +259,7 @@ export async function openDocPiP(){
     copyWallpaperToPip();
   }, 1000);
 
-  // Temizlik
   pip.addEventListener('pagehide', () => {
-    unCounter();
-    unLang();
-    clearInterval(syncTimer);
-    themeObserver.disconnect();
+    unCounter(); unLang(); clearInterval(syncTimer); themeObserver.disconnect();
   });
 }
