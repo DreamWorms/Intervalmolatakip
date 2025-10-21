@@ -38,30 +38,35 @@ export async function openDocPiP(){
     }
 
     /* ÜST BAR — 3 sütun: interval • saat • mola ETA */
-    .topbar{
-      display:grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items:center;
-      gap:8px;
-      padding:6px 8px;
-      border:1px solid var(--stroke);
-      border-radius:12px;
-      background:var(--panel);
-      backdrop-filter:saturate(120%) blur(6px);
-    }
-    .seg{min-width:0; display:flex; align-items:center; gap:6px}
-    .seg.l{justify-content:flex-start}
-    .seg.c{justify-content:center}
-    .seg.r{justify-content:flex-end; text-align:right}
+    /* ÜST BAR: solda interval, ortada saat, sağda molaya kalan */
+.topbar{
+  display:flex;
+  align-items:center;
+  gap:8px;                 /* istersen 10–12px yapabilirsin */
+}
 
-    .k{font-weight:800; opacity:.9; font-size:clamp(11px,2.5vw,12px)}
-    .v{font-weight:800; font-size:clamp(14px,3.6vw,18px)}
-    .sub{color:var(--muted); font-size:clamp(11px,2.8vw,12px)}
-    .clock{
-      font-weight:900;
-      font-size:clamp(18px,6.2vw,28px);
-      text-shadow:0 2px 10px rgba(0,0,0,.45);
-    }
+/* Sol ve sağ “pill” içerik kadar esner; yer daralınca kırpılır */
+.topbar .pill{ 
+  flex:1 1 0;
+  min-width:0;             /* kırpmanın çalışması için şart */
+}
+
+/* Uzun metinler saatle çakışmasın, zarifçe kırılsın */
+.topbar .pill .k,
+.topbar .pill .v,
+.topbar .pill .m{
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* Saat ortada sabit; asla üstüne yazı gelmez */
+.topbar .clock{
+  flex:0 0 auto;
+  padding:2px 8px;
+  z-index:1;               /* emin olmak için */
+  font-size:clamp(16px,5.4vw,24px);
+}
 
     /* SAYAÇ alanı: tüm kalan alanı doldurur */
     .counter{
