@@ -941,51 +941,69 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
   border-radius:12px; background: rgba(255,255,255,.04);
 }
 
-/* ===== Topbar ikon bar ===== */
-.iconbar{ display:flex; align-items:center; gap:8px; }
+/* ===== Icon bar layout ===== */
+.iconbar{ display:flex; align-items:flex-start; gap:14px; }
+.tb-item{ display:flex; flex-direction:column; align-items:center; gap:6px; min-width:64px; }
+
+/* Butonlar – BÜYÜK ve tam ortalı */
 .tb-icn{
   position:relative;
-  width:40px; height:40px; display:grid; place-items:center;
-  border-radius:12px; border:1px solid rgba(255,255,255,.14);
-  background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.02));
-  color:#eaf1ff; cursor:pointer;
-  box-shadow:0 8px 24px rgba(0,0,0,.3);
-  transition:transform .12s ease, box-shadow .2s ease, border-color .2s ease, filter .2s ease;
+  width:56px; height:56px; display:grid; place-items:center;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.18);
+  background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.03));
+  color:#e9edf4; cursor:pointer;
+  box-shadow:0 10px 26px rgba(0,0,0,.40);
+  transition:transform .12s ease, box-shadow .18s ease, border-color .18s ease, filter .18s ease;
 }
-.tb-icn:hover{ transform:translateY(-1px); box-shadow:0 12px 32px rgba(0,0,0,.4); border-color:rgba(255,255,255,.22); }
+.tb-icn:hover{ transform:translateY(-1px); box-shadow:0 16px 36px rgba(0,0,0,.50) }
+.tb-icn svg{ width:28px; height:28px; display:block; }
 
-/* Doc PiP — dikkat çeken parıltı */
+/* Etiketler */
+.tb-label{
+  font-weight:800; font-size:12px; line-height:1.15;
+  color:#eaf1ff; opacity:.9; white-space:nowrap; text-align:center;
+  text-shadow:0 1px 1px rgba(0,0,0,.45);
+}
+
+/* ===== Doc PiP — AŞIRI NEON ===== */
 .tb-icn.tb-pip{
-  border-color: color-mix(in srgb, var(--accent2) 58%, transparent);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent2) 30%, transparent),
-              0 10px 26px rgba(0,0,0,.45);
+  border-color: color-mix(in srgb, var(--accent2) 70%, transparent);
+  background:
+    radial-gradient(55% 55% at 50% 50%, rgba(255,111,177,.22), transparent 60%),
+    linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.02));
+  box-shadow:
+    0 0 0 2px rgba(255,111,177,.45),
+    0 0 28px 8px rgba(255,111,177,.45),
+    0 0 70px 28px rgba(25,212,255,.30),
+    inset 0 0 24px rgba(255,111,177,.45);
   isolation:isolate;
 }
-.tb-icn.tb-pip .pip-pulse{
-  position:absolute; inset:-3px; border-radius:12px;
-  pointer-events:none; z-index:-1;
-  animation:pipPulse 1.8s ease-in-out infinite;
-  background: radial-gradient(60% 60% at 50% 50%, rgba(255,111,177,.22), transparent 60%);
-  filter:blur(0.2px);
+/* dönen neon halka */
+.tb-icn.tb-pip::before{
+  content:"";
+  position:absolute; inset:-8px; border-radius:22px; z-index:-1;
+  background:conic-gradient(from 0deg,
+    rgba(255,111,177,.00),
+    rgba(255,111,177,.75),
+    rgba(25,212,255,.75),
+    rgba(255,111,177,.75),
+    rgba(255,111,177,.00));
+  filter:blur(16px);
+  animation:neonSpin 5s linear infinite;
 }
-@keyframes pipPulse{
-  0%{ opacity:.55; box-shadow:0 0 0 0 rgba(255,111,177,.45); transform:scale(.98); }
-  50%{ opacity:.9; box-shadow:0 0 30px 8px rgba(255,111,177,.25); transform:scale(1.02); }
-  100%{ opacity:.55; box-shadow:0 0 0 0 rgba(255,111,177,.0); transform:scale(.98); }
+.tb-icn.tb-pip::after{
+  content:""; position:absolute; inset:-2px; border-radius:18px; z-index:-1;
+  box-shadow:
+    0 0 34px 16px rgba(255,111,177,.55),
+    0 0 90px 30px rgba(25,212,255,.35);
+  opacity:.9;
+  animation:neonPulse 2.2s ease-in-out infinite;
 }
+.pip-pulse{ display:none; } /* önceki küçük efekt artık gereksiz */
 
-/* Popover */
-.tb-pop{
-  position:absolute; top:56px; right:16px;
-  width:min(220px, 86vw); padding:10px; z-index:1200;
-  border-radius:14px; border:1px solid rgba(255,255,255,.14);
-  background:linear-gradient(180deg, rgba(18,22,30,.95), rgba(18,22,30,.86));
-  box-shadow:0 24px 60px rgba(0,0,0,.55);
-  animation:tbIn .14s ease;
+@keyframes neonSpin { to { transform: rotate(360deg); } }
+@keyframes neonPulse {
+  0%,100%{ opacity:.85; transform:scale(.98); }
+  50%{ opacity:1; transform:scale(1.02); }
 }
-@keyframes tbIn{ from{ opacity:0; transform:translateY(-6px) scale(.98); } to{ opacity:1; transform:translateY(0) scale(1); } }
-.tb-pop-head{ font-weight:800; color:#eaf1ff; margin-bottom:8px; }
-.tb-pop select{ width:100%; }
-
-/* KZ Dock’u gizle (artık üst barda ikonlar var) */
-.kzDock{ display:none !important; }

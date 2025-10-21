@@ -42,21 +42,21 @@
   on(btnPip, 'click', () => { $('#openDocPipBtn')?.click(); });
 
   // i18n değişirse başlıkları güncelle (varsa)
-  try{
+ try{
     const I = window.I18N || {};
     const getLang = () => $('#langSelect')?.value || 'tr';
     const paint = () => {
-      const L = getLang();
-      btnTheme.title = 'Tema';
-      btnLang.title  = (I[L]?.labelLang || I.tr?.labelLang || 'Dil');
-      btnFr.title    = 'Arkadaşlar';
-      btnWn.title    = (I[L]?.wnTitle || I.tr?.wnTitle || 'Wellness Defteri');
-      btnPip.title   = (I[L]?.docpip || I.tr?.docpip || 'Doc PiP');
+      const L = getLang(), T = (k)=> (I[L]?.[k] ?? I.tr?.[k] ?? k);
+      btnTheme.title = 'Tema'; $('#lblTheme').textContent = 'Tema';
+      btnLang.title  = T('labelLang'); $('#lblLang').textContent = T('labelLang');
+      btnFr.title    = T('frNewFriend'); $('#lblFriends').textContent = 'Arkadaşlar';
+      btnWn.title    = T('wnTitle'); $('#lblWell').textContent = 'Wellness';
+      btnPip.title   = T('docpip'); $('#lblPip').textContent = T('docpip');
+
       popTheme.querySelector('.tb-pop-head').textContent = 'Tema';
-      popLang.querySelector('.tb-pop-head').textContent  = I[L]?.labelLang || I.tr?.labelLang || 'Dil';
+      popLang.querySelector('.tb-pop-head').textContent  = T('labelLang');
     };
     paint();
-    // langSelect değişir değişmez repaint
     $('#langSelect')?.addEventListener('change', paint);
-  }catch{}
+  }catch(e){}
 })();
