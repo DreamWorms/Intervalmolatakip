@@ -10,6 +10,21 @@
   <header class="topbar">
     <div class="brand">DDS <span class="muted">Interval Mola Takip</span></div>
     <div class="actions">
+      <label for="themeSelect" class="muted" style="margin-left:8px">Tema</label>
+<select id="themeSelect" aria-label="Tema seçimi">
+  <option value="">Varsayılan</option>
+  <option value="telus">TELUS Digital</option>
+  <option value="xarp">XARP</option>
+  <option value="hellokitty">Hello Kitty</option>
+  <option value="halloween">Halloween</option>
+  <option value="generals">Generals</option>
+  <option value="pirates">Pirates of Keyframe</option>
+  <option value="tdog">TDOG</option>
+  <option value="cp77">Cyberpunk 2077</option>
+  <option value="berserk1">Berserk 1</option>
+  <option value="berserk2">Berserk 2</option>
+  <option value="xmas">XMAS</option>
+</select>
       <label for="langSelect" class="muted" id="labelLang">Dil</label>
       <select id="langSelect" aria-label="Dil seçimi">
         <option value="tr">Türkçe</option>
@@ -134,7 +149,7 @@
       <div id="breakGrid" class="break-grid"></div>
     </section>
   </main>
-
   <script type="module" src="./src/main.js"></script>
+  <div id="themeBackdrop" aria-hidden="true"></div>
 </body>
 </html>

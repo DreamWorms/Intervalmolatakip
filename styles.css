@@ -453,3 +453,52 @@ button.ghost{ background:transparent }
   text-align:center;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
+
+/* ===== Wallpaper katmanı (sabit) ===== */
+#themeBackdrop{
+  position: fixed;
+  inset: 0;
+  z-index: -1;                 /* tüm UI'nin arkasında */
+  background: #0b0d11 center/cover no-repeat; /* varsayılan */
+  filter: none;
+}
+
+/* ===== Temaya göre SADECE wallpaper ===== */
+html[data-theme="telus"] #themeBackdrop{
+  background: url("https://i.ibb.co/0RKMsTXD/Telus-Digital.png") center/cover no-repeat;
+  filter: saturate(1.08) brightness(1.04);
+}
+html[data-theme="xarp"] #themeBackdrop{
+  background: url("https://i.ibb.co/jvDFh0rY/alien-xenomorph-3840x2160-18665.jpg") center/cover no-repeat;
+  filter: saturate(1.02) brightness(0.95);
+}
+html[data-theme="hellokitty"] #themeBackdrop{
+  background: url("https://i.ibb.co/M55jMCph/Ads-z-tasar-m-3.png") center/cover no-repeat;
+  filter: saturate(1.05) brightness(1.04);
+}
+html[data-theme="halloween"] #themeBackdrop{
+  background: url("https://i.ibb.co/twQcSH2r/Ads-z-tasar-m-5.png") center/cover no-repeat;
+  filter: saturate(1.04) brightness(1.02);
+}
+html[data-theme="generals"] #themeBackdrop{
+  background: url("https://i.ibb.co/Psx5Wvd9/Ads-z-tasar-m-7.png") center/cover no-repeat;
+  filter: saturate(1.02) brightness(1.01);
+}
+html[data-theme="pirates"] #themeBackdrop{
+  background: url("https://i.ibb.co/5XkJHz99/Pirates-Of-Keyframe-2.png") center/cover no-repeat;
+}
+html[data-theme="tdog"] #themeBackdrop{
+  background: url("https://i.ibb.co/1Y3PjMYQ/TDOG2.png") center/cover no-repeat;
+}
+html[data-theme="cp77"] #themeBackdrop{
+  background: url("https://i.ibb.co/dJw3jdvK/CP77.png") center/cover no-repeat;
+}
+html[data-theme="berserk1"] #themeBackdrop{
+  background: url("https://i.ibb.co/N25fFpHt/Berserk-1.jpg") center/cover no-repeat;
+}
+html[data-theme="berserk2"] #themeBackdrop{
+  background: url("https://i.ibb.co/HLWJqfXp/Berserk-2.jpg") center/cover no-repeat;
+}
+html[data-theme="xmas"] #themeBackdrop{
+  background: url("https://i.ibb.co/zhvjDvTH/XMAX.png") center/cover no-repeat;
+}

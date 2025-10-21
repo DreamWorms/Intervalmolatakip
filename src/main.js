@@ -153,3 +153,23 @@ mountBreaks('#breakGrid');
 mountSpecialIntervalUI();
 mountTimePill();           // << burası önemli
 startDashboardTicker();
+
+// ========== Wallpaper Tema Seçici ==========
+(function () {
+  const root = document.documentElement;
+  const sel  = document.getElementById('themeSelect');
+  if (!sel) return;
+
+  // açılışta kaydedilmiş temayı yükle
+  const saved = localStorage.getItem('theme') || '';
+  if (saved) root.setAttribute('data-theme', saved);
+  sel.value = saved;
+
+  // değişince uygula + kaydet
+  sel.addEventListener('change', (e) => {
+    const v = e.target.value || '';
+    if (v) root.setAttribute('data-theme', v);
+    else root.removeAttribute('data-theme');
+    localStorage.setItem('theme', v);
+  });
+})();
