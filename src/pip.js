@@ -42,7 +42,7 @@ export async function openDocPiP(){
       display:grid;
       grid-template-columns: auto 1fr auto;
       align-items:center;
-      gap:12px;
+      gap:8px;
       padding:6px 8px;
       border:1px solid var(--stroke);
       border-radius:12px;
