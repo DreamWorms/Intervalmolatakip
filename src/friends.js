@@ -4,7 +4,7 @@
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
   const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
-  // UI
+  // UI refs (bazıları null olabilir, on() zaten korumalı)
   const openBtn   = $('#openFriends');
   const grid      = $('#frGrid');
   const olapList  = $('#olapList');
@@ -13,15 +13,10 @@
   const frAdd     = $('#btnFrAdd');
   const frDel     = $('#btnFrDel');
   const frPipChk  = $('#frPip');
-
-  const pip       = $('#frPipPanel');
-  const pipTitle  = $('#frPipTitle');
-  const pipBreaks = $('#frPipBreaks');
-  const pipOlap   = $('#frPipOverlaps');
   const pipMin    = $('#frPipMin');
   const pipClose  = $('#frPipClose');
 
-  // Slot şablonları (arkadaşta süre sabit; kullanıcı sadece başlangıç yazar)
+  // Slot şablonları (süre sabit)
   const SLOT_DEFS = [
     ['Rest 1',15], ['Rest 2',15], ['Lunch',45], ['Wellness 1',16],
     ['Wellness 2',16], ['Wellness 3',62], ['Meeting',15], ['Meeting/Quiz',30],
@@ -50,7 +45,7 @@
 
   // Benim molalarım — ana gridten okunur
   let myBreaks = [];
-  window.kzSetMyBreaks = (arr=[]) => {               // dışarıdan beslemek istersek
+  window.kzSetMyBreaks = (arr=[]) => {
     myBreaks = arr.map(x=>{
       const start = x.start;
       const end   = x.end || (x.min ? endBy(x.start, x.min) : '');
@@ -65,13 +60,10 @@
     const out = [];
     tiles.forEach(t=>{
       const label = (t.querySelector('.tile-title')?.textContent || t.getAttribute('data-label') || '').trim() || 'Break';
-
-      // Süre: rozetten sayıyı çek
       let min = 0;
       const pill = t.querySelector('.badge, .pill');
       if (pill) { const m = parseInt(pill.textContent,10); if (m>0) min = m; }
 
-      // Başlangıç: input[type=time] yoksa textarea içindeki ilk HH:MM
       let start = '';
       const timeI = t.querySelector('input[type="time"]');
       if (timeI && HHMM.test(timeI.value)) start = timeI.value;
@@ -94,14 +86,12 @@
     const g = $('#breakGrid'); if(!g) return;
     const mo = new MutationObserver(()=>{ scrapeMyBreaks(); updateAll(); });
     mo.observe(g, { subtree:true, childList:true, attributes:true, characterData:true });
-
     g.addEventListener('input',  e => { if (e.target.matches('input, textarea, select')) { scrapeMyBreaks(); updateAll(); } }, true);
     g.addEventListener('change', e => { if (e.target.matches('input, textarea, select')) { scrapeMyBreaks(); updateAll(); } }, true);
-
     scrapeMyBreaks();
   }
 
-  // Arkadaş slot gridini kur (SÜRE alanı yok)
+  // Arkadaş slot gridini kur (süre alanı yok)
   function buildSlots(){
     if(!grid || grid.childElementCount) return;
     SLOT_DEFS.forEach(([label, def], i)=>{
@@ -124,7 +114,7 @@
         let s = f.slots.find(x=>x.id===id);
         if(!s){ s = {id,label,start:'',min:def,end:'',note:''}; f.slots.push(s); }
         s.start = startEl.value || '';
-        s.min   = def;                                   // dakika sabit
+        s.min   = def;
         s.end   = s.start ? endBy(s.start, s.min) : '';
         s.note  = noteEl.value || '';
         save(); updateAll();
@@ -137,8 +127,8 @@
   function fillFromFriend(){
     const f = cur();
     renderFriendSelect();
-    frName.value = f?.name || '';
-    frPipChk.checked = !!st.pipVisible;
+    if (frName)    frName.value = f?.name || '';
+    if (frPipChk)  frPipChk.checked = !!st.pipVisible;
 
     SLOT_DEFS.forEach(([label,def], i)=>{
       const id = `slot_${i}`;
@@ -153,6 +143,7 @@
   }
 
   function renderFriendSelect(){
+    if (!frSelect) return;
     frSelect.innerHTML = st.friends.map(f=>`<option value="${f.id}">${f.name||'(adsız)'}</option>`).join('');
     if(st.selectedId) frSelect.value = st.selectedId;
   }
@@ -166,7 +157,7 @@
 
   function calcOverlaps(){
     const f = cur();
-    if(!f){ olapList.innerHTML='Arkadaş yok.'; return []; }
+    if(!f){ if (olapList) olapList.innerHTML='Arkadaş yok.'; return []; }
 
     const slots = (f.slots||[])
       .filter(x=>x.start && (x.min||0)>0)
@@ -180,47 +171,49 @@
     });
     out.sort((a,b)=> toMin(a.start)-toMin(b.start));
 
-    olapList.innerHTML = out.length
-      ? out.map(r=>`<div>• <strong>${r.me}</strong> ↔ <em>${r.fr}</em>: ${r.start}–${r.end} (${r.min} dk)</div>`).join('')
-      : 'Kesişim bulunamadı.';
+    if (olapList) {
+      olapList.innerHTML = out.length
+        ? out.map(r=>`<div>• <strong>${r.me}</strong> ↔ <em>${r.fr}</em>: ${r.start}–${r.end} (${r.min} dk)</div>`).join('')
+        : 'Kesişim bulunamadı.';
+    }
     return out;
   }
 
+  // Sol üst PiP panel (yerel query + guard)
   function renderPip(overlaps){
-  const pip = document.getElementById('frPipPanel');
-  if (!pip) return; // DOM henüz yoksa sessizce çık
-  pip.setAttribute('aria-hidden', String(!st.pipVisible));
-  pip.dataset.collapsed = st.pipCollapsed ? 'true' : 'false';
-}
+    const panel = document.getElementById('frPipPanel');
+    const title = document.getElementById('frPipTitle');
+    const listB = document.getElementById('frPipBreaks');
+    const listO = document.getElementById('frPipOverlaps');
+    if (!panel || !title || !listB || !listO) return;
 
-  // Sol üst PiP panel
-  function renderPip(overlaps){
-    pip.setAttribute('aria-hidden', String(!st.pipVisible));
-    pip.dataset.collapsed = st.pipCollapsed ? 'true' : 'false';
+    panel.setAttribute('aria-hidden', String(!st.pipVisible));
+    panel.dataset.collapsed = st.pipCollapsed ? 'true' : 'false';
+
     const f = cur();
-    pipTitle.textContent = f ? `Arkadaş: ${f.name||'(adsız)'}` : 'Arkadaşlar';
+    title.textContent = f ? `Arkadaş: ${f.name||'(adsız)'}` : 'Arkadaşlar';
 
-    if(!f){ pipBreaks.textContent='–'; pipOlap.textContent='–'; return; }
+    if(!f){ listB.textContent='–'; listO.textContent='–'; return; }
 
     const b = (f.slots||[]).filter(x=>x.start && (x.min||0)>0)
       .map(x=>`• ${x.label}: ${x.start} → ${endBy(x.start,x.min)} (${x.min} dk)`).join('<br>');
-    pipBreaks.innerHTML = b || '–';
+    listB.innerHTML = b || '–';
 
     const list = overlaps || calcOverlaps();
-    pipOlap.innerHTML = list.length
+    listO.innerHTML = list.length
       ? list.map(r=>`• ${r.me} ↔ ${r.fr}: ${r.start}–${r.end} (${r.min} dk)`).join('<br>')
       : '–';
   }
 
   function updateAll(){
-    scrapeMyBreaks();               // ana ekrandan oku
-    const ol = calcOverlaps();      // kesişimler
-    renderPip(ol);                  // paneli güncelle
+    scrapeMyBreaks();
+    const ol = calcOverlaps();
+    renderPip(ol);
   }
 
   // Arkadaş CRUD
   function addFriend(){
-    const f = { id:uid(), name: (frName.value||'Yeni Arkadaş').trim(), slots:[] };
+    const f = { id:uid(), name: (frName?.value||'Yeni Arkadaş').trim(), slots:[] };
     st.friends.push(f); st.selectedId=f.id; save(); renderFriendSelect(); fillFromFriend();
   }
   function delFriend(){
@@ -238,7 +231,7 @@
 
   on(frPipChk,'change', ()=>{ st.pipVisible = frPipChk.checked; save(); renderPip(); });
   on(pipMin,'click', ()=>{ st.pipCollapsed = !st.pipCollapsed; save(); renderPip(); });
-  on(pipClose,'click', ()=>{ st.pipVisible = false; frPipChk.checked = false; save(); renderPip(); });
+  on(pipClose,'click', ()=>{ st.pipVisible = false; if (frPipChk) frPipChk.checked = false; save(); renderPip(); });
 
   on(openBtn,'click', ()=>{ buildSlots(); fillFromFriend(); hookBreakGrid(); });
 

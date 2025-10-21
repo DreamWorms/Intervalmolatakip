@@ -282,28 +282,33 @@
     </section>
   </main>
   
-<!-- Arkadaş PiP paneli (ana ekranda sağda) -->
-<div id="frPipPanel" class="frPip" aria-hidden="true" data-collapsed="false">
-  <div class="head">
-    <strong id="frPipTitle">Arkadaşlar</strong>
-    <div>
-      <button id="frPipMin" class="kzBtn">–</button>
-      <button id="frPipClose" class="kzBtn">✕</button>
+  </main>
+
+  <!-- Arkadaş PiP paneli (sol üst) -->
+  <div id="frPipPanel" class="frPip" aria-hidden="true" data-collapsed="false">
+    <div class="head">
+      <strong id="frPipTitle">Arkadaşlar</strong>
+      <div>
+        <button id="frPipMin" class="kzBtn">–</button>
+        <button id="frPipClose" class="kzBtn">✕</button>
+      </div>
+    </div>
+    <div class="body">
+      <div class="mini">Arkadaş Mola Blokları</div>
+      <div id="frPipBreaks" class="mini">–</div>
+      <div class="sep"></div>
+      <div class="mini">Kesişimler</div>
+      <div id="frPipOverlaps" class="mini">–</div>
     </div>
   </div>
-  <div class="body">
-    <div class="mini">Arkadaş Mola Blokları</div>
-    <div id="frPipBreaks" class="mini">–</div>
-    <div class="sep"></div>
-    <div class="mini">Kesişimler</div>
-    <div id="frPipOverlaps" class="mini">–</div>
-    <script type="module" src="./src/main.js"></script>
-<div id="themeBackdrop" aria-hidden="true"></div>
-<script src="src/dock.js"></script>
-<script src="src/friends.js"></script>
-<script src="src/wellnessBook.js"></script>
-<link rel="stylesheet" href="/src/theme-vars.css">
-  </div>
-</div>
+
+  <!-- script’ler BUNDAN SONRA -->
+  <script type="module" src="./src/main.js"></script>
+  <div id="themeBackdrop" aria-hidden="true"></div>
+  <script src="src/dock.js"></script>
+  <script src="src/friends.js"></script>
+  <script src="src/wellnessBook.js"></script>
+  <link rel="stylesheet" href="/src/theme-vars.css">
 </body>
 </html>
+
