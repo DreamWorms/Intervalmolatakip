@@ -24,19 +24,6 @@ export async function openDocPiP(){
 
     .wrap{ padding:10px; display:grid; gap:8px; }
 
-      <!-- 2 dk kala uyarı overlay -->
-  <div id="pipAlert" class="pip-alert" hidden>
-    <div class="alert-box">
-      <div class="soon">Mola Yaklaşıyor</div>
-      <div id="alertName" class="breakname">—</div>
-      <div class="ring">
-        <div id="alertCd" class="countdown">02:00</div>
-      </div>
-      <div class="hint tiny">Hazırlan: su al, esneme yap, gözleri dinlendir…</div>
-    </div>
-  </div>
-
-
     /* ÜST HUD: sol (interval), orta (saat), sağ (sıradaki) — tek satır, taşmadan */
     .hud{
       display:grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
@@ -85,57 +72,52 @@ export async function openDocPiP(){
     .ghost{ background:transparent }
 
     /* ==== 2 dk kala uyarı görünümü (overlay) ==== */
-.pip-alert{
-  position: fixed; inset: 0; z-index: 5;
-  display: grid; place-items: center;
-  background: rgba(0,0,0,.35);
-  backdrop-filter: blur(2px);
-}
-.pip-alert[hidden]{ display:none; }
+    .pip-alert{
+      position: fixed; inset: 0; z-index: 5;
+      display: grid; place-items: center;
+      background: rgba(0,0,0,.35);
+      backdrop-filter: blur(2px);
+    }
+    .pip-alert[hidden]{ display:none; }
 
-.pip-alert .alert-box{
-  text-align:center;
-  padding:14px 16px;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,.14);
-  background: linear-gradient(180deg, rgba(18,22,30,.96), rgba(18,22,30,.86));
-  box-shadow: 0 22px 60px rgba(0,0,0,.45);
-  min-width:min(360px, 90vw);
-}
+    .pip-alert .alert-box{
+      text-align:center;
+      padding:14px 16px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(18,22,30,.96), rgba(18,22,30,.86));
+      box-shadow: 0 22px 60px rgba(0,0,0,.45);
+      min-width:min(360px, 90vw);
+    }
 
-.pip-alert .soon{
-  font-weight:900; letter-spacing:.4px; margin-bottom:6px;
-}
-.pip-alert .breakname{
-  font-weight:800; opacity:.95; margin-bottom:10px;
-}
-.pip-alert .ring{
-  width:160px; height:160px; margin:6px auto 10px;
-  border-radius:50%; position:relative; display:grid; place-items:center;
-  background: radial-gradient(60% 60% at 50% 50%, rgba(255,111,177,.18), transparent 60%);
-}
-.pip-alert .ring::after{
-  content:""; position:absolute; inset:-6px; border-radius:50%;
-  border:6px solid transparent; border-top-color:#ff6fb1; border-right-color:#ff6fb1;
-  animation: pipSpin 1s linear infinite; opacity:.9;
-}
-@keyframes pipSpin { to { transform: rotate(360deg); } }
+    .pip-alert .soon{ font-weight:900; letter-spacing:.4px; margin-bottom:6px; }
+    .pip-alert .breakname{ font-weight:800; opacity:.95; margin-bottom:10px; }
+    .pip-alert .ring{
+      width:160px; height:160px; margin:6px auto 10px;
+      border-radius:50%; position:relative; display:grid; place-items:center;
+      background: radial-gradient(60% 60% at 50% 50%, rgba(255,111,177,.18), transparent 60%);
+    }
+    .pip-alert .ring::after{
+      content:""; position:absolute; inset:-6px; border-radius:50%;
+      border:6px solid transparent; border-top-color:#ff6fb1; border-right-color:#ff6fb1;
+      animation: pipSpin 1s linear infinite; opacity:.9;
+    }
+    @keyframes pipSpin { to { transform: rotate(360deg); } }
 
-.pip-alert .countdown{
-  font: 900 44px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  letter-spacing:1px;
-  padding:8px 10px; border-radius:12px;
-  border:1px solid rgba(255,255,255,.16);
-  background:linear-gradient(180deg, rgba(21,27,44,.65), rgba(12,18,32,.85));
-}
+    .pip-alert .countdown{
+      font: 900 44px/1 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      letter-spacing:1px;
+      padding:8px 10px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.16);
+      background:linear-gradient(180deg, rgba(21,27,44,.65), rgba(12,18,32,.85));
+    }
 
-/* uyarıdayken pencere kenarı hafif parlasın */
-body.alerting .counter-card,
-body.alerting .hud{
-  border-color:#ff6fb1 !important;
-  box-shadow: 0 0 0 1px rgba(255,111,177,.25), 0 18px 54px rgba(255,111,177,.28);
-}
-
+    /* uyarıdayken pencere kenarı hafif parlasın */
+    body.alerting .counter-card,
+    body.alerting .hud{
+      border-color:#ff6fb1 !important;
+      box-shadow: 0 0 0 1px rgba(255,111,177,.25), 0 18px 54px rgba(255,111,177,.28);
+    }
   </style>
 
   <div id="pipBackdrop"></div>
@@ -168,48 +150,57 @@ body.alerting .hud{
       </div>
     </div>
   </div>
+
+  <!-- 2 dk kala uyarı overlay (HTML BLOĞU STYLE’IN DIŞINDA!) -->
+  <div id="pipAlert" class="pip-alert" hidden>
+    <div class="alert-box">
+      <div class="soon">Mola Yaklaşıyor</div>
+      <div id="alertName" class="breakname">—</div>
+      <div class="ring"><div id="alertCd" class="countdown">02:00</div></div>
+      <div class="hint tiny">Hazırlan: su al, esneme yap, gözleri dinlendir…</div>
+    </div>
+  </div>
   `;
 
   const $ = (s, root=pip.document) => root.querySelector(s);
 
   // ==== UYARI MODU (2 dk kala) ====
-let inAlert = false;
-let lastBreakName = (document.getElementById('nextBreakName')?.textContent || 'Mola').trim();
+  let inAlert = false;
+  let lastBreakName = (document.getElementById('nextBreakName')?.textContent || 'Mola').trim();
 
-function parseEtaToSeconds(txt){
-  const m = (txt||'').match(/(\d{1,2}):(\d{2}):(\d{2})/);
-  if (!m) return null;
-  return (+m[1])*3600 + (+m[2])*60 + (+m[3]);
-}
-function fmtMMSS(secs){
-  const m = Math.floor(secs/60), s = secs%60;
-  return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-}
-function enterAlert(secs){
-  if (inAlert) {
-    $('#alertCd').textContent = fmtMMSS(secs);
-    $('#alertName').textContent = lastBreakName;
-    return;
+  function parseEtaToSeconds(txt){
+    const m = (txt||'').match(/(\d{1,2}):(\d{2}):(\d{2})/);
+    if (!m) return null;
+    return (+m[1])*3600 + (+m[2])*60 + (+m[3]);
   }
-  inAlert = true;
-  $('#alertName').textContent = lastBreakName;
-  $('#alertCd').textContent = fmtMMSS(secs);
-  pip.document.body.classList.add('alerting');
-  $('#pipAlert').hidden = false;
-}
-function exitAlert(){
-  if (!inAlert) return;
-  inAlert = false;
-  pip.document.body.classList.remove('alerting');
-  $('#pipAlert').hidden = true;
-}
-function checkAlertByEta(){
-  const txt = $('#pipNextEta')?.textContent || '';
-  const secs = parseEtaToSeconds(txt);
-  if (secs!=null && secs <= 120 && secs >= 0) enterAlert(secs);
-  else exitAlert();
-}
-
+  function fmtMMSS(secs){
+    const m = Math.floor(secs/60), s = secs%60;
+    return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+  function enterAlert(secs){
+    if (inAlert) {
+      $('#alertCd').textContent = fmtMMSS(secs);
+      $('#alertName').textContent = lastBreakName;
+      return;
+    }
+    inAlert = true;
+    $('#alertName').textContent = lastBreakName;
+    $('#alertCd').textContent = fmtMMSS(secs);
+    pip.document.body.classList.add('alerting');
+    $('#pipAlert').hidden = false;
+  }
+  function exitAlert(){
+    if (!inAlert) return;
+    inAlert = false;
+    pip.document.body.classList.remove('alerting');
+    $('#pipAlert').hidden = true;
+  }
+  function checkAlertByEta(){
+    const txt = $('#pipNextEta')?.textContent || '';
+    const secs = parseEtaToSeconds(txt);
+    if (secs!=null && secs <= 120 && secs >= 0) enterAlert(secs);
+    else exitAlert();
+  }
 
   // ——— Tema: değişkenleri ve duvar kâğıdını ana ekrandan aynen al
   const copyThemeVarsToPip = () => {
@@ -242,10 +233,10 @@ function checkAlertByEta(){
 
   // ——— i18n
   const paintTexts = () => {
-    $('#pipTaskLabel').textContent = t(S.lang, 'taskTitle')          || 'Task';
-    $('#pipNextLabel').textContent = t(S.lang, 'nextBreakTitle')     || 'Next';
-    $('#r').textContent            = t(S.lang, 'reset')              || 'Reset';
-    $('#pipHint').textContent      = t(S.lang, 'pipPadHint')         || 'Sol tık +1 · Sağ tık −1';
+    $('#pipTaskLabel').textContent = t(S.lang, 'taskTitle')      || 'Task';
+    $('#pipNextLabel').textContent = t(S.lang, 'nextBreakTitle') || 'Next';
+    $('#r').textContent            = t(S.lang, 'reset')          || 'Reset';
+    $('#pipHint').textContent      = t(S.lang, 'pipPadHint')     || 'Sol tık +1 · Sağ tık −1';
     $('#pad').title                = $('#pipHint').textContent;
   };
   paintTexts();
@@ -275,21 +266,22 @@ function checkAlertByEta(){
   // ——— Dashboard snapshot
   const applyDash = (d) => {
     if (!d) return;
-    $('#pipClock').textContent   = d.clock || '--:--:--';
+    $('#pipClock').textContent       = d.clock || '--:--:--';
     $('#pipTaskAmount').textContent  = String(d.task?.amount ?? 0);
-   if (d.next){
-  lastBreakName = (d.next.name || document.getElementById('nextBreakName')?.textContent || lastBreakName || 'Mola').trim();
-  $('#pipNextEta').textContent  = d.next.eta;
-} else {
-  $('#pipNextEta').textContent  = '--:--:--';
-}
+    if (d.next){
+      // isim varsa al; yoksa ana sayfadaki #nextBreakName’den kopyala
+      lastBreakName = (d.next.name || document.getElementById('nextBreakName')?.textContent || lastBreakName || 'Mola').trim();
+      $('#pipNextEta').textContent  = d.next.eta;
+    } else {
+      $('#pipNextEta').textContent  = '--:--:--';
+    }
   };
 
   applyDash(window.__KZS_LAST_DASH__);
   const syncTimer = setInterval(() => {
     if (pip.closed) { clearInterval(syncTimer); return; }
     applyDash(window.__KZS_LAST_DASH__);
-    checkAlertByEta(); 
+    checkAlertByEta();          // 2 dk kala uyarıyı yönet
     copyThemeVarsToPip();
     copyWallpaperToPip();
   }, 1000);
