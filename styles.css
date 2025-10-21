@@ -1220,3 +1220,63 @@ html, body{ overflow-x:hidden; }
 .tb-icn.pip-glow::after {
   pointer-events: none;
 }
+
+/* === PiP glow — softer override (put this at the very end) === */
+.tb-icn.pip-glow{
+  /* daha dar ve düşük yayılım */
+  border: 1px solid hsl(var(--pipHue) 100% 70% / .45);
+  background:
+    radial-gradient(100% 100% at 30% 20%,
+      hsl(var(--pipHue) 100% 65% / .10),
+      hsl(var(--pipHue) 100% 50% / .05) 38%,
+      transparent 68%);
+  box-shadow:
+    0 0 0 1px hsl(var(--pipHue) 100% 75% / .28) inset,
+    0 0 12px 6px  hsl(var(--pipHue) 100% 60% / .40),
+    0 0 28px 12px hsl(var(--pipHue) 100% 60% / .28);
+  filter:
+    drop-shadow(0 0 10px hsl(var(--pipHue) 100% 65% / .50))
+    drop-shadow(0 0 26px hsl(var(--pipHue) 100% 60% / .30));
+}
+
+.tb-icn.pip-glow .pip-label{
+  /* metin parıltısı da daha dengeli */
+  text-shadow:
+    0 0 3px  hsl(var(--pipHue) 100% 85% / .80),
+    0 0 10px hsl(var(--pipHue) 100% 70% / .70),
+    0 0 18px hsl(var(--pipHue) 100% 60% / .60);
+}
+
+/* dıştaki nabız: daha küçük alan + yumuşak */
+.tb-icn.pip-glow::before{
+  inset:-14px;
+  background: radial-gradient(60% 60% at 50% 50%,
+              hsl(var(--pipHue) 100% 60% / .25), transparent 62%);
+  animation: pipPulseSoft 2.0s ease-in-out infinite;
+}
+@keyframes pipPulseSoft{
+  0%,100% { transform:scale(.94); opacity:.45; }
+  50%     { transform:scale(1.08); opacity:.85; }
+}
+
+/* dönen halka: daha ince ve daha dar */
+.tb-icn.pip-glow::after{
+  inset:-6px;
+  background: conic-gradient(
+     from 0deg,
+     hsl(var(--pipHue) 100% 75% / 0) 0 42%,
+     hsl(var(--pipHue) 100% 75% / .75) 55%,
+     hsl(var(--pipHue) 100% 75% / 0) 70% 100%
+  );
+  -webkit-mask: radial-gradient(closest-side, transparent 78%, #000 80%);
+          mask: radial-gradient(closest-side, transparent 78%, #000 80%);
+  filter: blur(.6px);
+  opacity:.75;
+  animation: pipSpinSoft 1.4s linear infinite;
+}
+@keyframes pipSpinSoft { to { transform: rotate(360deg); } }
+
+/* (eski “tb-pip” bloğun ağır glow’u varsa iptal et) */
+.tb-icn.tb-pip{ box-shadow:none !important; }
+.tb-icn.tb-pip::before,
+.tb-icn.tb-pip::after{ content:none !important; }
