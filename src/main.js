@@ -57,6 +57,41 @@ function paintTexts(){
 }
 paintTexts();
 
+// === Üst bar ikon etiketlerini boyayan fonksiyon
+function paintIconbarLabels(){
+  const set = (sel, key, fallback='')=>{
+    const el = document.querySelector(sel);
+    if (!el) return;
+    el.textContent = key ? (t(S.lang, key) || fallback) : (fallback || '');
+  };
+
+  set('#tbThemeLbl',   'navTheme');
+  set('#tbLangLbl',    'labelLang');
+  set('#tbFriendsLbl', 'navFriends');
+
+  // Wellness çevirilmesin
+  const wl = document.querySelector('#tbWellnessLbl');
+  if (wl) wl.textContent = 'Wellness';
+
+  // PiP kısa ve sabit
+  set('#tbPipLbl', 'navPip');
+
+  // buton title'ları da dil alsın
+  const themeBtn   = document.querySelector('#btnTheme');
+  const langBtn    = document.querySelector('#btnLang');
+  const frBtn      = document.querySelector('#openFriends');
+  const wlBtn      = document.querySelector('#openWellness');
+  const pipBtn     = document.querySelector('#openDocPipBtn');
+  if (themeBtn) themeBtn.title = t(S.lang, 'navTheme');
+  if (langBtn)  langBtn.title  = t(S.lang, 'labelLang');
+  if (frBtn)    frBtn.title    = t(S.lang, 'navFriends');
+  if (wlBtn)    wlBtn.title    = 'Wellness';
+  if (pipBtn)   pipBtn.title   = 'PiP';
+}
+paintIconbarLabels();
+sub('lang', paintIconbarLabels);
+
+
 // Sayaç — PAD + kısayollar (sol tık +1 / sağ tık −1)
 const counterPad   = document.getElementById('counterPad');
 const shortcutBtns = document.querySelectorAll('.counter-actions [data-step]');

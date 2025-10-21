@@ -949,14 +949,15 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
   pointer-events:none !important;
 }
 
-/* ==== Iconbar kompakt ==== */
+/* === Iconbar kompakt ve ortalı === */
 .iconbar{ display:flex; align-items:flex-start; gap:10px; }
 .tb-item{ display:flex; flex-direction:column; align-items:center; gap:4px; min-width:54px; }
 
-/* 44x44 kutu, tam ortalı; svg 22px */
 .tb-icn{
   position:relative;
-  width:44px; height:44px; display:grid; place-items:center;
+  width:44px; height:44px;
+  display:grid; place-items:center;    /* tam ortalama */
+  line-height:0;                        /* baseline ofseti engelle */
   border-radius:12px;
   border:1px solid rgba(255,255,255,.18);
   background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.03));
@@ -964,10 +965,12 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
   box-shadow:0 8px 20px rgba(0,0,0,.35);
   transition:transform .12s ease, box-shadow .18s ease, border-color .18s ease, filter .18s ease;
   will-change: transform;
-  contain: paint;           /* taşan ışıklar layout'a etki etmesin */
+  contain: paint;                       /* parıltı layout'u bozmasın */
 }
 .tb-icn:hover{ transform:translateY(-1px); box-shadow:0 12px 28px rgba(0,0,0,.45) }
-.tb-icn svg{ width:22px; height:22px; display:block; }
+
+.tb-icn .ico{ width:22px; height:22px; display:grid; place-items:center; }
+.tb-icn .ico svg{ width:20px; height:20px; display:block; }
 
 .tb-label{
   font-weight:800; font-size:11px; line-height:1.1;
@@ -975,48 +978,56 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
   text-shadow:0 1px 1px rgba(0,0,0,.45);
 }
 
-/* ==== Doc PiP — güçlü ama taşma yapmayan neon ==== */
+/* ===== DOC PiP: metin + ultra neon ===== */
 .tb-icn.tb-pip{
-  border-color: color-mix(in srgb, var(--accent2) 65%, transparent);
+  border-color: rgba(255,111,177,.75);
   background:
-    radial-gradient(58% 58% at 50% 50%, rgba(255,111,177,.18), transparent 60%),
-    linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.02));
+    radial-gradient(60% 60% at 50% 50%, rgba(255,111,177,.22), transparent 62%),
+    linear-gradient(180deg,rgba(255,255,255,.14),rgba(255,255,255,.03));
   box-shadow:
-    0 0 0 2px rgba(255,111,177,.45),
-    0 0 26px 10px rgba(255,111,177,.45),
-    0 0 56px 20px rgba(25,212,255,.28),
-    inset 0 0 18px rgba(255,111,177,.45);
+    0 0 0 2px rgba(255,111,177,.55),
+    0 0 32px 14px rgba(255,111,177,.55),
+    0 0 80px 28px rgba(25,212,255,.35),
+    inset 0 0 22px rgba(255,111,177,.55);
   isolation:isolate;
 }
+.tb-icn.tb-pip .pipText{
+  font: 900 16px/1 Inter, system-ui;
+  letter-spacing:.8px;
+  color:#ffffff;
+  text-shadow:
+    0 0 6px rgba(255,255,255,1),
+    0 0 18px rgba(255,111,177,1),
+    0 0 34px rgba(25,212,255,.9);
+}
 
-/* dönen neon halo (kutu sınırında tutuldu, overflow yok) */
 .tb-icn.tb-pip::before{
-  content:""; position:absolute; inset:-4px; border-radius:14px; z-index:-1;
+  content:""; position:absolute; inset:-5px; border-radius:14px; z-index:-1;
   background:conic-gradient(from 0deg,
     rgba(255,111,177,.00),
-    rgba(255,111,177,.75),
-    rgba(25,212,255,.75),
-    rgba(255,111,177,.75),
+    rgba(255,111,177,.90),
+    rgba(25,212,255,.90),
+    rgba(255,111,177,.90),
     rgba(255,111,177,.00));
-  filter:blur(10px);
-  animation:neonSpin 4.5s linear infinite;
+  filter:blur(12px);
+  animation:neonSpin 3.8s linear infinite;
   pointer-events:none;
 }
 .tb-icn.tb-pip::after{
-  content:""; position:absolute; inset:-1px; border-radius:13px; z-index:-1;
+  content:""; position:absolute; inset:-2px; border-radius:13px; z-index:-1;
   box-shadow:
-    0 0 28px 12px rgba(255,111,177,.55),
-    0 0 70px 22px rgba(25,212,255,.30);
-  animation:neonPulse 2s ease-in-out infinite;
+    0 0 38px 18px rgba(255,111,177,.70),
+    0 0 95px 36px rgba(25,212,255,.40);
+  animation:neonPulse 1.8s ease-in-out infinite;
   pointer-events:none;
 }
 
 @keyframes neonSpin { to { transform: rotate(360deg); } }
 @keyframes neonPulse {
   0%,100%{ opacity:.9; transform:scale(.985); }
-  50%{ opacity:1; transform:scale(1.015); }
+  50%{ opacity:1;   transform:scale(1.02); }
 }
 
-/* Parıltı sayfa scrollbar'ını tetiklemesin */
-.topbar, .iconbar{ overflow:visible; }
+/* parıltı yüzünden yatay scrollbar oluşmasın */
 html, body{ overflow-x:hidden; }
+

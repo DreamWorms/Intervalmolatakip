@@ -45,6 +45,10 @@ const I18N = {
     wnPlan: 'Plan',
     wnWeekSep: '→',  
 
+    navTheme: 'Tema',        
+    navFriends: 'Arkadaşlar',
+    navPip: 'PiP',           
+
     // — PiP 2 dk overlay
     pipSoonTitle: 'Mola Yaklaşıyor',
     pipPrepareHint: 'Hazırlan: su al, esneme yap, gözleri dinlendir…',
@@ -108,6 +112,9 @@ const I18N = {
     wnPlan: 'Plan',
     wnWeekSep: '→',
 
+    navTheme: 'Theme',      
+    navFriends: 'Friends',
+    navPip: 'PiP',           
 
     // — PiP overlay
     pipSoonTitle: 'Break Starting Soon',
@@ -171,6 +178,9 @@ const I18N = {
     wnPlan: 'Plan',
     wnWeekSep: '→',
 
+    navTheme: 'Thema',     
+    navFriends: 'Freunde',
+    navPip: 'PiP',           
 
     // — PiP overlay
     pipSoonTitle: 'Pause steht bevor',
@@ -234,6 +244,9 @@ const I18N = {
     wnPlan: 'План',
     wnWeekSep: '→',
 
+    navTheme: 'Тема',       
+    navFriends: 'Приятели',
+    navPip: 'PiP',           
 
     // — PiP overlay
     pipSoonTitle: 'Почивката наближава',
