@@ -597,3 +597,25 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
   .kchip{ padding:7px 10px; gap:6px }
   .kchip .label{ font-weight:800 }
 }
+
+/* Dış satır: tam genişlik + ortalama */
+.season-row{
+  width:100%;
+  display:grid;               /* grid = ortalama işinde çok sağlam */
+  margin: 4px 0 8px;
+}
+
+/* İçteki kutuyu grid içinde yatayda tam ortaya koy */
+.season-row > .season-badges{
+  justify-self:center;        /* ← tam ortaya */
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+/* (İsteğe bağlı) sayfanın ana container genişliğine otursun */
+.container .season-row{
+  max-width: var(--container-max, 1200px);
+  margin-left:auto;
+  margin-right:auto;
+}
