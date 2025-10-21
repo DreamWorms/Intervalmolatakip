@@ -1210,3 +1210,13 @@ html, body{ overflow-x:hidden; }
   .tb-icn.pip-glow::before,
   .tb-icn.pip-glow::after{ animation: none; }
 }
+
+/* PiP butonu tıklanabilir kalsın */
+#btnDocPip,
+.tb-icn.pip-glow{ position:relative; overflow:visible; cursor:pointer; }
+
+/* Neon katmanları tıklamayı engellemesin */
+.tb-icn.pip-glow::before,
+.tb-icn.pip-glow::after{
+  pointer-events: none;
+}
