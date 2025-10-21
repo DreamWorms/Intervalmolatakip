@@ -88,14 +88,27 @@ export async function openDocPiP(){
   </div>
   `;
 
-  // PiP arka planını ana sayfadaki wallpaper ile eşle
+  // === Tema/WALLPAPER'ı PiP'e kopyala ===
 const copyWallpaperToPip = () => {
-  const bg = getComputedStyle(document.getElementById('themeBackdrop')).background;
-  pip.document.body.style.background = bg;
-  pip.document.body.style.backgroundSize = 'cover';
-  pip.document.body.style.backgroundPosition = 'center';
+  const backdrop = document.getElementById('themeBackdrop');
+  if (!backdrop) return;
+  const cs = getComputedStyle(backdrop);
+  const st = pip.document.body.style;
+  // tek seferde tüm arka planı geçir
+  st.background = cs.background;                 // görsel + konum + renk
+  st.backgroundSize = cs.backgroundSize || 'cover';
+  st.backgroundPosition = cs.backgroundPosition || 'center';
+  st.backgroundRepeat = cs.backgroundRepeat || 'no-repeat';
 };
+// ilk boyama
 copyWallpaperToPip();
+
+// Tema değişimini (html[data-theme]) izle ve PiP'i güncelle
+const _mo = new MutationObserver(copyWallpaperToPip);
+_mo.observe(document.documentElement, {
+  attributes: true,
+  attributeFilter: ['data-theme']
+});
 
 
   const $ = (s, root=pip.document) => root.querySelector(s);
@@ -164,10 +177,12 @@ copyWallpaperToPip();
   const syncTimer = setInterval(() => {
     if (pip.closed) { clearInterval(syncTimer); return; }
     applyDash(window.__KZS_LAST_DASH__);
+    copyWallpaperToPip();
   }, 1000);
 
   // Temizlik
   pip.addEventListener('pagehide', () => {
     unCounter(); unLang(); clearInterval(syncTimer);
+    _mo.disconnect();
   });
 }
