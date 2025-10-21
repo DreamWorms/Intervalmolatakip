@@ -905,3 +905,10 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
 #frPipPanel .sep{ margin:8px 0; border-top:1px dashed rgba(255,255,255,.1); }
 #frPipPanel[data-collapsed="true"] .body{ display:none; }
 #frPipMin, #frPipClose{ padding:4px 8px; border-radius:8px; }
+
+/* Friends modal: dakika rozetini ve sayı alanını tamamen gizle */
+#friendsBody .frTile .pill,
+#friendsBody .frTile .tileBody .mins { display:none !important; }
+
+/* Gövde 1 sütun kalsın (süre input'u kalkınca boş yer kalmasın) */
+#friendsBody .frTile .tileBody { grid-template-columns: 1fr !important; }
