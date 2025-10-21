@@ -14,7 +14,8 @@ const I18N = {
     taskTitle: 'Mevcut Interval',
     taskActive: 'Hedef',
     nextBreakTitle: 'Sıradaki Mola',
-    
+    pipPadHint:'Sayaç',
+
     breaksTitle: 'Breaks',
     clearBreaks: 'Molaları Sil',
     durationMins: 'Duration',
@@ -57,6 +58,7 @@ const I18N = {
     taskTitle: 'Current Interval',
     taskActive: 'Target',
     nextBreakTitle: 'Next Break',
+    pipPadHint:'Counter',
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Clear breaks',
@@ -100,6 +102,7 @@ const I18N = {
     taskTitle: 'Aktuelles Intervall',
     taskActive: 'Ziel',
     nextBreakTitle: 'Nächste Pause',
+    pipPadHint:'Zähler',
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Pausen löschen',
@@ -143,6 +146,7 @@ const I18N = {
     taskTitle: 'Tekusht interval',
     taskActive: 'Tsel',
     nextBreakTitle: 'Sledvashta Pochivka',
+    pipPadHint:'Брояч',
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Изтриване на почивки',
