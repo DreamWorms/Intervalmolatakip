@@ -11,6 +11,11 @@ export async function openDocPiP(){
   // === UI (tam ekran pad) ===
   pip.document.body.innerHTML = `
   <style>
+  html, body{ height:100%; background:transparent !important; }  /* beyazlık yok */
+#pipBackdrop{
+  position:fixed; inset:0; z-index:-1;              /* tüm pencereyi kapla */
+  background:#0b0d12 center/cover no-repeat fixed;  /* fallback + cover */
+}
     :root{
       --bg:#0b0d12; --panel:#0f1522cc; --stroke:#273246; --fg:#e9edf4; --muted:#9aa6b2;
     }
@@ -55,6 +60,7 @@ export async function openDocPiP(){
     .top-hint{ text-align:right; font-size:12px; color:var(--muted); }
   </style>
 
+  <div id="pipBackdrop"></div>
   <div class="wrap">
     <div id="pipClock" class="clock">--:--:--</div>
 
@@ -88,27 +94,30 @@ export async function openDocPiP(){
   </div>
   `;
 
-  // === Tema/WALLPAPER'ı PiP'e kopyala ===
+ // === Tema/WALLPAPER'ı PiP'e kopyala (cover, center, no-repeat) ===
 const copyWallpaperToPip = () => {
-  const backdrop = document.getElementById('themeBackdrop');
-  if (!backdrop) return;
-  const cs = getComputedStyle(backdrop);
-  const st = pip.document.body.style;
-  // tek seferde tüm arka planı geçir
-  st.background = cs.background;                 // görsel + konum + renk
-  st.backgroundSize = cs.backgroundSize || 'cover';
-  st.backgroundPosition = cs.backgroundPosition || 'center';
-  st.backgroundRepeat = cs.backgroundRepeat || 'no-repeat';
+  const src = document.getElementById('themeBackdrop');
+  const wall = pip.document.getElementById('pipBackdrop');
+  if (!src || !wall) return;
+
+  const cs = getComputedStyle(src);
+
+  // Görsel/gradient katmanlarını ve rengi al
+  wall.style.backgroundImage    = cs.backgroundImage;    // url(...) veya gradient(...)
+  wall.style.backgroundColor    = (cs.backgroundColor && cs.backgroundColor !== 'rgba(0, 0, 0, 0)') ? cs.backgroundColor : '#0b0d12';
+  wall.style.backgroundPosition = cs.backgroundPosition || 'center';
+  wall.style.backgroundRepeat   = 'no-repeat';
+  wall.style.backgroundSize     = 'cover';
+  wall.style.backgroundAttachment = 'fixed';             // pencereye sabitle
 };
+
 // ilk boyama
 copyWallpaperToPip();
 
-// Tema değişimini (html[data-theme]) izle ve PiP'i güncelle
+// Tema (html[data-theme]) değişince yeniden boya
 const _mo = new MutationObserver(copyWallpaperToPip);
-_mo.observe(document.documentElement, {
-  attributes: true,
-  attributeFilter: ['data-theme']
-});
+_mo.observe(document.documentElement, { attributes:true, attributeFilter:['data-theme'] });
+
 
 
   const $ = (s, root=pip.document) => root.querySelector(s);
