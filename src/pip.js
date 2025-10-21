@@ -20,11 +20,12 @@ export async function openDocPiP(){
     }
 
     :root{
-      --panel: rgba(10,14,22,.70);
-      --stroke:#273246;
-      --fg:#e9edf4;
-      --muted:#9aa6b2;
-    }
+  --bg:#0b0d12; 
+  --panel:rgba(18,16,26,.55);
+  --stroke:rgba(144,224,255,.25); 
+  --fg:#e9edf4; 
+  --muted:#9aa6b2;
+}
     body{
       margin:0; color:var(--fg);
       font:14px/1.55 system-ui,Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;

@@ -502,3 +502,82 @@ html[data-theme="berserk2"] #themeBackdrop{
 html[data-theme="xmas"] #themeBackdrop{
   background: url("https://i.ibb.co/zhvjDvTH/XMAX.png") center/cover no-repeat;
 }
+
+
+/* ===== THEME → UI KÖPRÜSÜ (EKLE — styles.css SONU) =================== */
+:root{
+  /* Eski temalardan gelen ana renkler */
+  --kzs-panel-bg: var(--glass-bg, rgba(18,16,26,.55));
+  --kzs-stroke:   var(--glass-border, rgba(144,224,255,.25));
+  --kzs-ink:      var(--text-light, #e9edf4);
+  --kzs-muted:    var(--text-muted, #9aa6b2);
+  --kzs-title:    var(--text-heading, #fff);
+
+  /* Vurgular */
+  --kzs-ac1: var(--accent-blue,  #4cc9f0);
+  --kzs-ac2: var(--accent-pink,  #f72585);
+  --kzs-ac3: var(--accent-green, #80ed99);
+  --kzs-accounter: var(--accent-counter, #ffd166);
+
+  /* Glow’lar (yoksa transparan olur) */
+  --kzs-glow1: var(--glow-blue,  transparent);
+  --kzs-glow2: var(--glow-pink,  transparent);
+  --kzs-glow3: var(--glow-green, transparent);
+  --kzs-glowC: var(--glow-counter, transparent);
+}
+
+/* --------- Kart/başlık/çiplerin temaya bağlanması --------- */
+.card,
+.summary-card,
+#counterCard,
+#siBlock,
+main .card{
+  background: var(--kzs-panel-bg);
+  border: 1px solid var(--kzs-stroke);
+  color: var(--kzs-ink);
+  backdrop-filter: blur(6px) saturate(120%);
+}
+
+.summary-card h3,
+#siBlock .muted,
+label.muted,
+.hint{ color: var(--kzs-muted); }
+
+/* Üst saat: tema birincil vurgu + glow */
+.clock-card .clock,
+#liveClock{
+  color: var(--kzs-title);
+  text-shadow: 0 0 10px var(--kzs-glow1), 0 0 2px #fff;
+}
+
+/* Kart bazında vurgu: (eski projedeki gibi) */
+#taskCard{           /* Mevcut Interval */
+  border-color: var(--kzs-ac1);
+  box-shadow: 0 0 10px var(--kzs-glow1) inset;
+}
+#nextBreakCard{      /* Sıradaki Mola */
+  border-color: var(--kzs-ac2);
+  box-shadow: 0 0 10px var(--kzs-glow2) inset;
+}
+#counterCard .counter-pad,        /* sayaç iç kutu */
+#counterPad{
+  border: 1px solid var(--kzs-accounter);
+  box-shadow: 0 0 12px var(--kzs-glowC) inset;
+  background: rgba(0,0,0,.25);
+  color: var(--kzs-title);
+}
+
+/* Buton/çipler temaya göre */
+.chip{ 
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--kzs-stroke);
+  color: var(--kzs-ink);
+  font-weight: 800;
+}
+.chip[data-step]{ border-color: var(--kzs-ac1); }
+#resetBtn{ border-color: var(--kzs-ac2); }
+
+/* Küçük sayaç ekranı/metinleri kontrast */
+.count-face,
+.summary-big,
+.value-lg{ color: var(--kzs-title); }
