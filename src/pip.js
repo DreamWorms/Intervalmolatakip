@@ -153,13 +153,13 @@ export async function openDocPiP(){
 
   <!-- 2 dk kala uyarı overlay (HTML BLOĞU STYLE’IN DIŞINDA!) -->
   <div id="pipAlert" class="pip-alert" hidden>
-    <div class="alert-box">
-      <div class="soon">Mola Yaklaşıyor</div>
-      <div id="alertName" class="breakname">—</div>
-      <div class="ring"><div id="alertCd" class="countdown">02:00</div></div>
-      <div class="hint tiny">Hazırlan: su al, esneme yap, gözleri dinlendir…</div>
-    </div>
+  <div class="alert-box">
+    <div id="pipSoon" class="soon">Mola Yaklaşıyor</div>
+    <div id="alertName" class="breakname">—</div>
+    <div class="ring"><div id="alertCd" class="countdown">02:00</div></div>
+    <div id="pipPrepare" class="hint tiny">Hazırlan: su al, esneme yap, gözleri dinlendir…</div>
   </div>
+</div>
   `;
 
   const $ = (s, root=pip.document) => root.querySelector(s);
@@ -238,7 +238,9 @@ export async function openDocPiP(){
     $('#r').textContent            = t(S.lang, 'reset')          || 'Reset';
     $('#pipHint').textContent      = t(S.lang, 'pipPadHint')     || 'Sol tık +1 · Sağ tık −1';
     $('#pad').title                = $('#pipHint').textContent;
-  };
+    const soon = $('#pipSoon');     if (soon) soon.textContent = t(S.lang, 'pipSoonTitle');
+    const prep = $('#pipPrepare');  if (prep) prep.textContent = t(S.lang, 'pipPrepareHint');
+};
   paintTexts();
   const unLang = sub('lang', paintTexts);
 

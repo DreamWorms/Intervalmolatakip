@@ -1,3 +1,10 @@
+// --- i18n yardımcıları (friends.js modül değil; DOM'dan dili alıyoruz)
+const getLang = () => (document.getElementById('langSelect')?.value || 'tr');
+const TT = (k) => {
+  const L = getLang();
+  const pack = window.I18N || {};
+  return (pack[L] && pack[L][k]) || (pack.tr && pack.tr[k]) || k;
+};
 // ===== FRIENDS v4 — yalnızca textarea'dan HH:MM okur, süre alanı yok =====
 (function () {
   const $  = (s, r=document) => r.querySelector(s);
@@ -162,7 +169,7 @@
 
   function calcOverlaps(){
     const f = cur();
-    if(!f){ if(olapList) olapList.innerHTML='Arkadaş yok.'; return []; }
+    if(!f){ olapList.innerHTML = TT('frNoFriend'); return []; }
 
     const slots = (f.slots||[])
       .filter(x=>x.start && (x.min||0)>0)
@@ -179,7 +186,7 @@
     if (olapList) {
       olapList.innerHTML = out.length
         ? out.map(r=>`<div>• <strong>${r.me}</strong> ↔ <em>${r.fr}</em>: ${r.start}–${r.end} (${r.min} dk)</div>`).join('')
-        : 'Kesişim bulunamadı.';
+        : TT('frOverlapsNone');
     }
     return out;
   }
@@ -219,12 +226,12 @@
 
   // Arkadaş CRUD
   function addFriend(){
-    const f = { id:uid(), name: (frName?.value||'Yeni Arkadaş').trim(), slots:[] };
+    const f = { id:uid(), name: (frName.value || TT('frNewFriend')).trim(), slots:[] };
     st.friends.push(f); st.selectedId=f.id; save(); renderFriendSelect(); fillFromFriend();
   }
   function delFriend(){
     const id = st.selectedId; if(!id) return;
-    if(!confirm('Bu arkadaşı silmek istiyor musun?')) return;
+    if(!confirm(TT('frConfirmDelete'))) return;
     st.friends = st.friends.filter(x=>x.id!==id);
     st.selectedId = st.friends[0]?.id || null; save(); renderFriendSelect(); fillFromFriend();
   }
@@ -244,7 +251,7 @@
   // init
   load();
   if(st.friends.length===0){
-    st.friends.push({ id:uid(), name:'Arkadaş 1', slots:[] });
+    st.friends.push({ id:uid(), name: TT('frNewFriend'), slots:[] });
     st.selectedId = st.friends[0].id; save();
   }
   buildSlots(); renderFriendSelect(); fillFromFriend(); hookBreakGrid(); renderPip();

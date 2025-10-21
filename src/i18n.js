@@ -14,13 +14,13 @@ const I18N = {
     taskTitle: 'Mevcut Interval',
     taskActive: 'Hedef',
     nextBreakTitle: 'Sıradaki Mola',
-    pipPadHint:'Sayaç',
+    pipPadHint: 'Sayaç',
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Molaları Sil',
-    durationMins: 'Duration',
-    minUnit: 'min',
-    notePlaceholder: 'Enter your break time HH:MM',
+    durationMins: 'Süre',
+    minUnit: 'dk',
+    notePlaceholder: 'Molanı HH:MM formatında yaz',
 
     siTitle: 'Özel interval',
     siLen: 'Dakika',
@@ -29,7 +29,17 @@ const I18N = {
     siSave: 'Kaydet',
     siSaved: 'Kaydedildi.',
 
+    // — Friends sekmesi
+    frNoFriend: 'Arkadaş yok.',
+    frOverlapsNone: 'Kesişim bulunamadı.',
+    frConfirmDelete: 'Bu arkadaşı silmek istiyor musun?',
+    frNewFriend: 'Yeni Arkadaş',
 
+    // — PiP 2 dk overlay
+    pipSoonTitle: 'Mola Yaklaşıyor',
+    pipPrepareHint: 'Hazırlan: su al, esneme yap, gözleri dinlendir…',
+
+    // başlıklar
     rest1: 'Rest 1',
     rest2: 'Rest 2',
     lunch: 'Lunch',
@@ -58,7 +68,7 @@ const I18N = {
     taskTitle: 'Current Interval',
     taskActive: 'Target',
     nextBreakTitle: 'Next Break',
-    pipPadHint:'Counter',
+    pipPadHint: 'Counter',
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Clear breaks',
@@ -73,6 +83,15 @@ const I18N = {
     siSave: 'Save',
     siSaved: 'Saved.',
 
+    // — Friends
+    frNoFriend: 'No friends.',
+    frOverlapsNone: 'No overlap found.',
+    frConfirmDelete: 'Delete this friend?',
+    frNewFriend: 'New Friend',
+
+    // — PiP overlay
+    pipSoonTitle: 'Break Starting Soon',
+    pipPrepareHint: 'Get ready: grab water, stretch, rest your eyes…',
 
     rest1: 'Rest 1',
     rest2: 'Rest 2',
@@ -94,29 +113,38 @@ const I18N = {
     counterTitle: 'Zähler',
     reset: 'Zurücksetzen',
     kbHint: 'Tastatur: ↑ / ↓ / R / + / −',
-    needTopLevel: 'Hinweis: Doc PiP funktioniert nur auf einer Top-Level-Seite (z.B. GitHub/Netlify).',
+    needTopLevel: 'Hinweis: Doc PiP funktioniert nur auf einer Top-Level-Seite (z. B. GitHub/Netlify).',
     intervalTitle: 'Intervall',
-    intervalHelp: 'Wenn leer, bleibt es im PiP verborgen.',
+    intervalHelp: 'Leer gelassen, bleibt es im PiP verborgen.',
     intervalHidden: '— Im PiP ausgeblendet —',
-    intervalPlaceholder: 'z.B. Mittag 12:00–12:45',
+    intervalPlaceholder: 'z. B. Mittag 12:00–12:45',
     taskTitle: 'Aktuelles Intervall',
     taskActive: 'Ziel',
     nextBreakTitle: 'Nächste Pause',
-    pipPadHint:'Zähler',
+    pipPadHint: 'Zähler',
 
     breaksTitle: 'Breaks',
     clearBreaks: 'Pausen löschen',
-    notePlaceholder: 'Enter your break time HH:MM',
-    durationMins: 'Duration',
-    minUnit: 'min',
+    notePlaceholder: 'Trage deine Pause HH:MM ein',
+    durationMins: 'Dauer',
+    minUnit: 'Min',
 
     siTitle: 'Benutzerdef. Intervall',
     siLen: 'Minuten',
     siStart: 'Schichtbeginn',
-    siLines: 'Werte (eine Zeile = ein Wert)',
+    siLines: 'Werte (eine pro Zeile)',
     siSave: 'Speichern',
     siSaved: 'Gespeichert.',
 
+    // — Friends
+    frNoFriend: 'Kein Freund.',
+    frOverlapsNone: 'Keine Überschneidung gefunden.',
+    frConfirmDelete: 'Diesen Freund löschen?',
+    frNewFriend: 'Neuer Freund',
+
+    // — PiP overlay
+    pipSoonTitle: 'Pause steht bevor',
+    pipPrepareHint: 'Mach dich bereit: Wasser holen, dehnen, Augen entspannen…',
 
     rest1: 'Rest 1',
     rest2: 'Rest 2',
@@ -142,25 +170,34 @@ const I18N = {
     intervalTitle: 'Интервал',
     intervalHelp: 'Ако е празно, остава скрито в PiP.',
     intervalHidden: '— Ще бъде скрито в PiP —',
-    intervalPlaceholder: 'напр. Lunch 12:00–12:45',
-    taskTitle: 'Tekusht interval',
-    taskActive: 'Tsel',
-    nextBreakTitle: 'Sledvashta Pochivka',
-    pipPadHint:'Брояч',
+    intervalPlaceholder: 'напр. Обяд 12:00–12:45',
+    taskTitle: 'Текущ интервал',
+    taskActive: 'Цел',
+    nextBreakTitle: 'Следваща почивка',
+    pipPadHint: 'Брояч',
 
-    breaksTitle: 'Breaks',
-    clearBreaks: 'Изтриване на почивки',
-    notePlaceholder: 'Enter your break time HH:MM',
-    durationMins: 'Duration',
-    minUnit: 'min',
+    breaksTitle: 'Почивки',
+    clearBreaks: 'Изчисти почивките',
+    notePlaceholder: 'Въведи час HH:MM',
+    durationMins: 'Продължителност',
+    minUnit: 'мин',
 
     siTitle: 'Специален интервал',
     siLen: 'Минути',
     siStart: 'Начало на смяна',
-    siLines: 'Стойности (по една на ред)',
+    siLines: 'Стойности (по ред)',
     siSave: 'Запази',
     siSaved: 'Запазено.',
 
+    // — Friends
+    frNoFriend: 'Няма приятели.',
+    frOverlapsNone: 'Няма пресичане.',
+    frConfirmDelete: 'Да изтрия ли този приятел?',
+    frNewFriend: 'Нов приятел',
+
+    // — PiP overlay
+    pipSoonTitle: 'Почивката наближава',
+    pipPrepareHint: 'Подготви се: вода, разтягане, почивка за очите…',
 
     rest1: 'Rest 1',
     rest2: 'Rest 2',
