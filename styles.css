@@ -560,10 +560,6 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
   justify-content:center;
 }
 
-/* sezon rozetini bulunduğu satırda mutlak ortala */
-.season-badges{
-  position:relative; left:50%; transform:translateX(-50%);
-}
 
 
 
