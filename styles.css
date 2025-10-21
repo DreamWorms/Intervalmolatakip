@@ -759,3 +759,38 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
 }
 .kzModal-close:hover { background: rgba(255,255,255,.10); transform: translateY(-1px); }
 .kzModal-body { padding: 16px; color: #dbe6ff; line-height: 1.55; }
+
+
+/* ===== Utilities ===== */
+.mt8{ margin-top:8px; }
+.kzFlex{ flex:1; }
+
+/* ===== Forms & list ===== */
+.kzSec{ margin-bottom:16px; }
+.kzSec h4{ margin:0 0 8px; font-size:16px; color:#eaf1ff; }
+.kzGrid{ display:grid; gap:8px; }
+.kzRow{ display:grid; grid-template-columns: 140px 1fr 140px; gap:8px; align-items:center; }
+.kzRowEnd{ display:flex; gap:8px; align-items:center; }
+.kzRow label{ color:#cfe0ff; font-size:13px; }
+.kzHint{ opacity:.8; font-size:12px; margin-top:6px; }
+
+.kzBtn{ padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05); color:#eaf1ff; cursor:pointer; }
+.kzBtn.pri{ background:linear-gradient(180deg, rgba(111,162,255,.25), rgba(111,162,255,.10)); }
+.kzBtn.danger{ background:linear-gradient(180deg, rgba(255,58,58,.25), rgba(255,58,58,.10)); }
+.kzBtn:hover{ filter:brightness(1.06); }
+
+.kzList{ display:grid; gap:8px; }
+.kzCard{ border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:10px;
+  background:rgba(255,255,255,.04); }
+.kzCardHead{ display:flex; gap:8px; align-items:center; }
+.kzPill{ font-size:12px; padding:3px 8px; border-radius:999px; border:1px solid rgba(255,255,255,.12); }
+.kzCardBtns{ display:flex; gap:8px; margin-left:auto; }
+
+#slotsWrap .slotRow{ display:grid; grid-template-columns: 120px 1fr 120px 36px; gap:8px; align-items:center; }
+#slotsWrap .slotRow select, #slotsWrap .slotRow input{ width:100%; }
+
+.kzTableWrap{ overflow:auto; border:1px solid rgba(255,255,255,.12); border-radius:12px; }
+.kzTable{ width:100%; border-collapse:collapse; }
+.kzTable th, .kzTable td{ padding:8px 10px; border-bottom:1px solid rgba(255,255,255,.08); text-align:left; }
+.kzTable th{ color:#cfe0ff; font-weight:600; }
