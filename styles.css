@@ -905,3 +905,38 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
 }
 
 .docpip-alert .hint{ opacity:.9; margin-top:4px }
+
+/* === Wellness Defteri (haftalık) === */
+.wbHead{
+  display:flex; align-items:center; gap:8px;
+}
+.wbHead .wbRange{ white-space:nowrap; }
+.wbHead .wbNav{ padding:6px 10px; border-radius:10px; }
+.wbHead .wbChk{ display:flex; gap:6px; align-items:center; opacity:.9; }
+
+.wbList{ display:grid; gap:10px; }
+.wbRow{
+  display:grid; grid-template-columns: 1fr auto; gap:10px; align-items:center;
+  border:1px solid rgba(255,255,255,.10); border-radius:12px;
+  background: rgba(255,255,255,.04); padding:10px;
+}
+.wbDayLine{ display:flex; gap:10px; align-items:center; opacity:.95; }
+.wbWkd{ font-weight:800; }
+.wbDate{ opacity:.9 }
+.wbSum{ margin-left:auto; font-weight:800; }
+.wbChips{ display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+
+.wbChip{
+  padding:4px 8px; border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  font-weight:700; letter-spacing:.2px;
+}
+.wbBtns{ display:flex; gap:6px; align-items:center; }
+.wbBtns .chip{ border-radius:999px; }
+
+.wbFoot{
+  display:flex; gap:12px; align-items:center; justify-content:space-between;
+  padding:8px 10px; border:1px solid rgba(255,255,255,.10);
+  border-radius:12px; background: rgba(255,255,255,.04);
+}
