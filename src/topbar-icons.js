@@ -62,63 +62,85 @@
 })();
 
 
-// tiny helpers
-const $  = (s,r=document)=>r.querySelector(s);
+// helpers
+const $ = (s,r=document)=>r.querySelector(s);
 
-// DOM hazır + elementler hazır olana kadar bekle
-function ready(cb){
-  if (document.readyState === 'loading')
-    document.addEventListener('DOMContentLoaded', cb, {once:true});
-  else cb();
-}
-function waitFor(selectors, cb, timeout=5000){
-  const missing = new Set(selectors);
-  const iv = setInterval(()=>{
-    for (const s of [...missing]) if ($(s)) missing.delete(s);
-    if (missing.size === 0){ clearInterval(iv); cb(); }
-  }, 100);
-  setTimeout(()=>{
-    if (missing.size){
-      clearInterval(iv);
-      console.warn('[topbar] bulunamadı:', [...missing]);
-      cb(); // yine de dener; bulunanlarla bağlar
-    }
-  }, timeout);
+function positionPopover(pop, anchor){
+  const r = anchor.getBoundingClientRect();
+  document.body.appendChild(pop);
+  pop.style.left = Math.max(8, Math.min(window.innerWidth - pop.offsetWidth - 8, r.left + r.width/2 - pop.offsetWidth/2)) + 'px';
+  pop.style.top  = (r.bottom + 10) + 'px';
+  pop.classList.add('open');
 }
 
-function cycleSelect(sel, dir=+1){
-  if (!sel || !sel.options?.length) return;
-  const i = sel.selectedIndex < 0 ? 0 : sel.selectedIndex;
-  sel.selectedIndex = (i + dir + sel.options.length) % sel.options.length;
-  sel.dispatchEvent(new Event('change', {bubbles:true}));
+function closePopovers(){ document.querySelectorAll('.tb-pop').forEach(p=>p.remove()); }
+
+function openSelectPopover(btn, sel, titleText){
+  if (!btn || !sel) return;
+  closePopovers();
+
+  const pop = document.createElement('div');
+  pop.className = 'tb-pop'; pop.setAttribute('role','listbox'); pop.tabIndex = -1;
+
+  const opts = Array.from(sel.options || []);
+  pop.innerHTML =
+    `<div class="tb-hd">${titleText||''}</div>` +
+    opts.map(o => {
+      const txt = (o.textContent||'').trim();
+      const val = o.value;
+      const selAttr = sel.value === val ? ' aria-selected="true"' : '';
+      const tick = sel.value === val ? '<span class="tick">✓</span>' : '<span class="tick" style="opacity:.25">·</span>';
+      return `<button class="tb-opt" role="option" data-val="${val}"${selAttr}><span>${txt}</span>${tick}</button>`;
+    }).join('');
+
+  pop.addEventListener('click', e=>{
+    const b = e.target.closest('.tb-opt'); if(!b) return;
+    sel.value = b.dataset.val;
+    sel.dispatchEvent(new Event('change',{bubbles:true}));
+    closePopovers();
+  });
+
+  positionPopover(pop, btn);
+
+  // kapanışlar
+  setTimeout(()=>{ // küçük gecikme: ilk tıklama popover içinde sayılmasın
+    const onDocClick = (e)=>{ if(!e.target.closest('.tb-pop') && !e.target.closest('#btnTheme,#btnLang')){ 
+      closePopovers(); document.removeEventListener('click', onDocClick, true);
+    }};
+    document.addEventListener('click', onDocClick, true);
+  }, 0);
+  document.addEventListener('keydown', (ev)=>{ if(ev.key==='Escape') closePopovers(); }, {once:true});
 }
 
-function bindTopbar(){
+// i18n: mevcut t(S.lang, key) fonksiyonunu kullanıyoruz
+function paintIconbarLabels(){
+  const L = (window.S?.lang) || $('#langSelect')?.value || 'tr';
+  const tFn = window.t || ((_,k)=>k);
+  $('#lblTheme') && ($('#lblTheme').textContent = (tFn(L,'themeLabel') || 'Tema'));
+  $('#lblLang')  && ($('#lblLang').textContent  = (tFn(L,'labelLang')  || 'Dil'));
+  $('#lblFriends')&&($('#lblFriends').textContent= (tFn(L,'friends')    || 'Arkadaşlar'));
+  $('#lblWell')  && ($('#lblWell').textContent  = (tFn(L,'wnTitle')     || 'Wellness'));
+  $('#lblPip')   && ($('#lblPip').textContent   = 'PiP'); // sabit
+}
+window.paintIconbarLabels = paintIconbarLabels;
+
+// bağlama
+(function bindTopbarMenus(){
   const btnTheme = $('#btnTheme');
   const btnLang  = $('#btnLang');
   const selTheme = $('#themeSelect') || document.querySelector('[data-role="theme"]');
   const selLang  = $('#langSelect')  || document.querySelector('[data-role="lang"]');
 
-  // Debug izleri
-  console.log('[topbar] bağla:', {btnTheme:!!btnTheme, btnLang:!!btnLang, selTheme:!!selTheme, selLang:!!selLang});
+  // butonlar: popover aç
+  btnTheme?.addEventListener('click', ()=> openSelectPopover(btnTheme, selTheme, (window.t?.(window.S?.lang,'themeLabel')||'Tema')));
+  btnLang ?.addEventListener('click', ()=> openSelectPopover(btnLang , selLang , (window.t?.(window.S?.lang,'labelLang')||'Dil')));
 
-  // tema
-  btnTheme?.addEventListener('click',    ()=> cycleSelect(selTheme, +1));
-  btnTheme?.addEventListener('contextmenu', e=>{ e.preventDefault(); cycleSelect(selTheme, -1); });
-
-  // dil
-  btnLang?.addEventListener('click',     ()=> cycleSelect(selLang, +1));
-  btnLang?.addEventListener('contextmenu',  e=>{ e.preventDefault(); cycleSelect(selLang, -1); });
-
-  // dil değişince üstbar yazıları güncelle (i18n tarafın S.lang kullanıyorsa senkronla)
+  // dil değişince yazıları güncelle + global state varsa senkronla
   selLang?.addEventListener('change', ()=>{
-    try{ if (window.S) window.S.lang = selLang.value; }catch{}
-    if (window.paintIconbarLabels) window.paintIconbarLabels();
+    if (window.S) window.S.lang = selLang.value;
+    paintIconbarLabels();
   });
-}
 
-// çalıştır
-ready(()=>{
-  // buton ve selectlerin gerçek ID’lerini buraya yaz
-  waitFor(['#btnTheme','#btnLang','#themeSelect','#langSelect'], bindTopbar);
-});
+  // ilk boya
+  paintIconbarLabels();
+})();
