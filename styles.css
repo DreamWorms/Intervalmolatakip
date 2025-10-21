@@ -801,3 +801,61 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
 #friendsModal .kzGrid { gap:10px; }
 #friendsModal .kzRow { grid-template-columns: 120px 1fr 120px; }
 #friendsModal .kzList .kzCard { background:rgba(255,255,255,.03); }
+
+/* ===== FRIENDS (CodePen tarzı) ===== */
+.fr-toolbar{
+  display:flex; justify-content:space-between; align-items:center;
+  gap:10px; margin-bottom:12px;
+}
+.fr-toolbar .row-left{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.fr-toolbar .row-left input[type="text"]{ width:220px; }
+
+.fwrap{ display:grid; grid-template-columns: 2.2fr 1fr; gap:14px; }
+@media (max-width: 980px){ .fwrap{ grid-template-columns: 1fr; } }
+
+.fleft, .fright{
+  border:1px solid rgba(255,255,255,.06);
+  background:rgba(255,255,255,.03);
+  border-radius:12px; padding:12px;
+}
+.fleft h4, .fright h4{ margin:0 0 10px; }
+
+.fgrid{
+  display:grid; gap:12px;
+  grid-template-columns: repeat(3, minmax(200px,1fr));
+}
+@media (max-width: 1200px){ .fgrid{ grid-template-columns: repeat(2, minmax(200px,1fr)); } }
+@media (max-width: 720px){  .fgrid{ grid-template-columns: 1fr; } }
+
+.fslot{
+  position:relative;
+  border:1px solid var(--stroke);
+  background:linear-gradient(180deg, rgba(19,25,41,.85), rgba(12,17,30,.92));
+  border-radius:14px; padding:10px;
+  box-shadow: var(--soft);
+}
+.fslot-head{
+  display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px;
+}
+.fslot-title{ font-weight:800; letter-spacing:.2px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.fslot-min{
+  display:flex; align-items:center; gap:6px;
+  font-size:12px;
+}
+.fslot-min input{
+  width:60px; text-align:right; padding:6px 8px; border-radius:10px;
+  border:1px solid var(--stroke); background:#0b1220; color:var(--fg);
+}
+.fslot textarea.starts{
+  width:100%; min-height:68px; resize:vertical; padding:8px 10px; border-radius:12px;
+  border:1px solid var(--stroke); background:#0b1220; color:var(--fg);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.olap-list{
+  border:1px solid rgba(255,255,255,.08);
+  background:#0b1220; border-radius:12px; padding:10px; min-height:140px;
+}
+.olap-list .row{ padding:6px 8px; border-bottom:1px solid rgba(255,255,255,.06); }
+.olap-list .row:last-child{ border-bottom:0; }
+.olap-list .t{ font-weight:700; }

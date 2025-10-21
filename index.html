@@ -91,80 +91,39 @@
       <button class="kzModal-close" data-close="friendsModal" aria-label="Kapat">✕</button>
     </div>
 
-    <div class="kzModal-body">
-      <!-- BENİM MOLALARIM -->
-      <section class="kzSec">
-        <h4>Benim Molalarım</h4>
-        <form id="myBreaksForm" class="kzGrid">
-          <div class="kzRow">
-            <label>Rest 1</label>
-            <input type="time" name="rest1_start" required>
-            <input type="number" name="rest1_min" min="1" max="180" placeholder="Süre (dk)" value="15" required>
-          </div>
-          <div class="kzRow">
-            <label>Rest 2</label>
-            <input type="time" name="rest2_start">
-            <input type="number" name="rest2_min" min="1" max="180" placeholder="Süre (dk)" value="15">
-          </div>
-          <div class="kzRow">
-            <label>Lunch</label>
-            <input type="time" name="lunch_start">
-            <input type="number" name="lunch_min" min="10" max="120" placeholder="Süre (dk)" value="45">
-          </div>
-          <div class="kzRow">
-            <label>Wellness 1</label>
-            <input type="time" name="well1_start">
-            <input type="number" name="well1_min" min="5" max="120" placeholder="Süre (dk)" value="16">
-          </div>
-          <div class="kzRow">
-            <label>Wellness 2</label>
-            <input type="time" name="well2_start">
-            <input type="number" name="well2_min" min="5" max="120" placeholder="Süre (dk)" value="16">
-          </div>
-          <div class="kzRowEnd">
-            <button type="submit" class="kzBtn pri">Kaydet</button>
-            <button type="button" id="myBreaksClear" class="kzBtn">Temizle</button>
-          </div>
-        </form>
-        <p class="kzHint">İstersen bunu ana ekrandan otomatik çekmeye bağlarız; şimdilik manuel.</p>
-      </section>
+    <div class="kzModal-body" id="friendsBody">
+  <!-- Üst çubuk: seçim ve canlı düzenleme -->
+  <div class="fr-toolbar">
+    <div class="row-left">
+      <label class="muted tiny">Arkadaş</label>
+      <select id="friendPick"></select>
+      <input id="friendName" type="text" placeholder="Yeni arkadaş adı…" />
+      <button id="friendAdd"  class="kzBtn">Ekle</button>
+      <button id="friendDel"  class="kzBtn danger">Sil</button>
+    </div>
+    <div class="row-right">
+      <label><input id="liveIntersect" type="checkbox" checked> Canlı kesişim</label>
+    </div>
+  </div>
 
-      <!-- ARKADAŞ EKLE -->
-      <section class="kzSec">
-        <h4>Arkadaş Ekle / Düzenle</h4>
-        <form id="friendForm" class="kzGrid">
-          <input type="hidden" name="id">
-          <div class="kzRow">
-            <label>İsim</label>
-            <input type="text" name="name" placeholder="Örn: Halil Ender" required>
-          </div>
+  <div class="fwrap">
+    <!-- SOL: Arkadaşın blokları -->
+    <section class="fleft">
+      <h4>Seçili arkadaşın mola blokları</h4>
+      <div id="fSlots" class="fgrid"><!-- JS dolduracak --></div>
+      <p class="kzHint">Her kutuya <strong>başlangıç saatlerini</strong> yaz: ör. <code>09:45, 13:10, 17:30</code>. Sağ üstteki sarı “dk” kutusundan süreyi değiştir.</p>
+    </section>
 
-          <div id="slotsWrap"><!-- Slot satırları JS ile gelir --></div>
+    <!-- SAĞ: Kesişim paneli -->
+    <aside class="fright">
+      <h4>Kesişen Molalar (Sen ↔ Arkadaş)</h4>
+      <div id="olapPanel" class="olap-list">Kesişim bulunamadı.</div>
+      <p class="kzHint">“Benim molalarım” ana ekrandan <em>otomatik</em> okunur: #breakGrid içindeki kutuların <strong>not</strong> alanına saatleri yazman yeterli.<br>
+      Örnek: Rest 1 notuna <code>09:45, 13:10</code> yaz → süre de kutudaki “dk” değeridir.</p>
+    </aside>
+  </div>
+</div>
 
-          <div class="kzRowEnd">
-            <button type="button" id="addSlot" class="kzBtn">+ Slot Ekle</button>
-            <span class="kzFlex"></span>
-            <button type="submit" class="kzBtn pri">Kaydet</button>
-            <button type="button" id="resetFriendForm" class="kzBtn">Formu Sıfırla</button>
-          </div>
-        </form>
-      </section>
-
-      <!-- LİSTE & KESİŞİM -->
-      <section class="kzSec">
-        <h4>Arkadaşlar</h4>
-        <div id="friendsList" class="kzList"></div>
-        <div class="kzRowEnd mt8">
-          <button id="exportFriends" class="kzBtn">Dışa Aktar (JSON)</button>
-          <button id="importFriends" class="kzBtn">İçe Aktar</button>
-          <input id="importFriendsFile" type="file" accept="application/json" hidden>
-          <span class="kzFlex"></span>
-          <button id="clearFriends" class="kzBtn danger">Tümünü Sil</button>
-        </div>
-      </section>
-    </div><!-- /.kzModal-body -->
-  </div><!-- /.kzModal-dialog -->
-</div><!-- /#friendsModal -->
 
 <!-- WELLNESS -->
 <div class="kzModal" id="wellnessBookModal" hidden>
