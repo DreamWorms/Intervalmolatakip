@@ -40,7 +40,7 @@ export async function openDocPiP(){
     /* ÜST BAR — 3 sütun: interval • saat • mola ETA */
     .topbar{
       display:grid;
-      grid-template-columns: auto 1fr auto;
+      grid-template-columns: 1fr auto 1fr;
       align-items:center;
       gap:8px;
       padding:6px 8px;
