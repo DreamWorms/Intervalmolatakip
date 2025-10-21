@@ -553,12 +553,12 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
 }
 
 /* === Sezon Rozetleri (XMAS + Halloween) ================================== */
+/* sezon rozetini bulunduğu satırda mutlak ortala */
 .season-badges{
-  display:flex; gap:12px;
-  width:max-content;          /* içerik kadar genişlik */
-  margin:-4px auto 8px;       /* << soldan/sağdan auto => tam ortaya */
-  justify-content:center;
+  position:relative; left:50%; transform:translateX(-50%);
 }
+
+
 
 
 /* Ortak rozet görünümü */
