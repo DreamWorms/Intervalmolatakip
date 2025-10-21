@@ -60,3 +60,9 @@
     $('#langSelect')?.addEventListener('change', paint);
   }catch(e){}
 })();
+
+// Eski çekmeceyi DOM'dan sök
+(function removeOldDock(){
+  const sels = ['#dockBtn','#dockToggle','#openDock','.dockToggle','.kzDockToggle','.kzDock','.fabDock','.dock-menu','.dockBackdrop'];
+  sels.forEach(s => document.querySelectorAll(s).forEach(n => n.remove()));
+})();
