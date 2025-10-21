@@ -11,160 +11,127 @@ export async function openDocPiP(){
   // === UI (tam ekran pad) ===
   pip.document.body.innerHTML = `
   <style>
-  /* --- PiP wallpaper layer --- */
-html,body{height:100%}
-#wp{
-  position:fixed; inset:0; z-index:-1;
-  background:#0b0d12 center/cover no-repeat;   /* URL JS’ten gelecek */
-  filter:saturate(1.02) brightness(1.02);
-}
-#wp::after{ /* okunurluk için hafif karartma */
-  content:""; position:absolute; inset:0;
-  background:
-    radial-gradient(1200px 700px at 50% 0%, rgba(0,0,0,.25), transparent 60%),
-    linear-gradient(180deg, rgba(0,0,0,.28), rgba(0,0,0,.45));
+  html, body{ height:100%; background:transparent !important; }  /* beyazlık yok */
+#pipBackdrop{
+  position:fixed; inset:0; z-index:-1;              /* tüm pencereyi kapla */
+  background:#0b0d12 center/cover no-repeat fixed;  /* fallback + cover */
 }
    :root{
-      --bg:#0b0d12; --stroke:#273246; --fg:#e9edf4; --muted:#9aa6b2;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font:14px/1.55 system-ui,Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      color:var(--fg);
-      background:transparent;         /* wallpaper alttan görünsün */
-      overflow:hidden;                 /* alt beyazlık yok */
-    }
+    --bg:#0b0d12; --panel:#0f1522cc; --stroke:#273246; --fg:#e9edf4; --muted:#9aa6b2;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font:14px/1.55 system-ui,Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--fg);
+    background:transparent; /* wallpaper arkadan gelsin */
+  }
 
-    /* KAPSAYICI */
-    .wrap{ padding:10px; display:grid; gap:8px; }
+  /* daha kompakt ama okunur yerleşim — HEP 2 SÜTUN */
+  .wrap{ padding:10px; display:grid; gap:8px; }
+  .clock{
+    font-size:clamp(18px,5.6vw,28px);
+    font-weight:900; text-align:center; margin:0 0 4px;
+  }
 
-    /* ── HUD (üst tek satır) ───────────────────────────────────── */
-    .hud{
-      display:grid;
-      grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);
-      align-items:center; gap:6px; min-width:0;
-    }
-    .clock{
-      font-size:clamp(18px,6.2vw,28px);
-      font-weight:900; text-align:center; white-space:nowrap;
-    }
-    .chip{
-      display:flex; align-items:center; gap:6px; min-width:0;
-      padding:4px 8px; border-radius:999px;
-      background:rgba(13,17,26,.55);
-      border:1px solid var(--stroke);
-      backdrop-filter:saturate(120%) blur(6px);
-      font-weight:800;
-    }
-    .chip .k{ font-size:clamp(11px,2.4vw,13px); opacity:.9 }
-    .chip .v{ font-size:clamp(12px,2.8vw,14px); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-    .chip .eta{ font-size:clamp(12px,3vw,16px); font-weight:900 }
-    .chip .dot{
-      width:8px;height:8px;border-radius:50%;
-      background:#38d39f; box-shadow:0 0 8px #38d39f80;
-    }
-    @media (max-width:360px){ .chip .k{display:none} } /* aşırı darda etiketleri gizle */
+  .grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:8px; align-items:start;
+    min-width:0;
+  }
+  /* NOT: tek sütuna geçiren @media kuralı YOK! */
 
-    /* ── Sayaç alanı ───────────────────────────────────────────── */
-    .counter{ display:flex; flex-direction:column; gap:6px }
-    .top-hint{ text-align:right; font-size:clamp(10px,2.1vw,12px); color:var(--muted) }
-    .pad{
-      flex:1 1 auto; width:100%;
-      min-height:clamp(100px,28vh,150px);
-      border:1px solid var(--stroke);
-      border-radius:12px;
-      background:linear-gradient(180deg, rgba(14,16,28,.92), rgba(12,14,22,.88));
-      display:flex; align-items:center; justify-content:center;
-      cursor:zoom-in; user-select:none;
-      transition:transform .06s ease, box-shadow .12s ease, border-color .12s ease;
-      box-shadow:0 8px 24px rgba(0,0,0,.35);
-    }
-    .pad:hover{ border-color:#3a4564; box-shadow:0 12px 32px rgba(0,0,0,.45) }
-    .pad:active{ transform:scale(.995) }
-    .face{
-      color:#fff;
-      font-size:clamp(36px,10.5vw,56px);
-      font-weight:900; line-height:1;
-      padding:10px 16px; border-radius:10px;
-      min-width:clamp(74px,26vw,110px);
-      text-align:center;
-      background:#0d1220; border:1px solid var(--stroke);
-    }
-    .row{ display:flex; gap:6px; align-items:center; justify-content:center; flex-wrap:wrap }
-    .chip-btn{
-      padding:6px 12px; border-radius:999px; border:1px solid var(--stroke);
-      background:#0c1425; color:var(--fg); cursor:pointer;
-      font-weight:800; font-size:clamp(12px,2.6vw,14px)
-    }
-    .ghost{ background:transparent }
+  .card{
+    background:rgba(10,14,22,.70);
+    backdrop-filter:saturate(120%) blur(6px);
+    border:1px solid var(--stroke);
+    border-radius:12px;
+    padding:clamp(6px,1.6vw,10px);
+    min-width:0;
+  }
+  .label{
+    opacity:.9; font-weight:800; letter-spacing:.2px; margin-bottom:2px;
+    font-size:clamp(12px,2.6vw,14px);
+  }
+  .muted{
+    color:var(--muted);
+    font-size:clamp(12px,2.8vw,14px);
+  }
+  .value-lg{               /* görev miktarı ve ETA için */
+    font-size:clamp(18px,3.4vw,22px);
+    font-weight:800; margin-top:4px;
+  }
+
+  /* Sayaç */
+  .counter-card{ grid-column:1 / -1; display:flex; flex-direction:column; gap:6px; }
+  .top-hint{ text-align:right; font-size:clamp(11px,2.2vw,12px); color:var(--muted); }
+
+  .pad{
+    flex:1 1 auto; width:100%;
+    min-height:clamp(100px,28vh,150px);
+    border:1px solid var(--stroke);
+    border-radius:12px;
+    background:linear-gradient(180deg, rgba(14,16,28,.92), rgba(12,14,22,.88));
+    display:flex; align-items:center; justify-content:center;
+    cursor:zoom-in; user-select:none;
+    transition:transform .06s ease, box-shadow .12s ease, border-color .12s ease;
+    box-shadow:0 8px 24px rgba(0,0,0,.35);
+  }
+  .pad:hover{ border-color:#3a4564; box-shadow:0 12px 32px rgba(0,0,0,.45) }
+  .pad:active{ transform:scale(.995) }
+
+  .face{
+    color:#fff;
+    font-size:clamp(36px,10.5vw,56px);
+    font-weight:900; line-height:1;
+    padding:10px 16px; border-radius:10px;
+    min-width:clamp(74px,26vw,110px);
+    text-align:center;
+    background:#0d1220; border:1px solid var(--stroke);
+  }
+
+  .row{ display:flex; gap:6px; align-items:center; justify-content:center; flex-wrap:wrap }
+  .chip{
+    padding:6px 12px; border-radius:999px; border:1px solid var(--stroke);
+    background:#0c1425; color:var(--fg); cursor:pointer;
+    font-weight:800; font-size:clamp(12px,2.6vw,14px)
+  }
+  .ghost{ background:transparent }
   </style>
 
-  <div id="wp" aria-hidden="true"></div>
+  <div id="pipBackdrop"></div>
   <div class="wrap">
-    <!-- HUD -->
-    <div class="hud">
-      <div class="chip" id="leftChip">
-        <span class="dot" id="taskDot" hidden></span>
-        <span class="k" id="leftLabel">Mevcut</span>
-        <span class="v" id="leftVal">0</span>
+    <div id="pipClock" class="clock">--:--:--</div>
+
+    <div class="grid">
+      <div class="card">
+        <div id="pipTaskLabel" class="label">Task</div>
+        <div id="pipTaskStatus" class="muted">—</div>
+         <div id="pipTaskAmount" class="value-lg">0</div>
       </div>
 
-      <div id="pipClock" class="clock">--:--:--</div>
-
-      <div class="chip" id="rightChip">
-        <span class="k" id="rightLabel">Sıradaki</span>
-        <span class="v" id="nextName">—</span>
-        <span class="eta" id="nextEta">--:--:--</span>
+      <div class="card">
+        <div id="pipNextLabel" class="label">Next</div>
+        <div id="pipNextName" class="muted">—</div>
+        <div id="pipNextEta"    class="value-lg">--:--:--</div>
       </div>
-    </div>
 
-    <!-- Sayaç -->
-    <div class="counter">
-      <div class="top-hint" id="pipHint">Sol tık +1 · Sağ tık −1</div>
-      <button id="pad" class="pad" title="Sol tık +1 · Sağ tık −1">
-        <span id="v" class="face">0</span>
-      </button>
-      <div class="row">
-        <button class="chip-btn" data-step="2">+2</button>
-        <button class="chip-btn" data-step="4">+4</button>
-        <button class="chip-btn" data-step="8">+8</button>
-        <button id="r" class="chip-btn ghost">Sıfırla</button>
+      <!-- Sayaç -->
+      <div class="card counter-card">
+        <div class="top-hint" id="pipHint">Sol tık +1 · Sağ tık −1</div>
+        <button id="pad" class="pad" title="Sol tık +1 · Sağ tık −1">
+          <span id="v" class="face">0</span>
+        </button>
+        <div class="row">
+          <button class="chip" data-step="2">+2</button>
+          <button class="chip" data-step="4">+4</button>
+          <button class="chip" data-step="8">+8</button>
+          <button id="r" class="chip ghost">Sıfırla</button>
+        </div>
       </div>
     </div>
   </div>
   `;
-
-  // --- PiP wallpaper URL'leri (yalnız wallpaper temaları) ---
-const WALLPAPERS = {
-  xmas:     "https://i.ibb.co/zhvjDvTH/XMAX.png",
-  telus:    "https://i.ibb.co/0RKMsTXD/Telus-Digital.png",
-  xarp:     "https://i.ibb.co/jvDFh0rY/alien-xenomorph-3840x2160-18665.jpg",
-  hellokitty:"https://i.ibb.co/M55jMCph/Ads-z-tasar-m-3.png",
-  halloween:"https://i.ibb.co/twQcSH2r/Ads-z-tasar-m-5.png",
-  generals: "https://i.ibb.co/Psx5Wvd9/Ads-z-tasar-m-7.png",
-  pirates:  "https://i.ibb.co/5XkJHz99/Pirates-Of-Keyframe-2.png",
-  tdog:     "https://i.ibb.co/1Y3PjMYQ/TDOG2.png",
-  cp77:     "https://i.ibb.co/dJw3jdvK/CP77.png",
-  berserk1: "https://i.ibb.co/N25fFpHt/Berserk-1.jpg",
-  berserk2: "https://i.ibb.co/HLWJqfXp/Berserk-2.jpg",
-};
-
-// PiP'te wallpaper'ı uygula
-const setWP = (themeKey) => {
-  const url = WALLPAPERS[themeKey];
-  const wp  = pip.document.getElementById('wp');
-  if (url)  wp.style.backgroundImage = `url("${url}")`;
-  else      wp.style.backgroundImage = 'none'; // tema yoksa düz zemin
-};
-
-// Açılışta uygula (S.theme varsa onu kullan)
-setWP(S.theme || S.appTheme || (document.documentElement.dataset?.theme));
-
-// Tema değişimini dinle (state.js'deki key 'theme' ise)
-let unTheme;
-try { unTheme = sub('theme', setWP); } catch(_) {}
 
  // === Tema/WALLPAPER'ı PiP'e kopyala (cover, center, no-repeat) ===
 const copyWallpaperToPip = () => {
@@ -194,14 +161,13 @@ _mo.observe(document.documentElement, { attributes:true, attributeFilter:['data-
 
   const $ = (s, root=pip.document) => root.querySelector(s);
 
-   // i18n etiketleri
+  // === i18n etiketleri (dil değişince PiP de boyansın)
   const paintTexts = () => {
-    pip.document.getElementById('leftLabel').textContent  = t(S.lang,'taskTitle')       || 'Task';
-    pip.document.getElementById('rightLabel').textContent = t(S.lang,'nextBreakTitle')  || 'Next';
-    pip.document.getElementById('r').textContent          = t(S.lang,'reset')           || 'Reset';
-    const hint = t(S.lang,'pipPadHint') || 'Sol tık +1 · Sağ tık −1';
-    pip.document.getElementById('pipHint').textContent = hint;
-    pip.document.getElementById('pad').title = hint;
+    $('#pipTaskLabel').textContent = t(S.lang, 'taskTitle')          || 'Task';
+    $('#pipNextLabel').textContent = t(S.lang, 'nextBreakTitle')     || 'Next';
+    $('#r').textContent            = t(S.lang, 'reset')              || 'Reset';
+    $('#pipHint').textContent      = t(S.lang, 'pipPadHint')         || 'Sol tık +1 · Sağ tık −1';
+    $('#pad').title                = $('#pipHint').textContent;
   };
   paintTexts();
   const unLang = sub('lang', paintTexts);
@@ -239,27 +205,20 @@ _mo.observe(document.documentElement, { attributes:true, attributeFilter:['data-
   // Sayaç senkronu
   const unCounter = sub('counter', (val) => { v.textContent = String(val); });
 
-   // Dashboard snapshot'ını HUD'a uygula
+  // === Dashboard snapshot'ını uygula
   const applyDash = (d) => {
     if (!d) return;
-    pip.document.getElementById('pipClock').textContent = d.clock || '--:--:--';
-
-    // Sol chip: mevcut görev/interval miktarı
-    pip.document.getElementById('leftVal').textContent = String(d.task?.amount ?? 0);
-    const dot = pip.document.getElementById('taskDot');
-    if (d.task?.active) { dot.hidden = false; } else { dot.hidden = true; }
-
-    // Sağ chip: sıradaki mola + ETA (tek satır)
+    $('#pipClock').textContent   = d.clock || '--:--:--';
+    $('#pipTaskStatus').textContent = d.task?.active ? (t(S.lang,'taskActive') || 'Active') : '—';
+    $('#pipTaskAmount').textContent  = String(d.task?.amount ?? 0);
     if (d.next){
-      const name = [d.next.keyOrName, d.next.at].filter(Boolean).join(' ');
-      pip.document.getElementById('nextName').textContent = name || '—';
-      pip.document.getElementById('nextEta').textContent  = d.next.eta || '--:--:--';
+      $('#pipNextName').textContent = `${d.next.keyOrName} ${d.next.at}`;
+      $('#pipNextEta').textContent  = d.next.eta;
     }else{
-      pip.document.getElementById('nextName').textContent = '—';
-      pip.document.getElementById('nextEta').textContent  = '--:--:--';
+      $('#pipNextName').textContent = '—';
+      $('#pipNextEta').textContent  = '--:--:--';
     }
   };
-
 
   // Açılışta doldur + her saniye snapshot tazele
   applyDash(window.__KZS_LAST_DASH__);
@@ -271,7 +230,7 @@ _mo.observe(document.documentElement, { attributes:true, attributeFilter:['data-
 
   // Temizlik
   pip.addEventListener('pagehide', () => {
-    unCounter(); unLang(); if (unTheme) unTheme(); clearInterval(syncTimer);
+    unCounter(); unLang(); clearInterval(syncTimer);
     _mo.disconnect();
   });
 }
