@@ -620,33 +620,40 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
   margin-right:auto;
 }
 
-/* Header'ı üç kolonlu grid: [sol][orta][sağ] */
+/* Header temel yerleşim (solda brand, sağda actions) */
 .topbar{
-  display: grid !important;
-  grid-template-columns: 1fr auto 1fr;
+  position: relative;
+  display: flex !important;
   align-items: center;
-  gap: 12px;
+  justify-content: space-between;
   padding: 8px 12px;
+  min-height: 52px; /* rozeti dikeyde ortalamak için makul yükseklik */
 }
 
-/* Sol ve sağ sabit; orta her zaman tam merkez */
-.topbar .brand{ justify-self: start; }
+/* Ortada her zaman tam ekran merkez: */
+.season-overlay{
+  position: absolute;
+  inset: 0;                    /* header'ın tamamını kaplar */
+  display: flex;
+  justify-content: center;     /* yatayda tam orta (ekranın ortası) */
+  align-items: center;         /* dikeyde header yüksekliğinin ortası */
+  pointer-events: none;        /* overlay tıklamayı engellemesin */
+  z-index: 2;
+}
 
+/* Rozetlerin kendisi tıklanabilir olsun */
+.season-overlay .season-badges{
+  pointer-events: auto;
+  display: flex;
+  gap: 8px;
+  width: max-content;
+}
+
+/* Sağdaki aksiyonlar */
 .topbar .actions{
-  justify-self: end;
   display: flex;
   align-items: center;
   gap: 8px;
   white-space: nowrap;
 }
 
-/* Rozetlerin bulunduğu orta kolon */
-.season-center{ justify-self: center; }
-
-.season-badges{
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  /* Çok rozet olursa alta taşısın istersen aç: */
-  /* flex-wrap: wrap; */
-}
