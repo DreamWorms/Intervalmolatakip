@@ -17,77 +17,76 @@ export async function openDocPiP(){
   background:#0b0d12 center/cover no-repeat fixed;  /* fallback + cover */
 }
     :root{
-      --bg:#0b0d12; --panel:#0f1522cc; --stroke:#273246; --fg:#e9edf4; --muted:#9aa6b2;
-    }
-    *{box-sizing:border-box}
-    body{ margin:0; font:14px/1.55 system-ui,Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-          color:var(--fg); background:radial-gradient(600px 280px at 15% -10%, #15233f 0%, transparent 55%), var(--bg); }
-    .wrap{ padding:12px; display:grid; gap:10px; }
-    .clock{ font-size:28px; font-weight:900; text-align:center; margin:2px 0 6px; }
-    .grid{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    .card{ background:var(--panel); border:1px solid var(--stroke); border-radius:14px; padding:10px; }
-    .label{ opacity:.8; font-weight:700; margin-bottom:4px }
-    .muted{ color:var(--muted) }
+    --bg:#0b0d12; --panel:#0f1522cc; --stroke:#273246; --fg:#e9edf4; --muted:#9aa6b2;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font:14px/1.55 system-ui,Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    color:var(--fg);
+    background:transparent; /* wallpaper arkadan gelsin */
+  }
 
-    /* Sayaç kartı alt sırada ve iki sütunu da kaplasın */
-    .counter-card{ grid-column:1 / -1; display:flex; flex-direction:column; gap:8px; }
+  /* daha sıkı, daha okunur yerleşim */
+  .wrap{ padding:10px; display:grid; gap:8px; }
+  .clock{
+    font-size:clamp(16px,4.2vw,26px);
+    font-weight:900; text-align:center; margin:0 0 4px;
+  }
 
-    /* PAD: kartın kalan tüm yüksekliğini kapla */
-    .pad{
-      flex:1 1 auto; width:100%;
-      min-height:120px;            /* burayı istersen 100–160 arası oynatabilirsin */
-      border:1px solid var(--stroke);
-      border-radius:14px;
-      background:linear-gradient(180deg, rgba(18,20,35,.78), rgba(14,16,28,.9));
-      display:flex; align-items:center; justify-content:center;
-      cursor:zoom-in; user-select:none;
-      transition:transform .06s ease, box-shadow .12s ease, border-color .12s ease;
-      box-shadow:0 8px 28px rgba(0,0,0,.35);
-    }
-    .pad:hover{ border-color:#3a4564; box-shadow:0 12px 36px rgba(0,0,0,.45); }
-    .pad:active{ transform:scale(.995); }
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:8px; align-items:start }
+  @media (max-width:420px){ .grid{ grid-template-columns:1fr } } /* dar alanda tek sütun */
 
-    .face{
-    color: var(--fg);
-      font-size:56px; font-weight:900; line-height:1;
-      padding:10px 18px; border-radius:12px; min-width:92px; text-align:center;
-      background:#0d1220; border:1px solid var(--stroke);
-    }
+  .card{
+    background:rgba(10,14,22,.70);
+    backdrop-filter:saturate(120%) blur(6px);
+    border:1px solid var(--stroke);
+    border-radius:12px;
+    padding:8px;
+    min-width:0;
+  }
+  .label{ opacity:.85; font-weight:800; letter-spacing:.2px; margin-bottom:2px;
+          font-size:clamp(11px,2.2vw,13px) }
+  .muted{ color:var(--muted); font-size:clamp(11px,2.4vw,13px) }
+  .value-lg{ font-size:clamp(16px,4vw,20px); font-weight:800; margin-top:4px }
 
-    .row{ display:flex; gap:8px; align-items:center; justify-content:center; flex-wrap:wrap; }
-    .chip{ padding:6px 12px; border-radius:999px; border:1px solid var(--stroke); background:#0c1425; color:var(--fg); cursor:pointer; }
-    .ghost{ background:transparent }
-    .top-hint{ text-align:right; font-size:12px; color:var(--muted); }
-  </style>
+  /* Sayaç */
+  .counter-card{ grid-column:1 / -1; display:flex; flex-direction:column; gap:6px; }
+  .top-hint{ text-align:right; font-size:clamp(10px,2vw,12px); color:var(--muted); }
+  @media (max-height:280px){ .top-hint{ display:none } } /* yükseklik çok kısaysa ipucu gizle */
 
-  <div id="pipBackdrop"></div>
-  <div class="wrap">
-    <div id="pipClock" class="clock">--:--:--</div>
+  .pad{
+    flex:1 1 auto; width:100%;
+    min-height:clamp(80px,24vh,130px);
+    border:1px solid var(--stroke);
+    border-radius:12px;
+    background:linear-gradient(180deg, rgba(14,16,28,.92), rgba(12,14,22,.88));
+    display:flex; align-items:center; justify-content:center;
+    cursor:zoom-in; user-select:none;
+    transition:transform .06s ease, box-shadow .12s ease, border-color .12s ease;
+    box-shadow:0 8px 24px rgba(0,0,0,.35);
+  }
+  .pad:hover{ border-color:#3a4564; box-shadow:0 12px 32px rgba(0,0,0,.45) }
+  .pad:active{ transform:scale(.995) }
 
-    <div class="grid">
-      <div class="card">
-        <div id="pipTaskLabel" class="label">Task</div>
-        <div id="pipTaskStatus" class="muted">—</div>
-        <div id="pipTaskAmount" style="font-size:20px; font-weight:800; margin-top:4px">0</div>
-      </div>
+  .face{
+    color:#fff;
+    font-size:clamp(32px,9.5vw,48px);
+    font-weight:900; line-height:1;
+    padding:8px 14px; border-radius:10px;
+    min-width:clamp(64px,22vw,96px);
+    text-align:center;
+    background:#0d1220; border:1px solid var(--stroke);
+  }
 
-      <div class="card">
-        <div id="pipNextLabel" class="label">Next</div>
-        <div id="pipNextName" class="muted">—</div>
-        <div id="pipNextEta" style="font-size:20px; font-weight:800; margin-top:4px">--:--:--</div>
-      </div>
-
-      <!-- Sayaç -->
-      <div class="card counter-card">
-        <div class="top-hint" id="pipHint">Sol tık +1 · Sağ tık −1</div>
-        <button id="pad" class="pad" title="Sol tık +1 · Sağ tık −1">
-          <span id="v" class="face">0</span>
-        </button>
-        <div class="row">
-          <button class="chip" data-step="2">+2</button>
-          <button class="chip" data-step="4">+4</button>
-          <button class="chip" data-step="8">+8</button>
-          <button id="r" class="chip ghost">Sıfırla</button>
+  .row{ display:flex; gap:6px; align-items:center; justify-content:center; flex-wrap:wrap }
+  .chip{
+    padding:6px 10px; border-radius:999px; border:1px solid var(--stroke);
+    background:#0c1425; color:var(--fg); cursor:pointer;
+    font-weight:700; font-size:clamp(11px,2.2vw,13px)
+  }
+  .ghost{ background:transparent }
         </div>
       </div>
     </div>
