@@ -146,3 +146,27 @@ window.paintIconbarLabels = paintIconbarLabels;
 })();
 
 
+// topbar.js (uygun bir yere, bir kere çalışsın)
+import { openDocPiP } from './pip.js';
+
+document.addEventListener('click', async (e) => {
+  const btn = e.target.closest('#btnDocPip');
+  if (!btn) return;
+
+  try {
+    await openDocPiP();                 // <- kullanıcı jesti içinde çağrılıyor
+  } catch (err) {
+    console.error('PiP açılamadı:', err);
+    alert(err?.message || 'Doc PiP açılamadı.');
+  }
+});
+
+// Klavye ile de açılabilsin
+document.addEventListener('keydown', (e) => {
+  const btn = document.activeElement?.closest?.('#btnDocPip');
+  if (!btn) return;
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    btn.click();
+  }
+});
