@@ -4,7 +4,7 @@
   const on = (el, ev, fn) => el && el.addEventListener(ev, fn);
 
   const LS_KEY = 'kzs_wellness_book_v1';
-  const state = { activeStart: null, items: [] }; // items: [{id,start,end,durMin,note}]
+  const state = { activeStart: null, items: [] }; // [{id,start,end,durMin,note}]
 
   const load = () => {
     try{
@@ -28,10 +28,11 @@
     return `${dd}.${mm} ${hh}:${mi}`;
   };
 
-  const statusEl = $('#wnStatus');
-  const tbody = $('#wnTable tbody');
+  const statusEl = document.getElementById('wnStatus');
+  const tbody = document.querySelector('#wnTable tbody');
 
   const render = () => {
+    if (!statusEl || !tbody) return; // modal henüz load edilmemişse
     statusEl.textContent = state.activeStart ? `Wellness aktif: ${fmt(state.activeStart)}` : 'Wellness pasif';
     tbody.innerHTML = '';
     state.items.slice().reverse().forEach(it=>{
@@ -72,12 +73,12 @@
   };
 
   // events
-  on($('#wnStart'), 'click', start);
-  on($('#wnEnd'), 'click', end);
-  on($('#wnNote'), 'click', addNote);
+  on(document.getElementById('wnStart'), 'click', start);
+  on(document.getElementById('wnEnd'), 'click', end);
+  on(document.getElementById('wnNote'), 'click', addNote);
 
-  on(tbody, 'click', (e)=>{
-    const id = e.target.getAttribute('data-del');
+  on(document.querySelector('#wnTable tbody'), 'click', (e)=>{
+    const id = e.target.getAttribute && e.target.getAttribute('data-del');
     if (!id) return;
     if (confirm('Silinsin mi?')){
       state.items = state.items.filter(x=>x.id!==id);
@@ -85,24 +86,23 @@
     }
   });
 
-  on($('#wnExport'), 'click', ()=>{
+  on(document.getElementById('wnExport'), 'click', ()=>{
     const blob = new Blob([ JSON.stringify({items:state.items}, null, 2) ], {type:'application/json'});
     const url = URL.createObjectURL(blob);
     const a = Object.assign(document.createElement('a'), {href:url, download:'wellness_book.json'});
     document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
   });
 
-  on($('#wnClear'), 'click', ()=>{
+  on(document.getElementById('wnClear'), 'click', ()=>{
     if (!confirm('Tüm kayıtlar silinsin mi?')) return;
     state.items = []; state.activeStart = null; save(); render();
   });
 
   // Modal açılırken güncelle
-  on($('#openWellness'), 'click', ()=> { load(); render(); });
+  const openWellBtn = document.getElementById('openWellness');
+  on(openWellBtn, 'click', ()=> { load(); render(); });
 
-  // ---- Entegrasyon kancası (otomatik kayıt için)
-  // Mevcut kodundan wellness başlarken: window.kzWellness('start')
-  // biterken: window.kzWellness('end')
+  // Entegrasyon kancası (otomatik)
   window.kzWellness = (act) => { if (act==='start') start(); else if (act==='end') end(); };
 
   // init

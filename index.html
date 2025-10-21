@@ -80,7 +80,9 @@
   </div>
 </div>
 
-<!-- ===== Modals: şimdilik boş iskelet (içini sonraki adımda dolduracağız) ===== -->
+<!-- ===== Modals (FRIENDS + WELLNESS) ===== -->
+
+<!-- FRIENDS -->
 <div class="kzModal" id="friendsModal" hidden>
   <div class="kzModal-overlay" data-close="friendsModal"></div>
   <div class="kzModal-dialog" role="dialog" aria-modal="true" aria-labelledby="friendsTitle">
@@ -88,82 +90,83 @@
       <h3 id="friendsTitle">Arkadaşlar</h3>
       <button class="kzModal-close" data-close="friendsModal" aria-label="Kapat">✕</button>
     </div>
+
     <div class="kzModal-body">
-  <!-- BENİM MOLALARIM -->
-  <section class="kzSec">
-    <h4>Benim Molalarım</h4>
-    <form id="myBreaksForm" class="kzGrid">
-      <div class="kzRow">
-        <label>Rest 1</label>
-        <input type="time" name="rest1_start" required>
-        <input type="number" name="rest1_min" min="1" max="180" placeholder="Süre (dk)" value="15" required>
-      </div>
-      <div class="kzRow">
-        <label>Rest 2</label>
-        <input type="time" name="rest2_start">
-        <input type="number" name="rest2_min" min="1" max="180" placeholder="Süre (dk)" value="15">
-      </div>
-      <div class="kzRow">
-        <label>Lunch</label>
-        <input type="time" name="lunch_start">
-        <input type="number" name="lunch_min" min="10" max="120" placeholder="Süre (dk)" value="45">
-      </div>
-      <div class="kzRow">
-        <label>Wellness 1</label>
-        <input type="time" name="well1_start">
-        <input type="number" name="well1_min" min="5" max="120" placeholder="Süre (dk)" value="16">
-      </div>
-      <div class="kzRow">
-        <label>Wellness 2</label>
-        <input type="time" name="well2_start">
-        <input type="number" name="well2_min" min="5" max="120" placeholder="Süre (dk)" value="16">
-      </div>
-      <div class="kzRowEnd">
-        <button type="submit" class="kzBtn pri">Kaydet</button>
-        <button type="button" id="myBreaksClear" class="kzBtn">Temizle</button>
-      </div>
-    </form>
-    <p class="kzHint">İpucu: İstersen otomatik almak için sayfadaki mola saatlerine küçük data-attr ekleyebiliriz (sonra gösteririm), şimdilik manuel.</p>
-  </section>
+      <!-- BENİM MOLALARIM -->
+      <section class="kzSec">
+        <h4>Benim Molalarım</h4>
+        <form id="myBreaksForm" class="kzGrid">
+          <div class="kzRow">
+            <label>Rest 1</label>
+            <input type="time" name="rest1_start" required>
+            <input type="number" name="rest1_min" min="1" max="180" placeholder="Süre (dk)" value="15" required>
+          </div>
+          <div class="kzRow">
+            <label>Rest 2</label>
+            <input type="time" name="rest2_start">
+            <input type="number" name="rest2_min" min="1" max="180" placeholder="Süre (dk)" value="15">
+          </div>
+          <div class="kzRow">
+            <label>Lunch</label>
+            <input type="time" name="lunch_start">
+            <input type="number" name="lunch_min" min="10" max="120" placeholder="Süre (dk)" value="45">
+          </div>
+          <div class="kzRow">
+            <label>Wellness 1</label>
+            <input type="time" name="well1_start">
+            <input type="number" name="well1_min" min="5" max="120" placeholder="Süre (dk)" value="16">
+          </div>
+          <div class="kzRow">
+            <label>Wellness 2</label>
+            <input type="time" name="well2_start">
+            <input type="number" name="well2_min" min="5" max="120" placeholder="Süre (dk)" value="16">
+          </div>
+          <div class="kzRowEnd">
+            <button type="submit" class="kzBtn pri">Kaydet</button>
+            <button type="button" id="myBreaksClear" class="kzBtn">Temizle</button>
+          </div>
+        </form>
+        <p class="kzHint">İstersen bunu ana ekrandan otomatik çekmeye bağlarız; şimdilik manuel.</p>
+      </section>
 
-  <!-- ARKADAŞ EKLE -->
-  <section class="kzSec">
-    <h4>Arkadaş Ekle / Düzenle</h4>
-    <form id="friendForm" class="kzGrid">
-      <input type="hidden" name="id">
-      <div class="kzRow">
-        <label>İsim</label>
-        <input type="text" name="name" placeholder="Örn: Halil Ender" required>
-      </div>
+      <!-- ARKADAŞ EKLE -->
+      <section class="kzSec">
+        <h4>Arkadaş Ekle / Düzenle</h4>
+        <form id="friendForm" class="kzGrid">
+          <input type="hidden" name="id">
+          <div class="kzRow">
+            <label>İsim</label>
+            <input type="text" name="name" placeholder="Örn: Halil Ender" required>
+          </div>
 
-      <div id="slotsWrap">
-        <!-- Slot satırları JS ile gelir -->
-      </div>
+          <div id="slotsWrap"><!-- Slot satırları JS ile gelir --></div>
 
-      <div class="kzRowEnd">
-        <button type="button" id="addSlot" class="kzBtn">+ Slot Ekle</button>
-        <span class="kzFlex"></span>
-        <button type="submit" class="kzBtn pri">Kaydet</button>
-        <button type="button" id="resetFriendForm" class="kzBtn">Formu Sıfırla</button>
-      </div>
-    </form>
-  </section>
+          <div class="kzRowEnd">
+            <button type="button" id="addSlot" class="kzBtn">+ Slot Ekle</button>
+            <span class="kzFlex"></span>
+            <button type="submit" class="kzBtn pri">Kaydet</button>
+            <button type="button" id="resetFriendForm" class="kzBtn">Formu Sıfırla</button>
+          </div>
+        </form>
+      </section>
 
-  <!-- LİSTE & KESİŞİM -->
-  <section class="kzSec">
-    <h4>Arkadaşlar</h4>
-    <div id="friendsList" class="kzList"></div>
-    <div class="kzRowEnd mt8">
-      <button id="exportFriends" class="kzBtn">Dışa Aktar (JSON)</button>
-      <button id="importFriends" class="kzBtn">İçe Aktar</button>
-      <input id="importFriendsFile" type="file" accept="application/json" hidden>
-      <span class="kzFlex"></span>
-      <button id="clearFriends" class="kzBtn danger">Tümünü Sil</button>
-    </div>
-  </section>
-</div>
+      <!-- LİSTE & KESİŞİM -->
+      <section class="kzSec">
+        <h4>Arkadaşlar</h4>
+        <div id="friendsList" class="kzList"></div>
+        <div class="kzRowEnd mt8">
+          <button id="exportFriends" class="kzBtn">Dışa Aktar (JSON)</button>
+          <button id="importFriends" class="kzBtn">İçe Aktar</button>
+          <input id="importFriendsFile" type="file" accept="application/json" hidden>
+          <span class="kzFlex"></span>
+          <button id="clearFriends" class="kzBtn danger">Tümünü Sil</button>
+        </div>
+      </section>
+    </div><!-- /.kzModal-body -->
+  </div><!-- /.kzModal-dialog -->
+</div><!-- /#friendsModal -->
 
-
+<!-- WELLNESS -->
 <div class="kzModal" id="wellnessBookModal" hidden>
   <div class="kzModal-overlay" data-close="wellnessBookModal"></div>
   <div class="kzModal-dialog" role="dialog" aria-modal="true" aria-labelledby="wellnessTitle">
@@ -171,36 +174,39 @@
       <h3 id="wellnessTitle">Wellness Defteri</h3>
       <button class="kzModal-close" data-close="wellnessBookModal" aria-label="Kapat">✕</button>
     </div>
-    <div class="kzModal-body">
-  <section class="kzSec">
-    <h4>Durum</h4>
-    <div class="kzRowEnd">
-      <div id="wnStatus">Wellness pasif</div>
-      <span class="kzFlex"></span>
-      <button id="wnStart" class="kzBtn pri">Başlat</button>
-      <button id="wnEnd" class="kzBtn">Bitir</button>
-      <button id="wnNote" class="kzBtn">Not Ekle</button>
-    </div>
-    <p class="kzHint">Otomatik kayıt istersen mevcut Wellness başlat/bitir kodunun yanına <code>window.kzWellness('start')</code> ve <code>window.kzWellness('end')</code> ekleyeceğiz (aşağıda anlatacağım).</p>
-  </section>
 
-  <section class="kzSec">
-    <h4>Kayıtlar</h4>
-    <div class="kzTableWrap">
-      <table class="kzTable" id="wnTable">
-        <thead>
-          <tr><th>Başlangıç</th><th>Bitiş</th><th>Süre</th><th>Not</th><th></th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <div class="kzRowEnd mt8">
-      <button id="wnExport" class="kzBtn">Dışa Aktar (JSON)</button>
-      <span class="kzFlex"></span>
-      <button id="wnClear" class="kzBtn danger">Tümünü Sil</button>
-    </div>
-  </section>
-</div>
+    <div class="kzModal-body">
+      <section class="kzSec">
+        <h4>Durum</h4>
+        <div class="kzRowEnd">
+          <div id="wnStatus">Wellness pasif</div>
+          <span class="kzFlex"></span>
+          <button id="wnStart" class="kzBtn pri">Başlat</button>
+          <button id="wnEnd" class="kzBtn">Bitir</button>
+          <button id="wnNote" class="kzBtn">Not Ekle</button>
+        </div>
+      </section>
+
+      <section class="kzSec">
+        <h4>Kayıtlar</h4>
+        <div class="kzTableWrap">
+          <table class="kzTable" id="wnTable">
+            <thead>
+              <tr><th>Başlangıç</th><th>Bitiş</th><th>Süre</th><th>Not</th><th></th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="kzRowEnd mt8">
+          <button id="wnExport" class="kzBtn">Dışa Aktar (JSON)</button>
+          <span class="kzFlex"></span>
+          <button id="wnClear" class="kzBtn danger">Tümünü Sil</button>
+        </div>
+      </section>
+    </div><!-- /.kzModal-body -->
+  </div><!-- /.kzModal-dialog -->
+</div><!-- /#wellnessBookModal -->
+
 
 
 
@@ -319,10 +325,9 @@
     </section>
   </main>
   <script type="module" src="./src/main.js"></script>
-  <div id="themeBackdrop" aria-hidden="true"></div>
-  <script src="src/dock.js"></script>
-  <script src="src/friends.js"></script>
-  <script src="src/wellnessBook.js"></script>
+<div id="themeBackdrop" aria-hidden="true"></div>
+<script src="src/dock.js"></script>
+<script src="src/friends.js"></script>
+<script src="src/wellnessBook.js"></script>
 </body>
 </html>
-<link rel="stylesheet" href="/src/theme-vars.css">

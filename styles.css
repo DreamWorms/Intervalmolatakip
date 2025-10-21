@@ -794,3 +794,10 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
 .kzTable{ width:100%; border-collapse:collapse; }
 .kzTable th, .kzTable td{ padding:8px 10px; border-bottom:1px solid rgba(255,255,255,.08); text-align:left; }
 .kzTable th{ color:#cfe0ff; font-weight:600; }
+
+/* Arkadaşlar modali: bölümleri ayırt et ve sıkılaştır */
+#friendsModal .kzSec { border:1px solid rgba(255,255,255,.06); border-radius:12px; padding:12px; background:rgba(255,255,255,.03); }
+#friendsModal .kzSec + .kzSec { margin-top:12px; }
+#friendsModal .kzGrid { gap:10px; }
+#friendsModal .kzRow { grid-template-columns: 120px 1fr 120px; }
+#friendsModal .kzList .kzCard { background:rgba(255,255,255,.03); }
