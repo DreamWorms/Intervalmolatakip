@@ -554,10 +554,12 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
 
 /* === Sezon Rozetleri (XMAS + Halloween) ================================== */
 .season-badges{
-  display:flex; justify-content:center; align-items:center;
-  gap:12px;
-  margin:-4px 0 8px;   /* üst saatin tepesine “yapışık” dursun */
+  display:flex; gap:12px;
+  width:max-content;          /* içerik kadar genişlik */
+  margin:-4px auto 8px;       /* << soldan/sağdan auto => tam ortaya */
+  justify-content:center;
 }
+
 
 /* Ortak rozet görünümü */
 .kchip{
