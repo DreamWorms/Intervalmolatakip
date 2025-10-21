@@ -94,13 +94,16 @@
     <div class="kzModal-body" id="friendsBody">
   <!-- ÜST ARAÇ ÇUBUĞU -->
   <div class="frToolbar">
-    <label>Arkadaş adı</label>
-    <input id="frName" type="text" class="text" placeholder="Örn: Arkadaş 1">
-    <label class="frPipLbl">
-      <input id="frPip" type="checkbox">
-      PiP’te göster
-    </label>
-  </div>
+  <label>Arkadaş</label>
+  <select id="frSelect" aria-label="Arkadaş seç"></select>
+  <input id="frName" type="text" class="text" placeholder="Ad yaz → otomatik kaydedilir">
+  <button id="btnFrAdd" class="kzBtn">Ekle</button>
+  <button id="btnFrDel" class="kzBtn">Sil</button>
+  <label class="frPipLbl">
+    <input id="frPip" type="checkbox"> PiP’te göster
+  </label>
+</div>
+
 
   <!-- İKİ KOLON: SOLDA ARKADAŞ BLOKLARI, SAĞDA KESİŞİMLER -->
   <div class="frWrap">
@@ -284,5 +287,22 @@
 <script src="src/friends.js"></script>
 <script src="src/wellnessBook.js"></script>
 <link rel="stylesheet" href="/src/theme-vars.css">
+<!-- Arkadaş PiP paneli (ana ekranda sağda) -->
+<div id="frPipPanel" class="frPip" aria-hidden="true" data-collapsed="false">
+  <div class="head">
+    <strong id="frPipTitle">Arkadaşlar</strong>
+    <div>
+      <button id="frPipMin" class="kzBtn">–</button>
+      <button id="frPipClose" class="kzBtn">✕</button>
+    </div>
+  </div>
+  <div class="body">
+    <div class="mini">Arkadaş Mola Blokları</div>
+    <div id="frPipBreaks" class="mini">–</div>
+    <div class="sep"></div>
+    <div class="mini">Kesişimler</div>
+    <div id="frPipOverlaps" class="mini">–</div>
+  </div>
+</div>
 </body>
 </html>
