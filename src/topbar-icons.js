@@ -144,3 +144,16 @@ window.paintIconbarLabels = paintIconbarLabels;
   // ilk boya
   paintIconbarLabels();
 })();
+
+
+// topbar.js (veya uygun yer)
+import { openDocPiP } from './pip.js';
+
+(() => {
+  const b = document.getElementById('btnDocPip');
+  if (!b) return;
+  if (!b.dataset.wired) {
+    b.addEventListener('click', openDocPiP);
+    b.dataset.wired = '1';
+  }
+})();
