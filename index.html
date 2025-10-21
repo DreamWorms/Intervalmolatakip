@@ -164,7 +164,14 @@
 </div>
 
 
-<div class="kzModal-body">
+<div class="kzModal" id="wellnessBookModal" hidden>
+  <div class="kzModal-overlay" data-close="wellnessBookModal"></div>
+  <div class="kzModal-dialog" role="dialog" aria-modal="true" aria-labelledby="wellnessTitle">
+    <div class="kzModal-head">
+      <h3 id="wellnessTitle">Wellness Defteri</h3>
+      <button class="kzModal-close" data-close="wellnessBookModal" aria-label="Kapat">✕</button>
+    </div>
+    <div class="kzModal-body">
   <section class="kzSec">
     <h4>Durum</h4>
     <div class="kzRowEnd">
@@ -314,6 +321,8 @@
   <script type="module" src="./src/main.js"></script>
   <div id="themeBackdrop" aria-hidden="true"></div>
   <script src="src/dock.js"></script>
+  <script src="src/friends.js"></script>
+  <script src="src/wellnessBook.js"></script>
 </body>
 </html>
 <link rel="stylesheet" href="/src/theme-vars.css">
