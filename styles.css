@@ -670,3 +670,92 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
   transform: translateY(1px);       /* optik 1px aşağı; istersen 0 yap */
   /* transform: translateY(0); */    /* tam matematiksel merkez için */
 }
+
+/* ===== KZ DOCK ===== */
+.kzDock {
+  position: fixed;
+  top: 88px; /* header'ın hemen altı gibi */
+  right: 16px;
+  z-index: 5000;
+}
+.kzDock-trigger {
+  width: 48px; height: 48px;
+  display: grid; place-items: center;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02));
+  backdrop-filter: blur(10px);
+  color: #eaeef9;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .2s ease;
+}
+.kzDock-trigger:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(0,0,0,.45); }
+
+.kzDock-panel[hidden] { display: none; }
+.kzDock-panel {
+  margin-top: 10px;
+  min-width: 240px;
+  padding: 10px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: linear-gradient(180deg, rgba(18,22,30,.85), rgba(18,22,30,.72));
+  backdrop-filter: blur(10px);
+  box-shadow: 0 20px 48px rgba(0,0,0,.45);
+  display: grid;
+  gap: 8px;
+  animation: kzDockIn .16s ease;
+}
+@keyframes kzDockIn { from { opacity: 0; transform: translateY(-6px) scale(.98);} to { opacity: 1; transform: translateY(0) scale(1);} }
+
+.kzDock-item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.04);
+  color: #eaf1ff; font-weight: 600;
+  letter-spacing: .2px;
+  cursor: pointer;
+  transition: background .15s ease, transform .06s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.kzDock-item:hover {
+  background: rgba(255,255,255,.08);
+  border-color: rgba(255,255,255,.18);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+}
+.kzDock-icn { width: 22px; height: 22px; display: grid; place-items: center; opacity: .9; }
+
+/* ===== MODAL temel ===== */
+.kzModal[hidden] { display: none; }
+.kzModal { position: fixed; inset: 0; z-index: 6000; }
+.kzModal-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(2px);
+}
+.kzModal-dialog {
+  position: relative;
+  margin: min(6vh, 40px) auto;
+  width: min(100% - 32px, 960px);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: linear-gradient(180deg, rgba(18,22,30,.95), rgba(18,22,30,.86));
+  box-shadow: 0 30px 80px rgba(0,0,0,.55);
+  overflow: hidden;
+}
+.kzModal-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.kzModal-head h3 { margin: 0; font-size: 18px; color: #eaf1ff; letter-spacing: .3px; }
+.kzModal-close {
+  width: 36px; height: 36px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(255,255,255,.04); color: #eaf1ff;
+  cursor: pointer; transition: background .15s ease, transform .06s ease;
+}
+.kzModal-close:hover { background: rgba(255,255,255,.10); transform: translateY(-1px); }
+.kzModal-body { padding: 16px; color: #dbe6ff; line-height: 1.55; }

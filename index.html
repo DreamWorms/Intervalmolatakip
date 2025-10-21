@@ -44,6 +44,68 @@
   </div>
 </header>
 
+<!-- ===== KZ DOCK (floating menu) ===== -->
+<div id="kzDock" class="kzDock" aria-label="Hızlı Menü">
+  <button id="kzDockTrigger" class="kzDock-trigger" aria-expanded="false" aria-controls="kzDockPanel" title="Menü">
+    <!-- 3x3 grid ikon -->
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <circle cx="5" cy="5" r="2"/><circle cx="12" cy="5" r="2"/><circle cx="19" cy="5" r="2"/>
+      <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+      <circle cx="5" cy="19" r="2"/><circle cx="12" cy="19" r="2"/><circle cx="19" cy="19" r="2"/>
+    </svg>
+  </button>
+
+  <div id="kzDockPanel" class="kzDock-panel" hidden>
+    <button class="kzDock-item" id="openFriends">
+      <span class="kzDock-icn" aria-hidden="true">
+        <!-- friends icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M16 11c1.66 0 3-1.57 3-3.5S17.66 4 16 4s-3 1.57-3 3.5S14.34 11 16 11zM8 11c1.66 0 3-1.57 3-3.5S9.66 4 8 4 5 5.57 5 7.5 6.34 11 8 11zM8 13c-3.33 0-6 2.24-6 5v1h8v-1c0-1.66.67-3.16 1.76-4.29C10.85 13.27 9.48 13 8 13zm8 0c-.71 0-1.39.09-2.03.26 1.53 1.18 2.53 3 2.53 4.99V19h7v-1c0-2.76-2.67-5-5.5-5H16z"/>
+        </svg>
+      </span>
+      <span>Arkadaşlar</span>
+    </button>
+
+    <button class="kzDock-item" id="openWellness">
+      <span class="kzDock-icn" aria-hidden="true">
+        <!-- notebook icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zm0 3v12h10V6H7zm2 2h6v2H9V8zm0 4h6v2H9v-2z"/>
+        </svg>
+      </span>
+      <span>Wellness Defteri</span>
+    </button>
+
+    <!-- ileride eklenecekler: Doc PiP, Tema/Dil, Ayarlar… -->
+  </div>
+</div>
+
+<!-- ===== Modals: şimdilik boş iskelet (içini sonraki adımda dolduracağız) ===== -->
+<div class="kzModal" id="friendsModal" hidden>
+  <div class="kzModal-overlay" data-close="friendsModal"></div>
+  <div class="kzModal-dialog" role="dialog" aria-modal="true" aria-labelledby="friendsTitle">
+    <div class="kzModal-head">
+      <h3 id="friendsTitle">Arkadaşlar</h3>
+      <button class="kzModal-close" data-close="friendsModal" aria-label="Kapat">✕</button>
+    </div>
+    <div class="kzModal-body">
+      <p>👋 Buraya “Arkadaşlar Sekmesi” gelecek. Bir sonraki mesajda form + kesişim hesapları eklenecek.</p>
+    </div>
+  </div>
+</div>
+
+<div class="kzModal" id="wellnessBookModal" hidden>
+  <div class="kzModal-overlay" data-close="wellnessBookModal"></div>
+  <div class="kzModal-dialog" role="dialog" aria-modal="true" aria-labelledby="wellnessTitle">
+    <div class="kzModal-head">
+      <h3 id="wellnessTitle">Wellness Defteri</h3>
+      <button class="kzModal-close" data-close="wellnessBookModal" aria-label="Kapat">✕</button>
+    </div>
+    <div class="kzModal-body">
+      <p>📝 Buraya “Wellness kayıt listesi” gelecek. Bir sonraki mesajda gerçek kayıt/okuma eklenecek.</p>
+    </div>
+  </div>
+</div>
 
 
 
@@ -162,6 +224,7 @@
   </main>
   <script type="module" src="./src/main.js"></script>
   <div id="themeBackdrop" aria-hidden="true"></div>
+  <script src="src/dock.js"></script>
 </body>
 </html>
 <link rel="stylesheet" href="/src/theme-vars.css">
