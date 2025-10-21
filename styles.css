@@ -657,3 +657,16 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
   white-space: nowrap;
 }
 
+/* == Season badges: tam dikey merkez + optik düzeltme == */
+.topbar{
+  min-height: 56px;                 /* kutunun yüksekliği simetrik olsun */
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+/* overlay zaten center; sadece eski margin'leri sıfırla */
+.season-overlay .season-badges{
+  margin: 0 !important;             /* önceki -4px margin'i iptal et */
+  transform: translateY(1px);       /* optik 1px aşağı; istersen 0 yap */
+  /* transform: translateY(0); */    /* tam matematiksel merkez için */
+}
