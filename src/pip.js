@@ -1,4 +1,4 @@
-// src/pip.js — PiP: saat + görev + sıradaki mola + sayaç (auto-compact + theme sync, sayaç hep görünür)
+// src/pip.js — PiP: üst bar (interval • saat • mola ETA) + büyük sayaç
 import { S, sub, setCounter, broadcast } from './state.js';
 import { t } from './i18n.js';
 
@@ -6,14 +6,14 @@ export async function openDocPiP(){
   if (window.top !== window) { alert('Lütfen siteyi top-level aç (Netlify/GitHub).'); return; }
   if (!('documentPictureInPicture' in window)) { alert('Tarayıcı Document PiP desteklemiyor.'); return; }
 
-  const pip = await window.documentPictureInPicture.requestWindow({ width: 460, height: 360 });
+  const pip = await window.documentPictureInPicture.requestWindow({ width: 460, height: 340 });
 
   pip.document.body.innerHTML = `
   <style>
     html,body{height:100%; background:transparent !important; overflow:hidden}
     *{box-sizing:border-box}
 
-    /* Ana sayfadaki #themeBackdrop kopyalanır */
+    /* Arka planı ana sayfadaki #themeBackdrop'tan kopyalayacağız */
     #pipBackdrop{
       position:fixed; inset:0; z-index:-1;
       background:#0b0d12 center/cover no-repeat fixed;
@@ -29,47 +29,47 @@ export async function openDocPiP(){
       margin:0; color:var(--fg);
       font:14px/1.55 system-ui,Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
     }
+    .wrap{
+      height:100%;
+      padding:10px;
+      display:grid;
+      grid-template-rows:auto 1fr auto;
+      gap:8px;
+    }
 
-    .wrap{ padding:10px; display:grid; gap:8px; min-height:100% }
+    /* ÜST BAR — 3 sütun: interval • saat • mola ETA */
+    .topbar{
+      display:grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items:center;
+      gap:8px;
+      padding:6px 8px;
+      border:1px solid var(--stroke);
+      border-radius:12px;
+      background:var(--panel);
+      backdrop-filter:saturate(120%) blur(6px);
+    }
+    .seg{min-width:0; display:flex; align-items:center; gap:6px}
+    .seg.l{justify-content:flex-start}
+    .seg.c{justify-content:center}
+    .seg.r{justify-content:flex-end; text-align:right}
 
+    .k{font-weight:800; opacity:.9; font-size:clamp(11px,2.5vw,12px)}
+    .v{font-weight:800; font-size:clamp(14px,3.6vw,18px)}
+    .sub{color:var(--muted); font-size:clamp(11px,2.8vw,12px)}
     .clock{
-      font-size:clamp(18px,5.6vw,28px);
-      font-weight:900; text-align:center; margin:0 0 4px;
+      font-weight:900;
+      font-size:clamp(18px,6.2vw,28px);
       text-shadow:0 2px 10px rgba(0,0,0,.45);
     }
 
-    /* İki kart + sayaç aynı grupta, ama compact'ta sadece kartları saklayacağız */
-    .grid{
-      display:grid; grid-template-columns:1fr 1fr; gap:8px; align-items:start; min-width:0;
+    /* SAYAÇ alanı: tüm kalan alanı doldurur */
+    .counter{
+      display:flex; flex-direction:column; gap:6px; min-height:0;
     }
-    .card{
-      background:var(--panel);
-      backdrop-filter:saturate(120%) blur(6px);
-      border:1px solid var(--stroke);
-      border-radius:12px;
-      padding:clamp(6px,1.6vw,10px);
-      min-width:0;
-    }
-    .label{ opacity:.9; font-weight:800; letter-spacing:.2px; margin-bottom:2px; font-size:clamp(12px,2.6vw,14px); }
-    .muted{ color:var(--muted); font-size:clamp(12px,2.8vw,14px); }
-    .value-lg{ font-size:clamp(18px,3.6vw,22px); font-weight:800; margin-top:4px; }
-
-    /* Mini özet satırı (compact'ta görünür) */
-    .mini-row{ display:none; gap:6px; }
-    .stat{
-      flex:1 1 0; display:flex; align-items:baseline; justify-content:space-between; gap:6px;
-      padding:6px 8px; border-radius:12px; border:1px solid var(--stroke); background:var(--panel);
-    }
-    .stat .k{ font-weight:800; opacity:.9; font-size:clamp(11px,2.5vw,12px) }
-    .stat .v{ font-weight:800; font-size:clamp(14px,3vw,16px) }
-
-    /* Sayaç — hep görünür */
-    .counter-card{ grid-column:1 / -1; display:flex; flex-direction:column; gap:6px; }
-    .top-hint{ text-align:right; font-size:clamp(11px,2.2vw,12px); color:var(--muted); }
-
     .pad{
       flex:1 1 auto; width:100%;
-      min-height:clamp(100px,28vh,150px);
+      min-height:clamp(110px, 26vh, 200px);
       border:1px solid var(--stroke);
       border-radius:12px;
       background:linear-gradient(180deg, rgba(14,16,28,.92), rgba(12,14,22,.88));
@@ -83,10 +83,10 @@ export async function openDocPiP(){
 
     .face{
       color:#fff;
-      font-size:clamp(36px,10.5vw,56px);
+      font-size:clamp(40px, 12vw, 68px);
       font-weight:900; line-height:1;
       padding:10px 16px; border-radius:10px;
-      min-width:clamp(74px,26vw,110px);
+      min-width:clamp(74px, 30vw, 120px);
       text-align:center;
       background:#0d1220; border:1px solid var(--stroke);
       text-shadow:0 2px 10px rgba(0,0,0,.35);
@@ -96,65 +96,39 @@ export async function openDocPiP(){
     .chip{
       padding:6px 12px; border-radius:999px; border:1px solid var(--stroke);
       background:#0c1425; color:var(--fg); cursor:pointer;
-      font-weight:800; font-size:clamp(12px,2.6vw,14px);
+      font-weight:800; font-size:clamp(12px,2.6vw,14px)
     }
     .ghost{ background:transparent }
-
-    /* --- COMPACT MOD --- */
-    /* Hata: önce .grid'i saklıyorduk; sayaç da saklanıyordu. Artık sadece .info kartlarını saklıyoruz. */
-    body.compact .info{ display:none; }         /* sadece iki bilgi kartını kapat */
-    body.compact .grid{ grid-template-columns:1fr; gap:6px; }
-    body.compact .mini-row{ display:flex; }
-    body.compact .pad{ min-height:clamp(84px,26vh,120px); }
-    body.compact .clock{ font-size:clamp(16px,6.2vw,22px); }
-    body.compact .face{ font-size:clamp(34px,12vmin,54px); min-width:clamp(70px,34vw,110px); }
   </style>
 
   <div id="pipBackdrop" aria-hidden="true"></div>
 
   <div class="wrap">
-    <div id="pipClock" class="clock">--:--:--</div>
-
-    <!-- Mini özet (compact'ta görünür) -->
-    <div class="mini-row">
-      <div class="stat">
-        <span class="k" id="miniTaskLabel">Task</span>
-        <span class="v" id="miniTaskV">0</span>
+    <div class="topbar">
+      <div class="seg l">
+        <span class="k" id="tbTaskLabel">Interval</span>
+        <span class="v" id="tbTaskVal">0</span>
       </div>
-      <div class="stat">
-        <span style="display:flex;gap:6px;align-items:baseline">
-          <span class="k" id="miniNextLabel">Next</span>
-          <span class="v" id="miniNextV">—</span>
-        </span>
-        <span class="v" id="miniNextEta">--:--:--</span>
+      <div class="seg c">
+        <div id="pipClock" class="clock">--:--:--</div>
+      </div>
+      <div class="seg r">
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px;min-width:0">
+          <div><span class="k" id="tbNextLabel">Next</span> · <span class="v" id="tbNextEta">--:--:--</span></div>
+          <div class="sub" id="tbNextName">—</div>
+        </div>
       </div>
     </div>
 
-    <!-- Kartlar + sayaç (sayaç hep görünür) -->
-    <div class="grid">
-      <div class="card info">
-        <div id="pipTaskLabel" class="label">Task</div>
-        <div id="pipTaskStatus" class="muted">—</div>
-        <div id="pipTaskAmount" class="value-lg">0</div>
-      </div>
-
-      <div class="card info">
-        <div id="pipNextLabel" class="label">Next</div>
-        <div id="pipNextName" class="muted">—</div>
-        <div id="pipNextEta" class="value-lg">--:--:--</div>
-      </div>
-
-      <div class="card counter-card">
-        <div class="top-hint" id="pipHint">Sol tık +1 · Sağ tık −1</div>
-        <button id="pad" class="pad" title="Sol tık +1 · Sağ tık −1">
-          <span id="v" class="face">0</span>
-        </button>
-        <div class="row">
-          <button class="chip" data-step="2">+2</button>
-          <button class="chip" data-step="4">+4</button>
-          <button class="chip" data-step="8">+8</button>
-          <button id="r" class="chip ghost">Sıfırla</button>
-        </div>
+    <div class="counter">
+      <button id="pad" class="pad" title="Sol tık +1 · Sağ tık −1">
+        <span id="v" class="face">0</span>
+      </button>
+      <div class="row">
+        <button class="chip" data-step="2">+2</button>
+        <button class="chip" data-step="4">+4</button>
+        <button class="chip" data-step="8">+8</button>
+        <button id="r" class="chip ghost">Sıfırla</button>
       </div>
     </div>
   </div>
@@ -162,7 +136,7 @@ export async function openDocPiP(){
 
   const $ = (s, root=pip.document) => root.querySelector(s);
 
-  /* === Wallpaper/tema senkronu === */
+  /* === Tema/WALLPAPER senkronu === */
   const copyWallpaperToPip = () => {
     const src  = document.getElementById('themeBackdrop');
     const wall = pip.document.getElementById('pipBackdrop');
@@ -179,26 +153,15 @@ export async function openDocPiP(){
   const themeObserver = new MutationObserver(copyWallpaperToPip);
   themeObserver.observe(document.documentElement, { attributes:true, attributeFilter:['data-theme'] });
 
-  /* === Auto-compact eşiği === */
-  function fitMode(){
-    const compact = (pip.innerWidth < 430) || (pip.innerHeight < 320);
-    pip.document.body.classList.toggle('compact', compact);
-  }
-  fitMode();
-  pip.addEventListener('resize', fitMode);
-
   /* === i18n === */
   const paintTexts = () => {
-    $('#pipTaskLabel').textContent  = t(S.lang,'taskTitle')      || 'Task';
-    $('#miniTaskLabel').textContent = t(S.lang,'taskTitle')      || 'Task';
+    $('#tbTaskLabel').textContent = t(S.lang,'taskTitle')      || 'Interval';
+    $('#tbNextLabel').textContent = t(S.lang,'nextBreakTitle') || 'Next';
+    $('#r').textContent           = t(S.lang,'reset')          || 'Reset';
 
-    $('#pipNextLabel').textContent  = t(S.lang,'nextBreakTitle') || 'Next';
-    $('#miniNextLabel').textContent = t(S.lang,'nextBreakTitle') || 'Next';
-
-    $('#r').textContent             = t(S.lang,'reset')          || 'Reset';
+    // Pad ipucu başlıkta kalsın
     const hint = t(S.lang,'pipPadHint') || 'Sol tık +1 · Sağ tık −1';
-    $('#pipHint').textContent = hint;
-    $('#pad').title          = hint;
+    $('#pad').title = hint;
   };
   paintTexts();
   const unLang = sub('lang', paintTexts);
@@ -227,28 +190,22 @@ export async function openDocPiP(){
   $('#r').addEventListener('click', () => { setCounter(0); broadcast('counter', S.counter); });
   const unCounter = sub('counter', (val) => { v.textContent = String(val); });
 
-  /* === Snapshot uygula (kart + mini-özet) === */
+  /* === Dashboard snapshot: üst barı doldur === */
   const applyDash = (d) => {
     if (!d) return;
     $('#pipClock').textContent = d.clock || '--:--:--';
 
-    $('#pipTaskStatus').textContent = d.task?.active ? (t(S.lang,'taskActive') || 'Active') : '—';
-    $('#pipTaskAmount').textContent = String(d.task?.amount ?? 0);
-    $('#miniTaskV').textContent     = String(d.task?.amount ?? 0);
+    // Sol segment: mevcut interval (eski "task" miktarını kullanıyoruz)
+    $('#tbTaskVal').textContent = String(d.task?.amount ?? 0);
 
+    // Sağ segment: sıradaki mola
     if (d.next){
       const nameAt = `${d.next.keyOrName} ${d.next.at}`;
-      $('#pipNextName').textContent = nameAt;
-      $('#pipNextEta').textContent  = d.next.eta;
-
-      $('#miniNextV').textContent   = nameAt;
-      $('#miniNextEta').textContent = d.next.eta;
+      $('#tbNextName').textContent = nameAt;
+      $('#tbNextEta').textContent  = d.next.eta;
     }else{
-      $('#pipNextName').textContent = '—';
-      $('#pipNextEta').textContent  = '--:--:--';
-
-      $('#miniNextV').textContent   = '—';
-      $('#miniNextEta').textContent = '--:--:--';
+      $('#tbNextName').textContent = '—';
+      $('#tbNextEta').textContent  = '--:--:--';
     }
   };
 
@@ -258,6 +215,8 @@ export async function openDocPiP(){
     applyDash(window.__KZS_LAST_DASH__);
     copyWallpaperToPip();
   }, 1000);
+
+  pip.addEventListener('resize', () => { /* layout, clamp ile otomatik */ });
 
   pip.addEventListener('pagehide', () => {
     unCounter(); unLang(); clearInterval(syncTimer); themeObserver.disconnect();
