@@ -1,4 +1,4 @@
-
+@import "/src/theme-vars.css";
 /* ─────────────────────────  A U R O R A  (clean)  ───────────────────────── */
 
 :root{
@@ -824,3 +824,15 @@ button.reset-btn,      .btn.warn   { border-color: var(--accent2); }
 #frPipPanel .sep{ margin:8px 0; border-top:1px dashed rgba(255,255,255,.1); }
 #frPipPanel[data-collapsed="true"] .body{ display:none; }
 #frPipMin, #frPipClose{ padding:4px 8px; border-radius:8px; }
+
+/* Friends modal: dakika rozetini, sayı alanını ve saat seçiciyi gizle */
+#friendsBody .frTile .pill,
+#friendsBody .frTile .tileBody .mins,
+#friendsBody .frTile .tileBody input[type="time"] {
+  display: none !important;
+}
+
+/* Gövde tek sütun kalsın (süre/saat kalkınca boşluk olmasın) */
+#friendsBody .frTile .tileBody {
+  grid-template-columns: 1fr !important;
+}
