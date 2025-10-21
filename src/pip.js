@@ -88,6 +88,16 @@ export async function openDocPiP(){
   </div>
   `;
 
+  // PiP arka planını ana sayfadaki wallpaper ile eşle
+const copyWallpaperToPip = () => {
+  const bg = getComputedStyle(document.getElementById('themeBackdrop')).background;
+  pip.document.body.style.background = bg;
+  pip.document.body.style.backgroundSize = 'cover';
+  pip.document.body.style.backgroundPosition = 'center';
+};
+copyWallpaperToPip();
+
+
   const $ = (s, root=pip.document) => root.querySelector(s);
 
   // === i18n etiketleri (dil değişince PiP de boyansın)
