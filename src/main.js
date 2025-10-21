@@ -173,3 +173,4 @@ startDashboardTicker();
     localStorage.setItem('theme', v);
   });
 })();
+import './season-badges.js';
