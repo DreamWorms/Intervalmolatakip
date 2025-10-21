@@ -11,6 +11,19 @@ export async function openDocPiP(){
   // === UI (tam ekran pad) ===
   pip.document.body.innerHTML = `
   <style>
+  /* --- PiP wallpaper layer --- */
+html,body{height:100%}
+#wp{
+  position:fixed; inset:0; z-index:-1;
+  background:#0b0d12 center/cover no-repeat;   /* URL JS’ten gelecek */
+  filter:saturate(1.02) brightness(1.02);
+}
+#wp::after{ /* okunurluk için hafif karartma */
+  content:""; position:absolute; inset:0;
+  background:
+    radial-gradient(1200px 700px at 50% 0%, rgba(0,0,0,.25), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,.28), rgba(0,0,0,.45));
+}
    :root{
       --bg:#0b0d12; --stroke:#273246; --fg:#e9edf4; --muted:#9aa6b2;
     }
@@ -88,6 +101,7 @@ export async function openDocPiP(){
     .ghost{ background:transparent }
   </style>
 
+  <div id="wp" aria-hidden="true"></div>
   <div class="wrap">
     <!-- HUD -->
     <div class="hud">
