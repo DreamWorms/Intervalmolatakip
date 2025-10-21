@@ -174,3 +174,39 @@ startDashboardTicker();
   });
 })();
 import './season-badges.js';
+
+// === WELLNESS: geri sayım "00:00:00" olunca haftalık deftere otomatik yaz ===
+(function autoWellnessLedgerHook() {
+  const etaEl  = document.getElementById('nextBreakEta');
+  const nameEl = document.getElementById('nextBreakName');
+  if (!etaEl || !nameEl || typeof window.kzWB_log !== 'function') return;
+
+  // Senin kurala göre eşleme: W1/W2 = 16 dk, W3 = 62 dk
+  const MIN_BY_NAME = { 'Wellness 1': 16, 'Wellness 2': 16, 'Wellness 3': 62 };
+
+  let lastKey = ''; // aynı molayı iki kez yazmamak için
+  const parseEta = (txt) => {
+    const m = (txt || '').match(/^(\d{1,2}):(\d{2}):(\d{2})$/);
+    return m ? (+m[1]) * 3600 + (+m[2]) * 60 + (+m[3]) : null;
+  };
+
+  const check = () => {
+    const name = (nameEl.textContent || '').trim();
+    const eta  = (etaEl.textContent || '').trim();
+    const secs = parseEta(eta);
+
+    if (!name || !name.toLowerCase().includes('wellness')) return;
+    if (secs === 0) {
+      const minutes = MIN_BY_NAME[name] ?? 16; // bilinmezse 16 kabul et
+      const key = new Date().toDateString() + '|' + name;
+      if (key !== lastKey) {                 // sadece bir kez yaz
+        lastKey = key;
+        window.kzWB_log(minutes);
+      }
+    }
+  };
+
+  // Hem DOM değişimini hem de güvenlik için her saniye kontrol et
+  new MutationObserver(check).observe(etaEl, { childList: true, characterData: true, subtree: true });
+  setInterval(check, 1000);
+})();
