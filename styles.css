@@ -1280,3 +1280,20 @@ html, body{ overflow-x:hidden; }
 .tb-icn.tb-pip{ box-shadow:none !important; }
 .tb-icn.tb-pip::before,
 .tb-icn.tb-pip::after{ content:none !important; }
+
+.hud[style*="1fr;"] .clock { font-size: clamp(20px, 7vw, 30px); }
+
+
+/* ——— Foldable kartlar ——— */
+[data-fold]{ position: relative; }
+[data-fold] .fold-btn{
+  position:absolute; top:8px; right:8px;
+  padding:4px 8px; border-radius:8px; cursor:pointer; line-height:1;
+  border:1px solid var(--bd); background:var(--chip-bg); color:var(--fg);
+  font-weight:800; font-size:12px;
+}
+[data-fold] .fold-btn .chev{ display:inline-block; transition: transform .15s ease; }
+[data-fold][data-collapsed="1"] .fold-btn .chev{ transform: rotate(-90deg); }
+
+/* Kart kapanınca, başlık dışındaki tüm çocukları gizle */
+[data-fold][data-collapsed="1"] > [data-fold-body]{ display:none !important; }

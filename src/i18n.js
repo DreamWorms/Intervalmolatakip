@@ -49,6 +49,22 @@ const I18N = {
     navFriends: 'Arkadaşlar',
     navPip: 'PiP',           
 
+    //Ayarlar
+    settings: 'Ayarlar',
+    pipSettingsTitle: 'PiP Ayarları',
+    pipShowClock: 'Saati göster',
+    pipShowTask: 'Mevcut intervali göster',
+    pipShowNext: 'Sıradaki molayı göster',
+    pipShowCounter: 'Sayacı göster',
+    pipAlertOverlay: '2 dk kala uyarı overlay',
+    pipPresets: 'Hazır düzenler',
+    pipPresetAll: 'Hepsi açık',
+    pipPresetMinimal: 'Minimal',
+    pipPresetFocus: 'Odak (sayaç)',
+    pipReset: 'Varsayılanlara dön',
+    close: 'Kapat',
+    save: 'Kaydet',
+
     // — PiP 2 dk overlay
     pipSoonTitle: 'Mola Yaklaşıyor',
     pipPrepareHint: 'Hazırlan: su al, esneme yap, gözleri dinlendir…',

@@ -8,7 +8,7 @@
   const btnFr    = $('#tbFriends');
   const btnWn    = $('#tbWellness');
   const btnPip   = $('#tbPip');
-
+  const btnSet  = $('#tbSettings');
   const popTheme = $('#popTheme');
   const popLang  = $('#popLang');
 
@@ -21,6 +21,7 @@
     if (nowOpen) pop.removeAttribute('hidden');
   }
 
+  
   on(btnTheme, 'click', () => toggle(popTheme));
   on(btnLang,  'click', () => toggle(popLang));
 
@@ -33,6 +34,11 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape'){ [popTheme, popLang].forEach(p => p && p.setAttribute('hidden','')); }
   });
+
+  on(btnSet, 'click', () => {         // EKLE
+  window.openPipSettings && window.openPipSettings();
+});
+
 
   // Arkadaşlar / Wellness ⇒ mevcut butonları tetikle
   on(btnFr, 'click', () => { $('#openFriends')?.click(); });
@@ -144,6 +150,14 @@ window.paintIconbarLabels = paintIconbarLabels;
   // ilk boya
   paintIconbarLabels();
 })();
+
+document.addEventListener('click', (e) => {                 // EKLE
+  const setBtn = e.target.closest('#btnSettings, #tbSettings, [data-action="settings"]');
+  if (!setBtn) return;
+  e.preventDefault();
+  window.openPipSettings && window.openPipSettings();
+});
+
 
 
 // Evrensel delege — tek kez ekle

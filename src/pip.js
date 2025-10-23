@@ -1,3 +1,4 @@
+
 // src/pip.js
 import { S, sub, setCounter, broadcast } from './state.js';
 import { t } from './i18n.js';
@@ -11,6 +12,9 @@ export async function openDocPiP(){
   // ============ HTML + CSS ============
   pip.document.body.innerHTML = `
   <style>
+  /* Güvenli gizleme */
+[hidden]{ display:none !important; }
+.no-alert #pipAlert{ display:none !important; }
     :root{
       /* Ana ekrandan kopyalanacak; şimdilik yedek değerler */
       --fg:#e9edf4; --muted:#9aa6b2; --surface:rgba(12,16,22,.58); --bd:rgba(144,224,255,.22);
@@ -124,20 +128,20 @@ export async function openDocPiP(){
 
   <div class="wrap">
     <div class="hud">
-      <div class="cell left">
+      <div class="cell left" id="hudTask">
         <div class="label" id="pipTaskLabel">Mevcut Interval</div>
         <div class="val"   id="pipTaskAmount">0</div>
       </div>
-      <div class="cell center">
+      <div class="cell center" id="hudClock">
         <div class="clock" id="pipClock">--:--:--</div>
       </div>
-      <div class="cell right" style="text-align:right">
+      <div class="cell right" style="text-align:right" id="hudNext">
         <div class="label" id="pipNextLabel">Sıradaki Mola</div>
         <div class="val"   id="pipNextEta">--:--:--</div>
       </div>
     </div>
 
-    <div class="counter-card">
+    <div class="counter-card" id="counterCard">
       <div class="top-hint" id="pipHint">Sol tık +1 · Sağ tık −1</div>
       <button id="pad" class="pad" title="Sol tık +1 · Sağ tık −1">
         <span id="v" class="face">0</span>
@@ -163,6 +167,46 @@ export async function openDocPiP(){
   `;
 
   const $ = (s, root=pip.document) => root.querySelector(s);
+// === PiP ayarlarını oku ve uygula ===
+function pipCfg(){
+  try{
+    return Object.assign(
+      { showClock:true, showTask:true, showNext:true, showCounter:true, alertOverlay:true },
+      window.__KZS_PIPCFG__ || JSON.parse(localStorage.getItem('kzs_pip_cfg_v1')||'{}')
+    );
+  }catch{
+    return { showClock:true, showTask:true, showNext:true, showCounter:true, alertOverlay:true };
+  }
+}
+
+function applyPipLayout(){
+  const c = pipCfg();
+  const D = pip.document;
+
+  // Görünürlük
+  D.getElementById('hudTask').hidden     = !c.showTask;
+  D.getElementById('hudClock').hidden    = !c.showClock;
+  D.getElementById('hudNext').hidden     = !c.showNext;
+  D.getElementById('counterCard').hidden = !c.showCounter;
+
+  // Üst HUD kolonlarını görünene göre ayarla
+  const hud = D.querySelector('.hud');
+  const vis = [c.showTask, c.showClock, c.showNext].filter(Boolean).length;
+  if (hud){
+    hud.style.gridTemplateColumns =
+      vis===3 ? 'minmax(0,1fr) auto minmax(0,1fr)' :
+      vis===2 ? '1fr 1fr' : '1fr';
+  }
+
+  // 2 dk overlay kapalıysa işaret bırak
+  D.body.classList.toggle('no-alert', !c.alertOverlay);
+}
+
+// açılışta uygula + ayar değişince tekrar boya
+applyPipLayout();
+const unPipCfg = (sub && sub('pipCfg', applyPipLayout)) || null;
+
+
 
   // ==== UYARI MODU (2 dk kala) ====
   let inAlert = false;
@@ -195,12 +239,19 @@ export async function openDocPiP(){
     pip.document.body.classList.remove('alerting');
     $('#pipAlert').hidden = true;
   }
+  
   function checkAlertByEta(){
-    const txt = $('#pipNextEta')?.textContent || '';
-    const secs = parseEtaToSeconds(txt);
-    if (secs!=null && secs <= 120 && secs >= 0) enterAlert(secs);
-    else exitAlert();
+  // Ayarlardan overlay kapalıysa hiçbir şey göstermeyelim
+  if (pip.document.body.classList.contains('no-alert')) { 
+    exitAlert(); 
+    return; 
   }
+  const txt  = $('#pipNextEta')?.textContent || '';
+  const secs = parseEtaToSeconds(txt);
+  if (secs!=null && secs <= 120 && secs >= 0) enterAlert(secs);
+  else exitAlert();
+}
+
 
   // ——— Tema: değişkenleri ve duvar kâğıdını ana ekrandan aynen al
   const copyThemeVarsToPip = () => {
@@ -242,6 +293,7 @@ export async function openDocPiP(){
     const prep = $('#pipPrepare');  if (prep) prep.textContent = t(S.lang, 'pipPrepareHint');
 };
   paintTexts();
+  applyPipLayout();
   const unLang = sub('lang', paintTexts);
 
   // ——— Sayaç
@@ -264,6 +316,8 @@ export async function openDocPiP(){
   $('#r').addEventListener('click', () => { setCounter(0); broadcast('counter', S.counter); });
 
   const unCounter = sub('counter', (val) => { v.textContent = String(val); });
+ 
+
 
   // ——— Dashboard snapshot
   const applyDash = (d) => {
@@ -286,9 +340,12 @@ export async function openDocPiP(){
     checkAlertByEta();          // 2 dk kala uyarıyı yönet
     copyThemeVarsToPip();
     copyWallpaperToPip();
+    applyPipLayout();
   }, 1000);
 
-  pip.addEventListener('pagehide', () => {
-    unCounter(); unLang(); mo.disconnect();
-  });
+ pip.addEventListener('pagehide', () => {
+  unCounter(); unLang(); mo.disconnect(); unPipCfg && unPipCfg();
+});
 }
+
+
