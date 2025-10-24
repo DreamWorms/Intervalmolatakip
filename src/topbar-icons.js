@@ -1,3 +1,4 @@
+
 // src/topbar-icons.js — topbar icon davranışları (modül değil)
 (function(){
   const $  = (s, r=document) => r.querySelector(s);
@@ -150,14 +151,6 @@ window.paintIconbarLabels = paintIconbarLabels;
   // ilk boya
   paintIconbarLabels();
 })();
-
-document.addEventListener('click', (e) => {                 // EKLE
-  const setBtn = e.target.closest('#btnSettings, #tbSettings, [data-action="settings"]');
-  if (!setBtn) return;
-  e.preventDefault();
-  window.openPipSettings && window.openPipSettings();
-});
-
 
 
 // Evrensel delege — tek kez ekle

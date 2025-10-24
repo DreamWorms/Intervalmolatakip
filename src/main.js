@@ -59,37 +59,39 @@ paintTexts();
 
 // === Üst bar ikon etiketlerini boyayan fonksiyon
 function paintIconbarLabels(){
-  const set = (sel, key, fallback='')=>{
+  const setLabel = (sel, key, fallback='')=>{
     const el = document.querySelector(sel);
     if (!el) return;
     el.textContent = key ? (t(S.lang, key) || fallback) : (fallback || '');
   };
 
-  set('#tbThemeLbl',   'navTheme');
-  set('#tbLangLbl',    'labelLang');
-  set('#tbFriendsLbl', 'navFriends');
-  set('#tbSettingsLbl', 'settings', 'Ayarlar');
+  // Label yazıları
+  setLabel('#tbThemeLbl',   'navTheme');
+  setLabel('#tbLangLbl',    'labelLang');
+  setLabel('#tbFriendsLbl', 'navFriends');
+  setLabel('#tbPipLbl',     'navPip');
+  setLabel('#tbSettingsLbl','settings','Ayarlar'); // Ayarlar etiketi
 
-  // Wellness çevirilmesin
+  // Wellness sabit kalsın
   const wl = document.querySelector('#tbWellnessLbl');
   if (wl) wl.textContent = 'Wellness';
 
-  // PiP kısa ve sabit
-  set('#tbPipLbl', 'navPip');
+  // Buton title'ları
+  const themeBtn = document.querySelector('#btnTheme');
+  const langBtn  = document.querySelector('#btnLang');
+  const frBtn    = document.querySelector('#openFriends');
+  const wlBtn    = document.querySelector('#openWellness');
+  const pipBtn   = document.querySelector('#openDocPipBtn');
+  const stBtn    = document.querySelector('#tbSettings');
 
-  // buton title'ları da dil alsın
-  const themeBtn   = document.querySelector('#btnTheme');
-  const langBtn    = document.querySelector('#btnLang');
-  const frBtn      = document.querySelector('#openFriends');
-  const wlBtn      = document.querySelector('#openWellness');
-  const pipBtn     = document.querySelector('#openDocPipBtn');
-  const setBtn    = document.querySelector('#tbSettings');
   if (themeBtn) themeBtn.title = t(S.lang, 'navTheme');
   if (langBtn)  langBtn.title  = t(S.lang, 'labelLang');
   if (frBtn)    frBtn.title    = t(S.lang, 'navFriends');
   if (wlBtn)    wlBtn.title    = 'Wellness';
   if (pipBtn)   pipBtn.title   = 'PiP';
+  if (stBtn)    stBtn.title    = t(S.lang, 'settings');
 }
+
 paintIconbarLabels();
 sub('lang', paintIconbarLabels);
 
@@ -249,25 +251,65 @@ setupFoldable({ titleSel:'#breaksTitle',   storageKey:'breaks'   });   // Breaks
 // sonra şunu da aç:
 setupFoldable({ titleSel:'#siTitle',       storageKey:'special'  });   // Özel İnterval
 
-// ========== Wallpaper Tema Seçici ==========
+// ========== Wallpaper / Video Tema Seçici ==========
+// Bu blok, normal görselleri "data-theme" ile; video temayı da <video id="bgVideo"> ile yönetir.
 (function () {
   const root = document.documentElement;
   const sel  = document.getElementById('themeSelect');
   if (!sel) return;
 
-  // açılışta kaydedilmiş temayı yükle
+  // Video dosyası eşlemesi
+  const VIDEO_MAP = {
+    // tema anahtarı : dosya yolu
+    swimcorgi: '/walls/swimming-corgi.mp4',
+  };
+
+  // Videoyu ekle/çıkar
+  function applyThemeVideo(theme){
+    const holder = document.getElementById('themeBackdrop'); // zaten HTML’de var
+    if (!holder) return;
+
+    let v = document.getElementById('bgVideo');
+    const videoSrc = VIDEO_MAP[theme];
+
+    // Video teması değilse: videoyu kaldır, sadece arkaplan görselleri kalsın
+    if (!videoSrc){
+      if (v) v.remove();
+      return;
+    }
+
+    // Video teması ise: yoksa oluştur, varsa src’yi güncelle
+    if (!v){
+      v = document.createElement('video');
+      v.id = 'bgVideo';
+      v.autoplay = v.muted = v.loop = true;
+      v.playsInline = true;
+      holder.appendChild(v);
+    }
+    if (v.src !== (location.origin + videoSrc)) v.src = videoSrc;
+  }
+
+  // Açılışta kaydedilmiş tema
   const saved = localStorage.getItem('theme') || '';
   if (saved) root.setAttribute('data-theme', saved);
+  else       root.removeAttribute('data-theme');
   sel.value = saved;
 
-  // değişince uygula + kaydet
+  // Açılışta video durumunu da uygula
+  applyThemeVideo(saved);
+
+  // Değişince uygula + kaydet
   sel.addEventListener('change', (e) => {
     const v = e.target.value || '';
     if (v) root.setAttribute('data-theme', v);
-    else root.removeAttribute('data-theme');
+    else   root.removeAttribute('data-theme');
     localStorage.setItem('theme', v);
+
+    // Video teması ise videoyu tak
+    applyThemeVideo(v);
   });
 })();
+
 import './season-badges.js';
 
 // === WELLNESS: geri sayım "00:00:00" olunca haftalık deftere otomatik yaz ===

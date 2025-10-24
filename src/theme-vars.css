@@ -10,12 +10,6 @@
   --chip-bd:rgba(255,255,255,.16);
 }
 
-/* XARP (alien) */
-html[data-theme="xarp"]{
-  --fg:#e8f0ff; --muted:#a6b0c3;
-  --surface:rgba(9,12,18,.55); --bd:rgba(88,211,255,.28);
-  --accent:#58d3ff; --accent2:#bf85ff;
-}
 
 /* Hello Kitty */
 html[data-theme="hellokitty"]{

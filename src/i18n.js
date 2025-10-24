@@ -119,6 +119,7 @@ const I18N = {
     frConfirmDelete: 'Delete this friend?',
     frNewFriend: 'New Friend',
 
+    settings: 'Settings',
     // Wellness Defteri
     wnTitle: 'Wellness Book',
     wnAuto: 'Auto log',
@@ -172,6 +173,7 @@ const I18N = {
     durationMins: 'Dauer',
     minUnit: 'Min',
 
+    settings: 'Einstellungen',
     siTitle: 'Benutzerdef. Intervall',
     siLen: 'Minuten',
     siStart: 'Schichtbeginn',
@@ -264,6 +266,7 @@ const I18N = {
     navFriends: 'Приятели',
     navPip: 'PiP',           
 
+    settings: 'Настройки',
     // — PiP overlay
     pipSoonTitle: 'Почивката наближава',
     pipPrepareHint: 'Подготви се: вода, разтягане, почивка за очите…',

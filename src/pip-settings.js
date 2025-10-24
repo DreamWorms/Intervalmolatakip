@@ -31,6 +31,7 @@
 
     const wrap = document.createElement('div');
     wrap.className = 'kzModal';
+    wrap.id = 'pipSettingsModal';
     wrap.innerHTML = `
 <div class="kzModal-overlay"></div>
 <div class="kzModal-dialog" role="dialog" aria-modal="true">
