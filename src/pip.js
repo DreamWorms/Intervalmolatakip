@@ -8,7 +8,7 @@ export async function openDocPiP(){
   if (!('documentPictureInPicture' in window)) { alert('Tarayıcı Document PiP desteklemiyor.'); return; }
 
   const pip = await window.documentPictureInPicture.requestWindow({ width: 420, height: 320 });
-
+  window.__PIP__ = pip;
   // ============ HTML + CSS ============
   pip.document.body.innerHTML = `
   <style>
@@ -274,7 +274,7 @@ const unPipCfg = (sub && sub('pipCfg', applyPipLayout)) || null;
     wall.style.backgroundSize     = 'cover';
     wall.style.backgroundAttachment = 'fixed';
   };
-
+  window.__DBG_copyWallToPip = copyWallpaperToPip;
   copyThemeVarsToPip();
   copyWallpaperToPip();
 
