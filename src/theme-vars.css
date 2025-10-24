@@ -74,14 +74,14 @@ html[data-theme="xmas"]{
   --accent:#f6d081; --accent2:#22c55e;
 }
 
-/* Swimming Corgi */
+/* Swimming Corgi — HIGH CONTRAST */
 html[data-theme="swimming-corgi"]{
-  --fg:#e8fbff;
-  --muted:#a8d7e6;
-  --surface:rgba(8,20,28,.42);
-  --bd:rgba(82,211,255,.30);
-  --accent:#52d3ff;
-  --accent2:#ff86c8;
-  --chip-bg:rgba(255,255,255,.07);
-  --chip-bd:rgba(255,255,255,.18);
+  --fg:#eaffff;                   /* çok açık mavi-beyaz yazı */
+  --muted:#84e6ff;                /* soluk yazı */
+  --surface:rgba(0,26,36,.78);    /* kart zemini — koyu petrol, daha opak cam */
+  --bd:rgba(0,255,255,.48);       /* kart kenarı — parlak cam */
+  --accent:#00f7ff;               /* ANA vurgu — neon camgöbeği */
+  --accent2:#ff2d95;              /* ikincil vurgu — neon pembe */
+  --chip-bg:rgba(255,255,255,.10);/* chip arka planı daha belirgin */
+  --chip-bd:rgba(0,255,255,.36);  /* chip kenarı da parlak */
 }
