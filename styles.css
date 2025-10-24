@@ -1323,3 +1323,4 @@ html, body{ overflow-x:hidden; }
   pointer-events: none;   /* tıklamayı engellemesin */
   filter: brightness(.92);/* istersen koyuluk ayarı */
 }
+
