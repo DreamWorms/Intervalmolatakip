@@ -1324,3 +1324,44 @@ html, body{ overflow-x:hidden; }
   filter: brightness(.92);/* istersen koyuluk ayarı */
 }
 
+/* ===== Swimming Corgi: görünür ve bariz fark yaratan override'lar ===== */
+
+/* Kartların cam yüzeyi ve kenarı daha parlak */
+html[data-theme="swimming-corgi"] .card,
+html[data-theme="swimming-corgi"] .summary-card,
+html[data-theme="swimming-corgi"] .metric-card {
+  background: var(--surface) !important;
+  border: 1px solid var(--bd) !important;
+  box-shadow: 0 0 0 1px rgba(0,255,255,.10), 0 10px 28px rgba(0,0,0,.45);
+}
+
+/* Rozet/pill’ler – neon turkuaz/pembe */
+html[data-theme="swimming-corgi"] .pill,
+html[data-theme="swimming-corgi"] .pill-blue,
+html[data-theme="swimming-corgi"] .pill-violet {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--accent) 88%, #00161b) 0%,
+    color-mix(in srgb, var(--accent) 55%, #00161b) 100%) !important;
+  border-color: color-mix(in srgb, var(--accent) 70%, transparent) !important;
+  color:#00181c !important;
+}
+html[data-theme="swimming-corgi"] .pill-pink {
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--accent2) 88%, #190010) 0%,
+    color-mix(in srgb, var(--accent2) 55%, #190010) 100%) !important;
+  border-color: color-mix(in srgb, var(--accent2) 70%, transparent) !important;
+}
+
+/* Chip’ler */
+html[data-theme="swimming-corgi"] .chip {
+  background: var(--chip-bg) !important;
+  border-color: var(--chip-bd) !important;
+  color: var(--fg) !important;
+}
+
+/* Sayaç yüzü/çerçevesi daha neon görünsün */
+html[data-theme="swimming-corgi"] .count-face,
+html[data-theme="swimming-corgi"] .face {
+  border-color: var(--accent) !important;
+  box-shadow: inset 0 0 14px color-mix(in srgb, var(--accent) 65%, transparent);
+}
