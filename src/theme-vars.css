@@ -78,7 +78,6 @@ html[data-theme="xmas"]{
 html[data-theme="keyiframe"]{
   --fg:#f7fff9; --muted:#d5ead8;
   --surface:rgba(16,32,24,.50); --bd:rgba(246,208,129,.40);
-  --accent:#f6d081; --accent2:#7e6b03ee;
 }
 
 /* Flints */
