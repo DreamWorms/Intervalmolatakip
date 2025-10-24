@@ -262,18 +262,49 @@ const unPipCfg = (sub && sub('pipCfg', applyPipLayout)) || null;
     });
   };
 
-  const copyWallpaperToPip = () => {
-    const src = document.getElementById('themeBackdrop');
-    const wall = pip.document.getElementById('pipBackdrop');
-    if (!src || !wall) return;
-    const cs = getComputedStyle(src);
-    wall.style.backgroundImage  = cs.backgroundImage;
-    wall.style.backgroundColor  = cs.backgroundColor || '#0b0d12';
-    wall.style.backgroundPosition = cs.backgroundPosition || 'center';
-    wall.style.backgroundRepeat   = 'no-repeat';
-    wall.style.backgroundSize     = 'cover';
-    wall.style.backgroundAttachment = 'fixed';
-  };
+  // Ana ekrandaki duvar kâğıdını/vidoyu PiP'e kopyala
+const copyWallpaperToPip = () => {
+  // 1) Önce video var mı? (#bgVideo veya #themeBackdrop içindeki <video>)
+  const srcVid = document.querySelector('#bgVideo, #themeBackdrop video');
+  if (srcVid) {
+    // PiP’te video elemanını hazırla (yoksa oluştur)
+    let pv = pip.document.getElementById('pipBgVideo');
+    if (!pv) {
+      pv = pip.document.createElement('video');
+      pv.id = 'pipBgVideo';
+      pv.muted = true;           // autoplay için şart
+      pv.autoplay = true;
+      pv.loop = true;
+      pv.playsInline = true;
+      // arkaya sabitle
+      pv.style.position = 'fixed';
+      pv.style.inset = '0';
+      pv.style.width = '100%';
+      pv.style.height = '100%';
+      pv.style.objectFit = 'cover';
+      pv.style.zIndex = '-1';
+      pip.document.body.appendChild(pv); // arka plana yerleştir
+    }
+    // kaynak ve oynatma
+    const url = srcVid.currentSrc || srcVid.src || '';
+    if (url && pv.src !== url) pv.src = url;
+    pv.play?.().catch(()=>{});
+    return; // video kopyalandıysa burada biter
+  }
+
+  // 2) Video yoksa eski davranış: CSS arkaplanını kopyala
+  const src = document.getElementById('themeBackdrop');
+  const wall = pip.document.getElementById('pipBackdrop');
+  if (!src || !wall) return;
+  const cs = getComputedStyle(src);
+  wall.style.backgroundImage        = cs.backgroundImage;
+  wall.style.backgroundColor        = cs.backgroundColor || '#0b0d12';
+  wall.style.backgroundPosition     = cs.backgroundPosition || 'center';
+  wall.style.backgroundRepeat       = 'no-repeat';
+  wall.style.backgroundSize         = 'cover';
+  wall.style.backgroundAttachment   = 'fixed';
+};
+
   window.__DBG_copyWallToPip = copyWallpaperToPip;
   copyThemeVarsToPip();
   copyWallpaperToPip();
