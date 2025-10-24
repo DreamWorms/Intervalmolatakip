@@ -81,7 +81,7 @@ html[data-theme="swimming-corgi"]{
   --muted:#a8d7e6;
 
   /* kartlar (glass) */
-  --surface:rgba(8,20,28,.42);
+  --surface:rgba(255, 0, 191, 0.42);
   --bd:rgba(82,211,255,.30);
 
   /* vurgu renkleri */
