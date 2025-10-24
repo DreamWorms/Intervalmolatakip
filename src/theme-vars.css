@@ -73,3 +73,22 @@ html[data-theme="xmas"]{
   --surface:rgba(16,32,24,.50); --bd:rgba(246,208,129,.40);
   --accent:#f6d081; --accent2:#22c55e;
 }
+
+/* Swimming Corgi */
+html[data-theme="swimming-corgi"]{
+  /* yazılar */
+  --fg:#e8fbff;
+  --muted:#a8d7e6;
+
+  /* kartlar (glass) */
+  --surface:rgba(8,20,28,.42);
+  --bd:rgba(82,211,255,.30);
+
+  /* vurgu renkleri */
+  --accent:#52d3ff;     /* aqua/mavi */
+  --accent2:#ff86c8;    /* pembe/mercans */
+  
+  /* chip’ler (istenirse biraz daha belirgin) */
+  --chip-bg:rgba(255,255,255,.07);
+  --chip-bd:rgba(255,255,255,.18);
+}
