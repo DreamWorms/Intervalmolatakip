@@ -503,8 +503,14 @@ html[data-theme="berserk2"] #themeBackdrop{
 html[data-theme="xmas"] #themeBackdrop{
   background: url("https://i.ibb.co/zhvjDvTH/XMAX.png") center/cover no-repeat;
 }
-
-
+html[data-theme="keyiframe"] #themeBackdrop{
+  background: url("https://i.ibb.co/HTvtYzfS/Keyfi-Rame.png") center/cover no-repeat;
+  filter: saturate(1.08) brightness(1.04);
+}
+  html[data-theme="flins"] #themeBackdrop{
+  background: url("https://i.ibb.co/8JVrt4J/Flins.jpg") center/cover no-repeat;
+  filter: saturate(1.08) brightness(1.04);
+}
 
 /* ——— Tema değişkenlerini tüm kart/tuşlara uygula ——— */
 body{ color:var(--fg); }
