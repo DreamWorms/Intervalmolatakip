@@ -81,3 +81,14 @@ html[data-theme="flints"]{
   --surface:rgba(6,16,26,.55); --bd:rgba(47,184,198,.32);
   --accent:#2fb8c6; --accent2:#d6b45a;
 }
+
+
+/* KEYIFRAME — coffee palette */
+html[data-theme="keyiframe"]{
+  --fg:#EAD8C7;            /* latte yazı rengi */
+  --muted:#C6B2A3;         /* soluk/tan */
+  --surface:rgba(26,10,3,.62); /* koyu kahve cam zemin */
+  --bd:rgba(200,157,114,.32);  /* karamel çerçeve */
+  --accent:#C89D72;        /* karamel vurgusu (mug/foam) */
+  --accent2:#F1D8BA;       /* açık krem ikinci vurgu */
+}
