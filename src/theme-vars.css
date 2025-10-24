@@ -74,11 +74,6 @@ html[data-theme="xmas"]{
   --accent:#f6d081; --accent2:#22c55e;
 }
 
-/* KEYİFRAME */
-html[data-theme="keyiframe"]{
-  --fg:#f7fff9; --muted:#d5ead8;
-  --surface:rgba(16,32,24,.50); --bd:rgba(246,208,129,.40);
-}
 
 /* Flints */
 html[data-theme="flints"]{
